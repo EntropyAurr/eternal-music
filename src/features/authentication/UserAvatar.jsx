@@ -7,7 +7,7 @@ const StyledUserAvatar = styled.div`
 
 const Avatar = styled.img`
   display: block;
-  width: 7rem;
+  width: 6rem;
   object-fit: cover;
   object-position: center;
   border-radius: 50%;

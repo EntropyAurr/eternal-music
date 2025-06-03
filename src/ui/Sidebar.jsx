@@ -1,17 +1,21 @@
 import styled from "styled-components";
-import Heading from "../ui/Heading";
+import Logo from "./Logo";
+import MainNav from "./MainNav";
 
 const StyledSidebar = styled.aside`
-  grid-row: 1/-1;
+  grid-row: 1 / -1;
   display: flex;
+  gap: 2rem;
   flex-direction: column;
-  border: 1px solid green;
+  padding: 2rem 2.5rem;
+  border-right: 1px solid green;
 `;
 
 function Sidebar() {
   return (
     <StyledSidebar>
-      <Heading as="h3">Sidebar</Heading>
+      <Logo />
+      <MainNav />
     </StyledSidebar>
   );
 }
