@@ -1,0 +1,12 @@
+import GlobalStyles from "./styles/GlobalStyles";
+
+function App() {
+  return (
+    <>
+      <GlobalStyles />
+      <div>Eternal music</div>
+    </>
+  );
+}
+
+export default App;
