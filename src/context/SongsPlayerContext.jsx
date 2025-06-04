@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext, useState } from "react";
+import useSound from "use-sound";
 
-import { createContext, useContext, useRef, useState } from "react";
 import { useSongs } from "../features/songs/useSongs";
 import Spinner from "../ui/Spinner";
 import Empty from "../ui/Empty";
@@ -9,27 +10,18 @@ const SongsPlayerContext = createContext();
 
 function SongsPlayerProvider({ children }) {
   const { songs, isPending } = useSongs();
-  const songRef = useRef();
   const [currentSongId, setCurrentSongId] = useState(null);
 
   if (isPending) return <Spinner />;
   if (!songs) return <Empty />;
 
   // PLAY song
-  function playSong(id) {
-    if (id === currentSongId) {
-      setCurrentSongId(id);
-      songRef.current.play();
-      console.log(currentSongId);
-    } else console.log("There was an error while playing song");
-  }
+  function playSong(id) {}
 
   // PAUSE song
-  function pauseSong() {
-    songRef.current.pause();
-  }
+  function pauseSong(id) {}
 
-  return <SongsPlayerContext.Provider value={{ songRef, playSong, pauseSong }}>{children}</SongsPlayerContext.Provider>;
+  return <SongsPlayerContext.Provider value={{ playSong, pauseSong }}>{children}</SongsPlayerContext.Provider>;
 }
 
 function useSongsPlayer() {

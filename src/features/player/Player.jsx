@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import Button from "../../ui/Button";
 import { useSongs } from "../songs/useSongs";
-import { useRef } from "react";
 import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
 import { useSongsPlayer } from "../../context/SongsPlayerContext";
+import { useSong } from "../songs/useSong";
 
 const StyledPlayer = styled.div`
   border: 1px solid #dd2d4a;
@@ -17,17 +17,17 @@ const StyledPlayer = styled.div`
 
 function Player() {
   const { songs, isPending } = useSongs();
-  const { songRef, playSong, pauseSong } = useSongsPlayer();
+  const { song, isPendingSong } = useSong();
+  const { playSong, pauseSong } = useSongsPlayer();
 
-  if (isPending) return <Spinner />;
-  if (!songs) return <Empty />;
-
-  const songUrl = songs[1].url;
+  console.log(song);
+  if (isPending || isPendingSong) return <Spinner />;
+  if (!songs || !song) return <Empty />;
 
   return (
     <StyledPlayer>
-      <audio ref={songRef} src={songUrl} />
-      <Button $variation="primary" size="medium" onClick={playSong}>
+      <audio />
+      <Button $variation="primary" size="medium" onClick={playSong(song.id)}>
         Play
       </Button>
       <Button $variation="primary" size="medium" onClick={pauseSong}>

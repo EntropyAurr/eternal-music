@@ -17,11 +17,11 @@ const SongTitle = styled.p`
 function SongItem({ song }) {
   const { id: songId, name, artist, url, duration } = song;
 
-  const { songRef, playSong, pauseSong } = useSongsPlayer();
+  const { playSong, pauseSong } = useSongsPlayer();
 
   return (
     <StyledSongItem>
-      <audio ref={songRef} src={url} />
+      <audio src={url} />
       <SongTitle onClick={playSong(songId)}>{name}</SongTitle>
       <p>Duration: {formatDuration(duration)}</p>
       <Button $variation="primary" size="medium" onClick={pauseSong}>

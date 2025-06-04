@@ -30,6 +30,8 @@ function App() {
             <Route element={<AppLayout />}>
               <Route index element={<Navigate replace to="/home" />} />
               <Route path="/home" element={<Home />} />
+              <Route path="/songs/" element={<Playlists />} />
+              <Route path="/songs/:songId" element={<Playlists />} />
               <Route path="/playlists" element={<Playlists />} />
               <Route path="/user" element={<User />} />
             </Route>
