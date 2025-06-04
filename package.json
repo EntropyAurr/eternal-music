@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.9",
+    "@tanstack/react-query": "^5.80.2",
+    "@tanstack/react-query-devtools": "^5.80.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.57.0",

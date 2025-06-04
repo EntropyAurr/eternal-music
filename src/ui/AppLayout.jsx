@@ -2,12 +2,12 @@ import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
-import Player from "./Player";
+import Player from "../features/player/Player";
 
 const StyledAppLayout = styled.div`
   display: grid;
   grid-template-columns: 25rem 1fr;
-  grid-template-rows: 8rem 40rem auto;
+  grid-template-rows: 8rem auto 1fr;
   height: 100vh;
 `;
 
