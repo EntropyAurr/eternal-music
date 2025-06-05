@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import Button from "../../ui/Button";
-import { useSongsPlayer } from "../../context/SongsPlayerContext";
 import { formatDuration } from "../../utils/helpers";
+import { useSongsPlayer } from "../../context/SongsPlayerContext";
 
-const StyledSongItem = styled.div`
+const StyledSong = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
@@ -14,21 +14,19 @@ const SongTitle = styled.p`
   font-weight: 600;
 `;
 
-function SongItem({ song }) {
+function Song({ song }) {
   const { id: songId, name, artist, url, duration } = song;
-
   const { playSong, pauseSong } = useSongsPlayer();
 
   return (
-    <StyledSongItem>
-      <audio src={url} />
-      <SongTitle onClick={playSong(songId)}>{name}</SongTitle>
+    <StyledSong>
+      <SongTitle onClick={() => playSong(song)}>{name}</SongTitle>
       <p>Duration: {formatDuration(duration)}</p>
-      <Button $variation="primary" size="medium" onClick={pauseSong}>
+      <Button $variation="primary" size="medium" onClick={() => pauseSong(songId)}>
         Pause
       </Button>
-    </StyledSongItem>
+    </StyledSong>
   );
 }
 
-export default SongItem;
+export default Song;

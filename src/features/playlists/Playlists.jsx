@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import SongItem from "../songs/SongItem";
 import { useSongs } from "../songs/useSongs";
 import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
+import Song from "../songs/Song";
+import Player from "../player/Player";
 
 const StyledPlaylists = styled.div`
   display: flex;
@@ -26,7 +27,7 @@ function Playlists() {
     <StyledPlaylists>
       <StyledSong>
         {songs.map((song) => (
-          <SongItem song={song} key={song.id} />
+          <Song song={song} key={song.id} />
         ))}
       </StyledSong>
     </StyledPlaylists>

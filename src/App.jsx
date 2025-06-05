@@ -6,6 +6,7 @@ import GlobalStyles from "./styles/GlobalStyles";
 import AppLayout from "./ui/AppLayout";
 import Home from "./pages/Home";
 import Playlists from "./features/playlists/Playlists";
+import Song from "./features/songs/Song";
 import User from "./pages/User";
 import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
@@ -30,8 +31,6 @@ function App() {
             <Route element={<AppLayout />}>
               <Route index element={<Navigate replace to="/home" />} />
               <Route path="/home" element={<Home />} />
-              <Route path="/songs/" element={<Playlists />} />
-              <Route path="/songs/:songId" element={<Playlists />} />
               <Route path="/playlists" element={<Playlists />} />
               <Route path="/user" element={<User />} />
             </Route>
