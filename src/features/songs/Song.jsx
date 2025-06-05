@@ -22,9 +22,9 @@ function Song({ song }) {
     <StyledSong>
       <SongTitle onClick={() => playSong(song)}>{name}</SongTitle>
       <p>Duration: {formatDuration(duration)}</p>
-      <Button $variation="primary" size="medium" onClick={() => pauseSong(songId)}>
+      {/* <Button $variation="primary" size="medium" onClick={() => pauseSong(songId)}>
         Pause
-      </Button>
+      </Button> */}
     </StyledSong>
   );
 }

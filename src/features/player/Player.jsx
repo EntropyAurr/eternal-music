@@ -23,7 +23,7 @@ function Player() {
 
   return (
     <StyledPlayer>
-      <Button $variation="primary" size="medium" onClick={() => playSong(songs[currentSongId])}>
+      <Button $variation="primary" size="medium" onClick={() => playSong(currentSongId)}>
         Play
       </Button>
       <Button $variation="primary" size="medium" onClick={() => pauseSong(currentSongId)}>
