@@ -16,15 +16,12 @@ const SongTitle = styled.p`
 
 function Song({ song }) {
   const { id: songId, name, artist, url, duration } = song;
-  const { playSong, pauseSong } = useSongsPlayer();
+  const { handlePlaySong } = useSongsPlayer();
 
   return (
     <StyledSong>
-      <SongTitle onClick={() => playSong(song)}>{name}</SongTitle>
+      <SongTitle onClick={() => handlePlaySong(songId)}>{name}</SongTitle>
       <p>Duration: {formatDuration(duration)}</p>
-      {/* <Button $variation="primary" size="medium" onClick={() => pauseSong(songId)}>
-        Pause
-      </Button> */}
     </StyledSong>
   );
 }

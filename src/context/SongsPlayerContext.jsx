@@ -7,39 +7,61 @@ import Empty from "../ui/Empty";
 const SongsPlayerContext = createContext();
 
 function SongsPlayerProvider({ children }) {
-  const songRef = useRef(null);
+  const audioRef = useRef(new Audio());
+  const audio = audioRef.current;
+  const songRef = useRef(null); // songRef.current: used to store the current song object
+
   const { songs, isPending } = useSongs();
+
   const [currentSongId, setCurrentSongId] = useState(null);
   const [currentSongTime, setCurrentSongTime] = useState(0);
+  const [volume, setVolume] = useState(15);
 
   if (isPending) return <Spinner />;
   if (!songs) return <Empty />;
 
-  // PLAY song
-  function playSong(song) {
-    console.log(currentSongId);
+  console.log(songRef);
+  console.log(audio.volume);
+  console.log(volume);
 
-    if (songRef.current) {
-      songRef.current.pause();
-      songRef.current.currentTime = 0;
+  // VOLUME adjustment
+  function handleVolume(value) {
+    if (!songRef.current) audio.volume = volume / 100;
+    console.log(audio.volume);
+
+    audio.volume = value / 100;
+    setVolume(value);
+  }
+
+  // PLAY song
+  function handlePlaySong(id) {
+    const song = songs.find((song) => song.id === id);
+
+    if (!song) return;
+
+    if (!songRef.current || songRef.current.id !== id) {
+      audio.src = song.url;
+      audio.currentTime = 0;
+    } else {
+      audio.currentTime = currentSongTime;
     }
 
-    const currentSong = new Audio(song.url);
-    songRef.current = currentSong;
-    currentSong.play();
+    songRef.current = song;
+    audio.play();
     setCurrentSongId(song.id);
-
-    console.log(currentSongId);
+    // because React's state updates are asynchronous => currentSongId still holds the old value until the next render => currentSongId !== song.id
   }
 
   // PAUSE song
-  function pauseSong(songId) {
-    if (songId === currentSongId && songRef.current) {
-      songRef.current.pause();
-    }
+  function handlePauseSong() {
+    setCurrentSongTime(audio.currentTime);
+    audio.pause();
   }
 
-  return <SongsPlayerContext.Provider value={{ playSong, pauseSong, currentSongId }}>{children}</SongsPlayerContext.Provider>;
+  // NEXT song
+  function handleNext() {}
+
+  return <SongsPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, volume, handleVolume }}>{children}</SongsPlayerContext.Provider>;
 }
 
 function useSongsPlayer() {
