@@ -5,7 +5,8 @@ import { useSongs } from "../songs/useSongs";
 import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
 import { IoVolumeMedium } from "react-icons/io5";
-import { RxTrackNext } from "react-icons/rx";
+import { RxTrackNext, RxTrackPrevious } from "react-icons/rx";
+import { formatDuration } from "../../utils/helpers";
 
 const StyledPlayer = styled.div`
   border: 1px solid #dd2d4a;
@@ -18,9 +19,20 @@ const StyledPlayer = styled.div`
 
 const VolumeBar = styled.input``;
 
+const SongTrack = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+`;
+
+const ProgressBar = styled.input`
+  width: 20rem;
+`;
+
 function Player() {
   const { songs, isPending } = useSongs();
-  const { handlePlaySong, handlePauseSong, currentSongId, volume, handleVolume } = useSongsPlayer();
+  const { handlePlaySong, handlePauseSong, currentSongId, volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress } = useSongsPlayer();
 
   if (isPending) return <Spinner />;
   if (!songs) return <Empty />;
@@ -41,9 +53,19 @@ function Player() {
       <VolumeBar type="range" min={0} max={100} value={volume} onChange={(e) => handleVolume(e.target.value)} />
       <span>Volume: {volume}</span>
 
-      <Button $variation="primary" size="medium" onClick={() => {}}>
+      <Button $variation="primary" size="medium" onClick={() => handlePrevious(currentSongId)}>
+        <RxTrackPrevious />
+      </Button>
+
+      <Button $variation="primary" size="medium" onClick={() => handleNext(currentSongId)}>
         <RxTrackNext />
       </Button>
+
+      <SongTrack>
+        <span>{formatDuration(currentSongTime)}</span>
+        <ProgressBar type="range" value={progress} min={0} max={100} step={0.1} onChange={(e) => handleProgressSong(e.target.value)} />
+        <span>{formatDuration(duration)}</span>
+      </SongTrack>
     </StyledPlayer>
   );
 }
