@@ -1,12 +1,13 @@
 import styled from "styled-components";
-import Button from "../../ui/Button";
 import { useSongsPlayer } from "../../context/SongsPlayerContext";
 import { useSongs } from "../songs/useSongs";
+import { formatDuration } from "../../utils/helpers";
+import { RxTrackNext, RxTrackPrevious } from "react-icons/rx";
+import ButtonIcon from "../../ui/ButtonIcon";
 import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
-import { IoVolumeMedium } from "react-icons/io5";
-import { RxTrackNext, RxTrackPrevious } from "react-icons/rx";
-import { formatDuration } from "../../utils/helpers";
+import TogglePlaySong from "./TogglePlaySong";
+import ToggleVolume from "./ToggleVolume";
 
 const StyledPlayer = styled.div`
   border: 1px solid #dd2d4a;
@@ -32,34 +33,26 @@ const ProgressBar = styled.input`
 
 function Player() {
   const { songs, isPending } = useSongs();
-  const { handlePlaySong, handlePauseSong, currentSongId, volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress } = useSongsPlayer();
+  const { currentSongId, volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress } = useSongsPlayer();
 
   if (isPending) return <Spinner />;
   if (!songs) return <Empty />;
 
   return (
     <StyledPlayer>
-      <Button $variation="primary" size="medium" onClick={() => handlePlaySong(currentSongId)}>
-        Play
-      </Button>
+      <TogglePlaySong />
 
-      <Button $variation="primary" size="medium" onClick={handlePauseSong}>
-        Pause
-      </Button>
-
-      <Button $variation="primary" size="medium" onClick={() => {}}>
-        <IoVolumeMedium />
-      </Button>
+      <ToggleVolume />
       <VolumeBar type="range" min={0} max={100} value={volume} onChange={(e) => handleVolume(e.target.value)} />
       <span>Volume: {volume}</span>
 
-      <Button $variation="primary" size="medium" onClick={() => handlePrevious(currentSongId)}>
+      <ButtonIcon onClick={() => handlePrevious(currentSongId)}>
         <RxTrackPrevious />
-      </Button>
+      </ButtonIcon>
 
-      <Button $variation="primary" size="medium" onClick={() => handleNext(currentSongId)}>
+      <ButtonIcon onClick={() => handleNext(currentSongId)}>
         <RxTrackNext />
-      </Button>
+      </ButtonIcon>
 
       <SongTrack>
         <span>{formatDuration(currentSongTime)}</span>

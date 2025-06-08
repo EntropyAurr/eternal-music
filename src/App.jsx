@@ -11,6 +11,7 @@ import User from "./pages/User";
 import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
 import { SongsPlayerProvider } from "./context/SongsPlayerContext";
+import { DarkModeProvider } from "./context/DarkModeContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,25 +23,27 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <SongsPlayerProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <GlobalStyles />
-        <BrowserRouter>
-          <Routes>
-            <Route element={<AppLayout />}>
-              <Route index element={<Navigate replace to="/home" />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/playlists" element={<Playlists />} />
-              <Route path="/user" element={<User />} />
-            </Route>
+    <DarkModeProvider>
+      <QueryClientProvider client={queryClient}>
+        <SongsPlayerProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <GlobalStyles />
+          <BrowserRouter>
+            <Routes>
+              <Route element={<AppLayout />}>
+                <Route index element={<Navigate replace to="/home" />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/playlists" element={<Playlists />} />
+                <Route path="/user" element={<User />} />
+              </Route>
 
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </SongsPlayerProvider>
-    </QueryClientProvider>
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </SongsPlayerProvider>
+      </QueryClientProvider>
+    </DarkModeProvider>
   );
 }
 

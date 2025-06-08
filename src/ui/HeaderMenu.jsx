@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import DarkModeToggle from "./DarkModeToggle";
 
 const StyledHeaderMenu = styled.ul`
   display: flex;
@@ -8,9 +9,9 @@ const StyledHeaderMenu = styled.ul`
 function HeaderMenu() {
   return (
     <StyledHeaderMenu>
-      <li>Icon 1</li>
-      <li>Icon 2</li>
-      <li>Icon 3</li>
+      <li>
+        <DarkModeToggle />
+      </li>
     </StyledHeaderMenu>
   );
 }

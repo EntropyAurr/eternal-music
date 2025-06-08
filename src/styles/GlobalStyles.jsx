@@ -159,7 +159,6 @@ select:focus {
   outline-offset: -2px;
 }
 
-/* Parent selector, finally 😃 */
 button:has(svg) {
   line-height: 0;
 }

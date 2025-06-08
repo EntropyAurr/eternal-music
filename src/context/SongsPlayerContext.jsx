@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useSongs } from "../features/songs/useSongs";
 import Spinner from "../ui/Spinner";
 import Empty from "../ui/Empty";
@@ -18,30 +18,49 @@ function SongsPlayerProvider({ children }) {
   const [currentSongTime, setCurrentSongTime] = useState(0);
   const [volume, setVolume] = useState(15);
   const [progress, setProgress] = useState(0);
+  const [nextSongId, setNextSongId] = useState(null);
+
+  // NEXT song
+  const handleNext = useCallback(
+    (id) => {
+      const song = songs.find((song) => song.id === id);
+
+      if (!songRef.current || song.id === songs.length - 1) return;
+
+      songRef.current = songs[id + 1];
+      audio.src = songs[id + 1].url;
+      setCurrentSongId(song.id + 1);
+      audio.play();
+    },
+    [songs, audio]
+  );
 
   useEffect(
     function () {
-      if (songRef.current) {
-        audio.addEventListener("timeupdate", () => setProgress((audio.currentTime / duration) * 100));
-        audio.addEventListener("timeupdate", () => setCurrentSongTime(audio.currentTime));
+      if (!songRef.current) return;
+
+      function onTimeUpdate() {
+        const currentTime = audio.currentTime;
       }
 
+      audio.addEventListener("timeupdate", () => onTimeUpdate);
+
+      // first render
       setProgress(0);
       setCurrentSongTime(0);
       audio.currentTime = 0;
 
       return () => {
-        audio.removeEventListener("timeupdate", () => setProgress((audio.currentTime / duration) * 100));
-        audio.removeEventListener("timeupdate", () => setCurrentSongTime(audio.currentTime));
+        audio.removeEventListener("timeupdate", () => onTimeUpdate);
       };
     },
-    [audio, duration]
+    [audio, duration, currentSongId, nextSongId, handleNext]
   );
+
+  if (!songRef.current) audio.volume = volume / 100;
 
   if (isPending) return <Spinner />;
   if (!songs) return <Empty />;
-
-  if (!songRef.current) audio.volume = volume / 100;
 
   // VOLUME adjustment
   function handleVolume(value) {
@@ -71,6 +90,8 @@ function SongsPlayerProvider({ children }) {
     audio.play();
 
     setCurrentSongId(song.id);
+    setNextSongId(song.id + 1);
+
     // because React's state updates are asynchronous => currentSongId still holds the old value until the next render => currentSongId !== song.id
   }
 
@@ -78,18 +99,6 @@ function SongsPlayerProvider({ children }) {
   function handlePauseSong() {
     audio.pause();
     setCurrentSongTime(audio.currentTime);
-  }
-
-  // NEXT song
-  function handleNext(id) {
-    const song = songs.find((song) => song.id === id);
-
-    if (!songRef.current || song.id === songs.length - 1) return;
-
-    songRef.current = songs[id + 1];
-    audio.src = songs[id + 1].url;
-    setCurrentSongId(song.id + 1);
-    audio.play();
   }
 
   // PREVIOUS song
@@ -104,7 +113,7 @@ function SongsPlayerProvider({ children }) {
     audio.play();
   }
 
-  return <SongsPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, duration, volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, progress }}>{children}</SongsPlayerContext.Provider>;
+  return <SongsPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, progress, audioRef }}>{children}</SongsPlayerContext.Provider>;
 }
 
 function useSongsPlayer() {

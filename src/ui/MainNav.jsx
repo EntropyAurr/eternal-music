@@ -1,7 +1,9 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import { HiOutlineHome, HiOutlineUser } from "react-icons/hi2";
+import { HiOutlineChevronDown, HiOutlineChevronUp, HiOutlineHome, HiOutlineUser } from "react-icons/hi2";
 import { PiPlaylist } from "react-icons/pi";
+import ButtonIcon from "./ButtonIcon";
+import { useState } from "react";
 
 const NavList = styled.ul`
   display: flex;
@@ -48,7 +50,20 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
+const Playlists = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.2rem;
+  background-color: var(--color-grey-400);
+  color: var(--color-grey-50);
+  border-radius: var(--border-radius-sm);
+  padding: 1.5rem 2.4rem;
+`;
+
 function MainNav() {
+  const [showPlaylists, setShowPlaylists] = useState(false);
+
   return (
     <nav>
       <NavList>
@@ -63,7 +78,15 @@ function MainNav() {
           <StyledNavLink to="/playlists">
             <PiPlaylist />
             <span>Playlists</span>
+            <ButtonIcon onClick={() => setShowPlaylists((show) => !show)}>{!showPlaylists ? <HiOutlineChevronDown /> : <HiOutlineChevronUp />}</ButtonIcon>
           </StyledNavLink>
+
+          {showPlaylists && (
+            <Playlists>
+              <li>Playlist 1</li>
+              <li>Playlist 2</li>
+            </Playlists>
+          )}
         </li>
 
         <li>
