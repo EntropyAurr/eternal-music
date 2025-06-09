@@ -4,13 +4,12 @@ import { HiOutlinePause, HiOutlinePlay } from "react-icons/hi2";
 import ButtonIcon from "../../ui/ButtonIcon";
 
 function TogglePlaySong() {
-  const { handlePlaySong, handlePauseSong, currentSongId, audioRef } = useSongsPlayer();
+  const { handlePlaySong, handlePauseSong, currentSongId, audioRef, songRef } = useSongsPlayer();
   const [isPlaying, setIsPlaying] = useState(false);
+  const audio = audioRef.current;
 
   useEffect(
     function () {
-      const audio = audioRef.current;
-
       if (!audio) return;
 
       audio.addEventListener("play", () => setIsPlaying(true));
@@ -24,7 +23,7 @@ function TogglePlaySong() {
       };
     },
 
-    [audioRef]
+    [audio]
   );
 
   function handleToggle() {
@@ -33,10 +32,11 @@ function TogglePlaySong() {
     } else {
       handlePauseSong();
     }
+
     setIsPlaying((play) => !play);
   }
 
-  return <ButtonIcon onClick={handleToggle}>{isPlaying ? <HiOutlinePause /> : <HiOutlinePlay />}</ButtonIcon>;
+  return <ButtonIcon onClick={handleToggle}>{isPlaying && songRef.current ? <HiOutlinePause /> : <HiOutlinePlay />}</ButtonIcon>;
 }
 
 export default TogglePlaySong;
