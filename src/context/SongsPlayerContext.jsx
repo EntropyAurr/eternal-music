@@ -54,7 +54,7 @@ function SongsPlayerProvider({ children }) {
         audio.removeEventListener("timeupdate", () => onTimeUpdate);
       };
     },
-    [audio, duration, currentSongId, nextSongId, handleNext]
+    [audio, duration, currentSongId, nextSongId]
   );
 
   if (!songRef.current) audio.volume = volume / 100;

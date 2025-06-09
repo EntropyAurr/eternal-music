@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect } from "react";
-import { useLocalStorageState } from "../../../../Udemy-Learning/React Course 2024/17-the-wild-oasis/src/hooks/useLocalStorageState";
+import { useLocalStorageState } from "../hooks/useLocalStorageState";
 
 const DarkModeContext = createContext();
 
