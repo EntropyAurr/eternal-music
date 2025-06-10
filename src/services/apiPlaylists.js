@@ -7,3 +7,14 @@ export async function getPlaylists() {
 
   return data;
 }
+
+export async function getPlaylist(id) {
+  const { data, error } = await supabase.from("playlists").select("*, songs(*)").eq("id", id).single();
+
+  if (error) {
+    console.error(error);
+    throw new Error("Playlist not found");
+  }
+
+  return data;
+}

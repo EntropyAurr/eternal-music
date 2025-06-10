@@ -3,8 +3,9 @@ import { useSongs } from "../songs/useSongs";
 import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
 import Song from "../songs/Song";
-import Heading from "../../ui/Heading";
+import { usePlaylist } from "./usePlaylist";
 import Button from "../../ui/Button";
+import CreateSongForm from "../songs/CreateSongForm";
 
 const StyledPlaylist = styled.div`
   display: flex;
@@ -25,28 +26,31 @@ const Songs = styled.ul`
   gap: 2.5rem;
 `;
 
-function Playlists() {
+function Playlist() {
   const { songs, isPending } = useSongs();
+  const { playlist, isPendingPlaylist } = usePlaylist();
 
-  if (isPending) return <Spinner />;
-  if (!songs) return <Empty />;
+  if (isPending || isPendingPlaylist) return <Spinner />;
+  if (!songs || !playlist) return <Empty />;
+
+  console.log(playlist);
 
   return (
     <StyledPlaylist>
-      <Header>
-        <Heading as="h2">Playlist name</Heading>
-        <Button $variation="primary" size="large">
-          Add song to playlist
-        </Button>
-      </Header>
+      <Header as="h2">{playlist.playlistName}</Header>
 
       <Songs>
         {songs.map((song) => (
           <Song song={song} key={song.id} />
         ))}
       </Songs>
+
+      <Button $variation="primary" size="medium" onClick={() => {}}>
+        Add song
+      </Button>
+      <CreateSongForm />
     </StyledPlaylist>
   );
 }
 
-export default Playlists;
+export default Playlist;

@@ -1,14 +1,25 @@
-import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { HiOutlineChevronDown, HiOutlineChevronUp, HiOutlineHome, HiOutlineUser } from "react-icons/hi2";
 import { PiPlaylist } from "react-icons/pi";
 import ButtonIcon from "./ButtonIcon";
-import { useState } from "react";
+import Spinner from "./Spinner";
+import Empty from "./Empty";
+import { usePlaylists } from "../features/playlists/usePlaylists";
+import Button from "./Button";
+import Table from "./Table";
+import RenderBody from "./RenderBody";
 
 const NavList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+`;
+
+const List = styled.li`
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -50,7 +61,7 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
-const Playlists = styled.ul`
+const StyledLink = styled(Link)`
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -63,18 +74,22 @@ const Playlists = styled.ul`
 
 function MainNav() {
   const [showPlaylists, setShowPlaylists] = useState(false);
+  const { playlists, isPendingPlaylists } = usePlaylists();
+
+  if (isPendingPlaylists) return <Spinner />;
+  if (!playlists) return <Empty />;
 
   return (
     <nav>
       <NavList>
-        <li>
+        <List>
           <StyledNavLink to="/home">
             <HiOutlineHome />
             <span>Home</span>
           </StyledNavLink>
-        </li>
+        </List>
 
-        <li>
+        <List>
           <StyledNavLink to="/playlists">
             <PiPlaylist />
             <span>Playlists</span>
@@ -82,19 +97,26 @@ function MainNav() {
           </StyledNavLink>
 
           {showPlaylists && (
-            <Playlists>
-              <li>Playlist 1</li>
-              <li>Playlist 2</li>
-            </Playlists>
+            <>
+              <RenderBody
+                data={playlists}
+                render={(playlist) => (
+                  <StyledLink key={playlist.id} to={`/playlists/${playlist.id}`}>
+                    {playlist.playlistName}
+                  </StyledLink>
+                )}
+              />
+              <Button>Create new playlist</Button>
+            </>
           )}
-        </li>
+        </List>
 
-        <li>
+        <List>
           <StyledNavLink to="/user">
             <HiOutlineUser />
             <span>User</span>
           </StyledNavLink>
-        </li>
+        </List>
       </NavList>
     </nav>
   );

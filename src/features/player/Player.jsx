@@ -13,18 +13,32 @@ const StyledPlayer = styled.div`
   border: 1px solid #dd2d4a;
   grid-column: 1 / -1;
   display: flex;
-  gap: 2rem;
+  justify-content: center;
+  gap: 4rem;
   padding: 2rem 2.2rem;
   height: 10rem;
+`;
+
+const Volume = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 `;
 
 const VolumeBar = styled.input``;
 
 const SongTrack = styled.div`
-  width: 100%;
   display: flex;
   gap: 1rem;
   align-items: center;
+`;
+
+const TimeTrack = styled.span`
+  width: 6rem;
+  text-align: center;
+  line-height: 1.5;
+  font-size: 1.7rem;
+  font-family: "Ubuntu";
 `;
 
 const ProgressBar = styled.input`
@@ -40,24 +54,26 @@ function Player() {
 
   return (
     <StyledPlayer>
-      <TogglePlaySong />
-
-      <ToggleVolume />
-      <VolumeBar type="range" min={0} max={100} value={volume} onChange={(e) => handleVolume(e.target.value)} />
-      <span>Volume: {volume}</span>
+      <Volume>
+        <ToggleVolume />
+        <VolumeBar type="range" min={0} max={100} value={volume} onChange={(e) => handleVolume(e.target.value)} />
+        <span>Volume: {volume}</span>
+      </Volume>
 
       <ButtonIcon onClick={() => handlePrevious(currentSongId)}>
         <RxTrackPrevious />
       </ButtonIcon>
+
+      <TogglePlaySong />
 
       <ButtonIcon onClick={() => handleNext(currentSongId)}>
         <RxTrackNext />
       </ButtonIcon>
 
       <SongTrack>
-        <span>{formatDuration(currentSongTime)}</span>
+        <TimeTrack>{formatDuration(currentSongTime)}</TimeTrack>
         <ProgressBar type="range" value={progress} min={0} max={100} step={0.1} onChange={(e) => handleProgressSong(e.target.value)} />
-        <span>{formatDuration(duration)}</span>
+        <TimeTrack>{formatDuration(duration)}</TimeTrack>
       </SongTrack>
     </StyledPlayer>
   );

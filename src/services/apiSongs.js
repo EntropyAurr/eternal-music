@@ -15,3 +15,5 @@ export async function getCurrentSong(id) {
 
   return data;
 }
+
+export async function createUpdateSong() {}

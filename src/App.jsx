@@ -5,13 +5,14 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import GlobalStyles from "./styles/GlobalStyles";
 import AppLayout from "./ui/AppLayout";
 import Home from "./pages/Home";
-import Playlists from "./features/playlists/Playlists";
+import Playlists from "./pages/Playlists";
 import Song from "./features/songs/Song";
 import User from "./pages/User";
 import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
 import { SongsPlayerProvider } from "./context/SongsPlayerContext";
 import { DarkModeProvider } from "./context/DarkModeContext";
+import Playlist from "./features/playlists/Playlist";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,6 +35,7 @@ function App() {
                 <Route index element={<Navigate replace to="/home" />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/playlists" element={<Playlists />} />
+                <Route path="/playlists/:playlistId" element={<Playlist />} />
                 <Route path="/user" element={<User />} />
               </Route>
 

@@ -32,17 +32,18 @@ function SongsPlayerProvider({ children }) {
       const song = songs.find((song) => song.id === id);
 
       if (!song) return;
-
       setDuration(song.duration);
 
       if (!songRef.current || songRef.current.id !== id) {
         audio.src = song.url;
         audio.currentTime = 0;
+        setCurrentSongTime(0);
         setProgress(0);
+      } else {
+        audio.currentTime = currentSongTime;
       }
 
       songRef.current = song;
-      audio.currentTime = currentSongTime;
       audio.play();
 
       setCurrentSongId(song.id);
@@ -94,6 +95,10 @@ function SongsPlayerProvider({ children }) {
       if (!songRef.current) return;
 
       function handleProgressUpdate() {
+        if (!audio.duration) {
+          setProgress(0);
+          return;
+        }
         setProgress((audio.currentTime / audio.duration) * 100);
         setCurrentSongTime(audio.currentTime);
       }
