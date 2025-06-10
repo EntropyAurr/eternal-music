@@ -1,4 +1,4 @@
-import supabase from "./supabase";
+import supabase, { supabaseUrl } from "./supabase";
 
 export async function getSongs() {
   const { data, error } = await supabase.from("songs").select("*");
@@ -16,4 +16,32 @@ export async function getCurrentSong(id) {
   return data;
 }
 
-export async function createUpdateSong() {}
+export async function createUpdateSong(newSong, id) {
+  const hasSongPath = newSong.url?.startsWith?.(supabaseUrl);
+  const songName = newSong.url[0].name.replaceAll(" ", "-");
+  const songPath = hasSongPath ? newSong.url : `${supabaseUrl}/storage/v1/object/public/songs//${songName}`;
+
+  let query = supabase.from("songs");
+
+  if (!id) {
+    query = query.insert([{ ...newSong, url: songPath }]);
+  }
+
+  const { data, error } = await query.select().single();
+
+  if (error) {
+    console.log(error);
+    throw new Error("Song could not be created");
+  }
+
+  if (hasSongPath) return data;
+
+  const { error: storageError } = await supabase.storage.from("songs-files").upload(songName, newSong.url);
+
+  if (storageError) {
+    console.log(storageError);
+    throw new Error("Song URL could not be found");
+  }
+
+  return data;
+}

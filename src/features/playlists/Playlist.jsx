@@ -33,8 +33,6 @@ function Playlist() {
   if (isPending || isPendingPlaylist) return <Spinner />;
   if (!songs || !playlist) return <Empty />;
 
-  console.log(playlist);
-
   return (
     <StyledPlaylist>
       <Header as="h2">{playlist.playlistName}</Header>
