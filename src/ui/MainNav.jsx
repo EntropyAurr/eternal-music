@@ -106,7 +106,9 @@ function MainNav() {
                   </StyledLink>
                 )}
               />
-              <Button>Create new playlist</Button>
+              <Button $variation="primary" size="medium">
+                Create new playlist
+              </Button>
             </>
           )}
         </List>

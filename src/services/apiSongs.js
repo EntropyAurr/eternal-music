@@ -18,8 +18,8 @@ export async function getCurrentSong(id) {
 
 export async function createUpdateSong(newSong, id) {
   const hasSongPath = newSong.url?.startsWith?.(supabaseUrl);
-  const songName = newSong.url[0].name.replaceAll(" ", "-");
-  const songPath = hasSongPath ? newSong.url : `${supabaseUrl}/storage/v1/object/public/songs//${songName}`;
+  const songName = `${newSong.url.name}`.replaceAll(" ", "-");
+  const songPath = hasSongPath ? newSong.url : `${supabaseUrl}/storage/v1/object/public/song-files//${songName}`;
 
   let query = supabase.from("songs");
 
@@ -36,7 +36,7 @@ export async function createUpdateSong(newSong, id) {
 
   if (hasSongPath) return data;
 
-  const { error: storageError } = await supabase.storage.from("songs-files").upload(songName, newSong.url);
+  const { error: storageError } = await supabase.storage.from("song-files").upload(songName, newSong.url);
 
   if (storageError) {
     console.log(storageError);

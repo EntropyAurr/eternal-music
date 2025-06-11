@@ -15,7 +15,6 @@ function CreateSongForm() {
 
   function onSubmit(data) {
     const url = typeof data.url === "string" ? data.url : data.url[0];
-    console.log(data.url);
 
     createSong(
       { ...data, url: url },

@@ -6,6 +6,7 @@ import Song from "../songs/Song";
 import { usePlaylist } from "./usePlaylist";
 import Button from "../../ui/Button";
 import CreateSongForm from "../songs/CreateSongForm";
+import { useState } from "react";
 
 const StyledPlaylist = styled.div`
   display: flex;
@@ -27,26 +28,38 @@ const Songs = styled.ul`
 `;
 
 function Playlist() {
-  const { songs, isPending } = useSongs();
   const { playlist, isPendingPlaylist } = usePlaylist();
+  const { songs, isPending } = useSongs();
+
+  const [showForm, setShowForm] = useState(false);
 
   if (isPending || isPendingPlaylist) return <Spinner />;
   if (!songs || !playlist) return <Empty />;
 
+  const { id, playlistName } = playlist;
+
+  function handleShowForm() {
+    setShowForm((show) => !show);
+  }
+
   return (
     <StyledPlaylist>
-      <Header as="h2">{playlist.playlistName}</Header>
+      <Header as="h2">{playlistName}</Header>
 
-      <Songs>
-        {songs.map((song) => (
-          <Song song={song} key={song.id} />
-        ))}
-      </Songs>
+      {id === 1 ? (
+        <Songs>
+          {songs.map((song) => (
+            <Song song={song} key={song.id} />
+          ))}
+        </Songs>
+      ) : (
+        <div></div>
+      )}
 
-      <Button $variation="primary" size="medium" onClick={() => {}}>
+      <Button $variation="primary" size="medium" onClick={handleShowForm}>
         Add song
       </Button>
-      <CreateSongForm />
+      {showForm && <CreateSongForm />}
     </StyledPlaylist>
   );
 }

@@ -13,6 +13,7 @@ import PageNotFound from "./pages/PageNotFound";
 import { SongsPlayerProvider } from "./context/SongsPlayerContext";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import Playlist from "./features/playlists/Playlist";
+import { Toaster } from "react-hot-toast";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -44,6 +45,23 @@ function App() {
             </Routes>
           </BrowserRouter>
         </SongsPlayerProvider>
+
+        <Toaster
+          position="top-center"
+          gutter={12}
+          containerStyle={{ margin: "0.8rem" }}
+          toastOptions={{
+            success: { duration: 3000 },
+            error: { duration: 5000 },
+            style: {
+              fontSize: "1.6rem",
+              maxWidth: "50rem",
+              padding: "1.6rem 2.4rem",
+              backgroundColor: "var(--color-grey-0)",
+              color: "var(--color-grey-700)",
+            },
+          }}
+        />
       </QueryClientProvider>
     </DarkModeProvider>
   );
