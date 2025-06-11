@@ -19,16 +19,15 @@ function Song({ song }) {
   const { id: songId, name, artist, url, duration } = song;
   const { handlePlaySong } = useSongsPlayer();
 
-  const [showTest, setShowTest] = useState(false);
+  function handleAdd(id) {}
 
   return (
     <StyledSong>
       <SongTitle onClick={() => handlePlaySong(songId)}>{name}</SongTitle>
       <p>Duration: {formatDuration(duration)}</p>
       <Button $variation="primary" size="small" onClick={() => {}}>
-        Select
+        Add to playlist
       </Button>
-      {showTest && <p>TEST SUCCESSFULLY</p>}
     </StyledSong>
   );
 }

@@ -8,7 +8,7 @@ export async function getSongs() {
   return data;
 }
 
-export async function getCurrentSong(id) {
+export async function getSong(id) {
   const { data, error } = await supabase.from("songs").select("*").eq("id", id).single();
 
   if (error) throw new Error("Current song could not be loaded");

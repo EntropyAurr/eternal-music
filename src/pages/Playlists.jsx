@@ -6,6 +6,7 @@ import { useSongs } from "../features/songs/useSongs";
 import Spinner from "../ui/Spinner";
 import Empty from "../ui/Empty";
 import Song from "../features/songs/Song";
+import { createPlaylist } from "../services/apiPlaylists";
 
 const StyledPlaylists = styled.div`
   display: flex;
@@ -43,8 +44,8 @@ function Playlists() {
     <StyledPlaylists>
       <Header>
         <Heading as="h2">Playlist #</Heading>
-        <Button $variation="primary" size="large">
-          Add song to playlist
+        <Button $variation="primary" size="medium" onClick={() => createPlaylist()}>
+          Create playlist
         </Button>
       </Header>
 
