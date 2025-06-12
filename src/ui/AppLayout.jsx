@@ -15,9 +15,7 @@ const Main = styled.main`
   padding: 2rem 2.2rem;
 `;
 
-const Container = styled.div`
-  display: flex;
-`;
+const Container = styled.div``;
 
 function AppLayout() {
   return (

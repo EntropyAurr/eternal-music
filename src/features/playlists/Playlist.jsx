@@ -1,12 +1,13 @@
+import { useState } from "react";
 import styled from "styled-components";
 import { useSongs } from "../songs/useSongs";
+import { usePlaylist } from "./usePlaylist";
 import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
 import Song from "../songs/Song";
-import { usePlaylist } from "./usePlaylist";
 import Button from "../../ui/Button";
 import CreateSongForm from "../songs/CreateSongForm";
-import { useState } from "react";
+import SongForPlaylist from "../songs/SongForPlaylist";
 
 const StyledPlaylist = styled.div`
   display: flex;
@@ -53,7 +54,7 @@ function Playlist() {
           ))}
         </Songs>
       ) : (
-        <div></div>
+        <SongForPlaylist />
       )}
 
       <Button $variation="primary" size="medium" onClick={handleShowForm}>

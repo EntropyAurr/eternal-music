@@ -48,7 +48,7 @@ export async function createPlaylist() {
   const updatedPlaylists = playlists.map((playlist) => {
     const song = songMap.get(playlist.songId);
     const totalTime = song?.duration || 0;
-    const numSongs = 1; // or change this if you have multiple songs per playlist
+    const numSongs = 4; // or change this if you have multiple songs per playlist
 
     return {
       ...playlist,

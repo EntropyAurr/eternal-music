@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import { formatDuration } from "../../utils/helpers";
-import { useSongPlayer } from "../../context/SongPlayerContext";
-import Button from "../../ui/Button";
 import { useAddSong } from "../../context/SongContext";
+import { useSongPlayer } from "../../context/SongPlayerContext";
+import { formatDuration } from "../../utils/helpers";
 
 const StyledSong = styled.div`
   display: grid;
@@ -17,31 +16,18 @@ const SongTitle = styled.p`
   font-weight: 600;
 `;
 
-function Song({ song }) {
-  const { id: songId, name, artist, duration, url } = song;
+function SongForPlaylist() {
+  const { song } = useAddSong();
+  const { id: songId, name, artist, duration } = song;
   const { handlePlaySong } = useSongPlayer();
-  const { getSong } = useAddSong();
-
-  function handleAdd() {
-    const songForPlaylist = {
-      name,
-      artist,
-      duration,
-      url,
-    };
-    getSong(songForPlaylist);
-  }
 
   return (
     <StyledSong>
       <SongTitle onClick={() => handlePlaySong(songId)}>{name}</SongTitle>
       <p>{artist}</p>
       <p>{formatDuration(duration)}</p>
-      <Button $variation="primary" size="small" onClick={() => handleAdd()}>
-        Add to playlist
-      </Button>
     </StyledSong>
   );
 }
 
-export default Song;
+export default SongForPlaylist;

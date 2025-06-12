@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useSongsPlayer } from "../../context/SongsPlayerContext";
+import { useSongPlayer } from "../../context/SongPlayerContext";
 import { HiOutlinePause, HiOutlinePlay } from "react-icons/hi2";
 import ButtonIcon from "../../ui/ButtonIcon";
 
 function TogglePlaySong() {
-  const { handlePlaySong, handlePauseSong, currentSongId, audioRef, songRef } = useSongsPlayer();
+  const { handlePlaySong, handlePauseSong, currentSongId, audioRef, songRef } = useSongPlayer();
   const [isPlaying, setIsPlaying] = useState(false);
   const audio = audioRef.current;
 

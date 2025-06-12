@@ -4,9 +4,9 @@ import { useSongs } from "../features/songs/useSongs";
 import Spinner from "../ui/Spinner";
 import Empty from "../ui/Empty";
 
-const SongsPlayerContext = createContext();
+const SongPlayerContext = createContext();
 
-function SongsPlayerProvider({ children }) {
+function SongPlayerProvider({ children }) {
   const audioRef = useRef(new Audio());
   const songRef = useRef(null); // songRef.current: used to store the current song object
   const audio = audioRef.current;
@@ -121,13 +121,13 @@ function SongsPlayerProvider({ children }) {
   if (isPending) return <Spinner />;
   if (!songs) return <Empty />;
 
-  return <SongsPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, progress, audioRef, songRef }}>{children}</SongsPlayerContext.Provider>;
+  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, progress, audioRef, songRef }}>{children}</SongPlayerContext.Provider>;
 }
 
-function useSongsPlayer() {
-  const context = useContext(SongsPlayerContext);
+function useSongPlayer() {
+  const context = useContext(SongPlayerContext);
   if (context === undefined) throw new Error("SongsPlayerContext is used outside of SongsPlayerProvider");
   return context;
 }
 
-export { SongsPlayerProvider, useSongsPlayer };
+export { SongPlayerProvider, useSongPlayer };
