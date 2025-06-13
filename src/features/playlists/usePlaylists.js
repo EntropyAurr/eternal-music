@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getPlaylists } from "../../services/apiPlaylists";
 
 export function usePlaylists() {
-  const { isPendingPlaylists, data: playlists } = useQuery({
+  const { data: playlists, isPendingPlaylists } = useQuery({
     queryKey: ["playlists"],
     queryFn: getPlaylists,
   });

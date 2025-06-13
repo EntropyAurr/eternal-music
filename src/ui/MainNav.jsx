@@ -6,10 +6,9 @@ import { PiPlaylist } from "react-icons/pi";
 import ButtonIcon from "./ButtonIcon";
 import Spinner from "./Spinner";
 import Empty from "./Empty";
-import { usePlaylists } from "../features/playlists/usePlaylists";
 import Button from "./Button";
-import Table from "./Table";
 import RenderBody from "./RenderBody";
+import { usePlaylists } from "../features/playlists/usePlaylists";
 
 const NavList = styled.ul`
   display: flex;
@@ -84,13 +83,6 @@ function MainNav() {
       <NavList>
         <List>
           <StyledNavLink to="/home">
-            <HiOutlineHome />
-            <span>Home</span>
-          </StyledNavLink>
-        </List>
-
-        <List>
-          <StyledNavLink to="/playlists">
             <PiPlaylist />
             <span>Playlists</span>
             <ButtonIcon onClick={() => setShowPlaylists((show) => !show)}>{!showPlaylists ? <HiOutlineChevronDown /> : <HiOutlineChevronUp />}</ButtonIcon>
@@ -101,7 +93,7 @@ function MainNav() {
               <RenderBody
                 data={playlists}
                 render={(playlist) => (
-                  <StyledLink key={playlist.id} to={`/playlists/${playlist.id}`}>
+                  <StyledLink key={playlist.id} to={`/playlist/${playlist.id}`}>
                     {playlist.playlistName}
                   </StyledLink>
                 )}
