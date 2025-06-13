@@ -36,19 +36,19 @@ function CreateSongForm() {
   return (
     <Form onSubmit={handleSubmit(onSubmit, onError)}>
       <FormRow label="Song name" error={errors?.name?.message}>
-        <Input type="text" id="name" {...register("name", { required: "This field is required" })} />
+        <Input type="text" id="name" {...register("name", { required: "This field is required" })} disabled={isCreating} />
       </FormRow>
 
       <FormRow label="Artist" error={errors?.artist?.message}>
-        <Input type="text" id="artist" {...register("artist", { required: "This field is required" })} />
+        <Input type="text" id="artist" {...register("artist", { required: "This field is required" })} disabled={isCreating} />
       </FormRow>
 
       <FormRow label="Duration" error={errors?.duration?.message}>
-        <Input type="number" id="duration" {...register("duration", { required: "This field is required" })} />
+        <Input type="number" id="duration" {...register("duration", { required: "This field is required" })} disabled={isCreating} />
       </FormRow>
 
       <FormRow label="Song URL">
-        <FileInput id="url" accept="audio/*" {...register("url", { required: "This field is required" })} />
+        <FileInput id="url" accept="audio/*" {...register("url", { required: "This field is required" })} disabled={isCreating} />
       </FormRow>
 
       <Button $variation="primary" size="medium">

@@ -1,7 +1,10 @@
 import styled from "styled-components";
 import { useAddSong } from "../../context/SongContext";
-import { useSongPlayer } from "../../context/SongPlayerContext";
-import { formatDuration } from "../../utils/helpers";
+import { useEffect, useState } from "react";
+import supabase from "../../services/supabase";
+import Empty from "../../ui/Empty";
+import Song from "./Song";
+import { useSongs } from "./useSongs";
 
 const StyledSong = styled.div`
   display: grid;
@@ -10,22 +13,34 @@ const StyledSong = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
-const SongTitle = styled.p`
-  cursor: pointer;
-  font-size: 1.8rem;
-  font-weight: 600;
-`;
 
 function SongForPlaylist() {
-  const { song } = useAddSong();
-  const { id: songId, name, artist, duration } = song;
-  const { handlePlaySong } = useSongPlayer();
+  // const { songIds } = useAddSong();
+  // const [songs, setSongs] = useState([]);
+
+  const { songs } = useSongs();
+
+  // useEffect(() => {
+  //   if (!songIds || songIds.length === 0) return;
+
+  //   async function fetchSong() {
+  //     const { data, error } = await supabase.from("playlists").select("*").in("id", songIds);
+
+  //     if (error) throw new Error("Songs could not be loaded");
+
+  //     setSongs(data);
+  //   }
+
+  //   fetchSong();
+  // }, [songIds]);
+
+  if (!songs.length) return <Empty />;
 
   return (
     <StyledSong>
-      <SongTitle onClick={() => handlePlaySong(songId)}>{name}</SongTitle>
-      <p>{artist}</p>
-      <p>{formatDuration(duration)}</p>
+      {songs.map((song) => (
+        <Song key={song.id} song={song} />
+      ))}
     </StyledSong>
   );
 }

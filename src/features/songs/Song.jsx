@@ -1,8 +1,8 @@
 import styled from "styled-components";
+import Button from "../../ui/Button";
 import { formatDuration } from "../../utils/helpers";
 import { useSongPlayer } from "../../context/SongPlayerContext";
-import Button from "../../ui/Button";
-import { useAddSong } from "../../context/SongContext";
+import { useUploadSong } from "./useUploadSong";
 
 const StyledSong = styled.div`
   display: grid;
@@ -18,18 +18,15 @@ const SongTitle = styled.p`
 `;
 
 function Song({ song }) {
-  const { id: songId, name, artist, duration, url } = song;
+  const { id: songId, name, artist, duration } = song;
   const { handlePlaySong } = useSongPlayer();
-  const { getSong } = useAddSong();
+  const { uploadSong } = useUploadSong();
 
   function handleAdd() {
     const songForPlaylist = {
-      name,
-      artist,
-      duration,
-      url,
+      songId: songId,
     };
-    getSong(songForPlaylist);
+    uploadSong(songForPlaylist);
   }
 
   return (

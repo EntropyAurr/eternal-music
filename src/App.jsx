@@ -5,15 +5,15 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import GlobalStyles from "./styles/GlobalStyles";
 import AppLayout from "./ui/AppLayout";
 import Home from "./pages/Home";
-import Playlists from "./pages/Playlists";
 import User from "./pages/User";
 import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
 import { SongPlayerProvider } from "./context/SongPlayerContext";
 import { DarkModeProvider } from "./context/DarkModeContext";
-import Playlist from "./features/playlists/Playlist";
 import { Toaster } from "react-hot-toast";
 import { SongProvider } from "./context/SongContext";
+import Playlist from "./features/playlists/Playlist";
+import { PlaylistProvider } from "./context/PlaylistContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,22 +29,23 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <SongPlayerProvider>
           <SongProvider>
-            <ReactQueryDevtools initialIsOpen={false} />
-            <GlobalStyles />
-            <BrowserRouter>
-              <Routes>
-                <Route element={<AppLayout />}>
-                  <Route index element={<Navigate replace to="/home" />} />
-                  <Route path="/home" element={<Home />} />
-                  <Route path="/playlists" element={<Playlists />} />
-                  <Route path="/playlists/:playlistId" element={<Playlist />} />
-                  <Route path="/user" element={<User />} />
-                </Route>
+            <PlaylistProvider>
+              <ReactQueryDevtools initialIsOpen={false} />
+              <GlobalStyles />
+              <BrowserRouter>
+                <Routes>
+                  <Route element={<AppLayout />}>
+                    <Route index element={<Navigate replace to="/home" />} />
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/playlist/:playlist_Id" element={<Playlist />} />
+                    <Route path="/user" element={<User />} />
+                  </Route>
 
-                <Route path="/login" element={<Login />} />
-                <Route path="*" element={<PageNotFound />} />
-              </Routes>
-            </BrowserRouter>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="*" element={<PageNotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </PlaylistProvider>
           </SongProvider>
         </SongPlayerProvider>
 

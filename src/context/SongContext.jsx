@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState } from "react";
+import supabase from "../services/supabase";
 
 const SongContext = createContext();
 
@@ -7,9 +8,18 @@ function SongProvider({ children }) {
   const [song, setSong] = useState({});
   const [songIds, setSongIds] = useState([]);
 
-  function getSong(songForPlaylist) {
+  async function getSong(songForPlaylist) {
     setSong(songForPlaylist);
-    setSongIds(songForPlaylist.id);
+    setSongIds((id) => [...id, songForPlaylist.songId]);
+
+    const { data } = await supabase.from("playlists").insert([
+      {
+        playlist_id: 1,
+        song_id: songForPlaylist.songId,
+      },
+    ]);
+
+    return data;
   }
 
   return <SongContext.Provider value={{ song, getSong, songIds }}>{children}</SongContext.Provider>;
