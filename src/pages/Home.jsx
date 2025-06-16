@@ -5,7 +5,6 @@ import { useSongs } from "../features/songs/useSongs";
 import Spinner from "../ui/Spinner";
 import Empty from "../ui/Empty";
 import Song from "../features/songs/Song";
-import Playlists from "../features/playlists/Playlists";
 
 const StyledHome = styled.div`
   display: flex;
@@ -47,8 +46,6 @@ function Home() {
           Create playlist
         </Button>
       </Header>
-
-      <Playlists />
 
       <AllSongsContainer>
         <Heading as="h3">All Songs</Heading>

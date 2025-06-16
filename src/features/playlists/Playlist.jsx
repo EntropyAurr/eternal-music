@@ -2,6 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import Button from "../../ui/Button";
 import Empty from "../../ui/Empty";
+import CreateSongForm from "../../features/songs/CreateSongForm";
+import { usePlaylist } from "../../context/PlaylistContext";
 
 const StyledPlaylist = styled.div`
   display: flex;
@@ -16,14 +18,15 @@ const Header = styled.div`
   gap: 1.5rem;
 `;
 
-const Songs = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
+const SongTitle = styled.p`
+  cursor: pointer;
+  font-size: 1.8rem;
+  font-weight: 600;
 `;
 
-function Playlist({ playlist }) {
+function Playlist() {
   const [showForm, setShowForm] = useState(false);
+  const { playlist } = usePlaylist();
 
   if (!playlist) return <Empty />;
 
@@ -36,6 +39,8 @@ function Playlist({ playlist }) {
   return (
     <StyledPlaylist>
       <Header as="h2">{playlistName}</Header>
+
+      <SongTitle></SongTitle>
 
       <Button $variation="primary" size="medium" onClick={handleShowForm}>
         Add new song

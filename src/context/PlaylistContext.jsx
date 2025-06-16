@@ -3,16 +3,22 @@ import { createContext, useContext } from "react";
 import { usePlaylists } from "../features/playlists/usePlaylists";
 import Spinner from "../ui/Spinner";
 import Empty from "../ui/Empty";
+import { useParams } from "react-router-dom";
 
 const PlaylistContext = createContext();
 
 function PlaylistProvider({ children }) {
+  const { playlistId } = useParams();
   const { playlists, isPendingPlaylists } = usePlaylists();
 
   if (isPendingPlaylists) return <Spinner />;
   if (!playlists) return <Empty />;
 
-  return <PlaylistContext.Provider>{children}</PlaylistContext.Provider>;
+  const playlist = playlists?.find((playlist) => playlist.id === Number(playlistId));
+
+  if (!playlist) return <Empty />;
+
+  return <PlaylistContext.Provider value={{ playlists, playlist }}>{children}</PlaylistContext.Provider>;
 }
 
 function usePlaylist() {
