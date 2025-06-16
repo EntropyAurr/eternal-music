@@ -12,12 +12,12 @@ function SongProvider({ children }) {
     setSong(songForPlaylist);
     setSongIds((id) => [...id, songForPlaylist.songId]);
 
-    const { data } = await supabase.from("playlists").insert([
-      {
-        playlist_id: 1,
-        song_id: songForPlaylist.songId,
-      },
-    ]);
+    const rowsToInsert = songIds.map((songId) => ({
+      playlist_id: 4,
+      song_id: songId,
+    }));
+
+    const { data } = await supabase.from("playlists").insert(rowsToInsert);
 
     return data;
   }

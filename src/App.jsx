@@ -29,23 +29,28 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <SongPlayerProvider>
           <SongProvider>
-            <PlaylistProvider>
-              <ReactQueryDevtools initialIsOpen={false} />
-              <GlobalStyles />
-              <BrowserRouter>
-                <Routes>
-                  <Route element={<AppLayout />}>
-                    <Route index element={<Navigate replace to="/home" />} />
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/playlist/:playlist_Id" element={<Playlist />} />
-                    <Route path="/user" element={<User />} />
-                  </Route>
+            <ReactQueryDevtools initialIsOpen={false} />
+            <GlobalStyles />
+            <BrowserRouter>
+              <Routes>
+                <Route element={<AppLayout />}>
+                  <Route index element={<Navigate replace to="/home" />} />
+                  <Route path="/home" element={<Home />} />
+                  <Route
+                    path="/playlist/:playlistId"
+                    element={
+                      <PlaylistProvider>
+                        <Playlist />
+                      </PlaylistProvider>
+                    }
+                  />
+                  <Route path="/user" element={<User />} />
+                </Route>
 
-                  <Route path="/login" element={<Login />} />
-                  <Route path="*" element={<PageNotFound />} />
-                </Routes>
-              </BrowserRouter>
-            </PlaylistProvider>
+                <Route path="/login" element={<Login />} />
+                <Route path="*" element={<PageNotFound />} />
+              </Routes>
+            </BrowserRouter>
           </SongProvider>
         </SongPlayerProvider>
 

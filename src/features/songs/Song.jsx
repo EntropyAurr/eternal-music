@@ -24,7 +24,7 @@ function Song({ song }) {
 
   function handleAdd() {
     const songForPlaylist = {
-      songId: songId,
+      songId,
     };
     uploadSong(songForPlaylist);
   }
