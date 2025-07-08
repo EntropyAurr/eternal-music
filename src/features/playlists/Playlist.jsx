@@ -3,7 +3,11 @@ import styled from "styled-components";
 import Button from "../../ui/Button";
 import Empty from "../../ui/Empty";
 import CreateSongForm from "../../features/songs/CreateSongForm";
-import { usePlaylist } from "../../context/PlaylistContext";
+import { usePlaylists } from "./usePlaylists";
+import { useParams } from "react-router-dom";
+import { usePlaylistSong } from "./usePlaylistSong";
+import Spinner from "../../ui/Spinner";
+import Song from "../songs/Song";
 
 const StyledPlaylist = styled.div`
   display: flex;
@@ -26,21 +30,26 @@ const SongTitle = styled.p`
 
 function Playlist() {
   const [showForm, setShowForm] = useState(false);
-  const { playlist } = usePlaylist();
+  const { playlists, isPendingPlaylists } = usePlaylists();
+  const { playlistId } = useParams();
+  const { songsFromPlaylist, isPending } = usePlaylistSong();
 
-  if (!playlist) return <Empty />;
-
-  const { playlistName, songId } = playlist;
+  if (isPendingPlaylists && isPending) return <Spinner />;
+  if (!playlists || !songsFromPlaylist) return <Empty />;
 
   function handleShowForm() {
     setShowForm((show) => !show);
   }
 
+  const playlist = playlists.find((playlist) => playlist.id === Number(playlistId));
+
   return (
     <StyledPlaylist>
-      <Header as="h2">{playlistName}</Header>
+      <Header as="h2">{playlist.playlistName}</Header>
 
-      <SongTitle></SongTitle>
+      {songsFromPlaylist.map((song) => (
+        <Song song={song.songs} songIdForPlaylist={song.song_id} key={song.song_id} />
+      ))}
 
       <Button $variation="primary" size="medium" onClick={handleShowForm}>
         Add new song

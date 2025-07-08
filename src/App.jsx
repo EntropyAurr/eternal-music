@@ -13,7 +13,6 @@ import { DarkModeProvider } from "./context/DarkModeContext";
 import { Toaster } from "react-hot-toast";
 import { SongProvider } from "./context/SongContext";
 import Playlist from "./features/playlists/Playlist";
-import { PlaylistProvider } from "./context/PlaylistContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,14 +35,7 @@ function App() {
                 <Route element={<AppLayout />}>
                   <Route index element={<Navigate replace to="/home" />} />
                   <Route path="/home" element={<Home />} />
-                  <Route
-                    path="/playlist/:playlistId"
-                    element={
-                      <PlaylistProvider>
-                        <Playlist />
-                      </PlaylistProvider>
-                    }
-                  />
+                  <Route path="/playlist/:playlistId" element={<Playlist />} />
                   <Route path="/user" element={<User />} />
                 </Route>
 

@@ -16,7 +16,7 @@ const Avatar = styled.img`
 function UserAvatar() {
   return (
     <StyledUserAvatar>
-      <Avatar src="assets/avatar-1.jpg" />
+      <Avatar src="/avatar-1.jpg" />
     </StyledUserAvatar>
   );
 }

@@ -9,6 +9,8 @@ import Empty from "./Empty";
 import Button from "./Button";
 import RenderBody from "./RenderBody";
 import { usePlaylists } from "../features/playlists/usePlaylists";
+import Modal from "./Modal";
+import CreatePlaylistForm from "../features/playlists/CreatePlaylistForm";
 
 const NavList = styled.ul`
   display: flex;
@@ -19,6 +21,7 @@ const NavList = styled.ul`
 const List = styled.li`
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -98,9 +101,17 @@ function MainNav() {
                   </StyledLink>
                 )}
               />
-              <Button $variation="primary" size="medium">
-                Create new playlist
-              </Button>
+
+              <Modal>
+                <Modal.Open opens="playlist-form">
+                  <Button $variation="primary" size="medium">
+                    Add new playlist
+                  </Button>
+                </Modal.Open>
+                <Modal.Window name="playlist-form">
+                  <CreatePlaylistForm />
+                </Modal.Window>
+              </Modal>
             </>
           )}
         </List>

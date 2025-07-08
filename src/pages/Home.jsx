@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import Heading from "../ui/Heading";
-import Button from "../ui/Button";
 import { useSongs } from "../features/songs/useSongs";
 import Spinner from "../ui/Spinner";
 import Empty from "../ui/Empty";
 import Song from "../features/songs/Song";
+import { usePlaylists } from "../features/playlists/usePlaylists";
 
 const StyledHome = styled.div`
   display: flex;
@@ -34,17 +34,15 @@ const Songs = styled.ul`
 
 function Home() {
   const { songs, isPending } = useSongs();
+  const { playlists, isPendingPlaylists } = usePlaylists();
 
-  if (isPending) return <Spinner />;
-  if (!songs) return <Empty />;
+  if (isPending || isPendingPlaylists) return <Spinner />;
+  if (!songs || !playlists) return <Empty />;
 
   return (
     <StyledHome>
       <Header>
         <Heading as="h2">Playlist #</Heading>
-        <Button $variation="primary" size="medium" onClick={() => {}}>
-          Create playlist
-        </Button>
       </Header>
 
       <AllSongsContainer>

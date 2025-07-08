@@ -1,7 +1,4 @@
 import styled from "styled-components";
-import { useAddSong } from "../../context/SongContext";
-import { useEffect, useState } from "react";
-import supabase from "../../services/supabase";
 import Empty from "../../ui/Empty";
 import Song from "./Song";
 import { useSongs } from "./useSongs";
@@ -15,24 +12,7 @@ const StyledSong = styled.div`
 `;
 
 function SongForPlaylist() {
-  // const { songIds } = useAddSong();
-  // const [songs, setSongs] = useState([]);
-
   const { songs } = useSongs();
-
-  // useEffect(() => {
-  //   if (!songIds || songIds.length === 0) return;
-
-  //   async function fetchSong() {
-  //     const { data, error } = await supabase.from("playlists").select("*").in("id", songIds);
-
-  //     if (error) throw new Error("Songs could not be loaded");
-
-  //     setSongs(data);
-  //   }
-
-  //   fetchSong();
-  // }, [songIds]);
 
   if (!songs.length) return <Empty />;
 

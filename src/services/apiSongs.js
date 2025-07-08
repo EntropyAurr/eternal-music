@@ -1,24 +1,36 @@
 import supabase, { supabaseUrl } from "./supabase";
 
 export async function getSongs() {
-  const { data, error } = await supabase.from("songs").select("*").in("id", [12, 13]);
-  // dynamically use (function,...) the id list array: [12, 13,...] to filter the song being fetched to playlist
-  // songIds = [] ,then write the function to update songIds array when we click on the Add to playlist button
-  // const { data, error } = await supabase.from("songs").select("*").in("id", songIds);
-  // songIds lives in SongContext ??? But we cannot use context inside regular function
+  const { data, error } = await supabase.from("songs").select("*");
 
   if (error) throw new Error("Songs could not be loaded");
 
   return data;
 }
 
-export async function getSong(id) {
-  const { data, error } = await supabase.from("songs").select("*").eq("id", id).single();
+export async function getSongIds() {
+  const { data, error } = await supabase.from("songs").select("id");
 
-  if (error) throw new Error("Current song could not be loaded");
+  if (error) throw new Error("SongIds could not be loaded");
 
   return data;
 }
+
+// export async function getSongs(songIds) {
+//   const { data, error } = await supabase.from("songs").select("*").in("id", songIds);
+
+//   if (error) throw new Error("Songs could not be loaded");
+
+//   return data;
+// }
+
+// export async function getSong(id) {
+//   const { data, error } = await supabase.from("songs").select("*").eq("id", id).single();
+
+//   if (error) throw new Error("Current song could not be loaded");
+
+//   return data;
+// }
 
 export async function createUpdateSong(newSong, id) {
   const hasSongPath = newSong.url?.startsWith?.(supabaseUrl);
@@ -34,7 +46,6 @@ export async function createUpdateSong(newSong, id) {
   const { data, error } = await query.select().single();
 
   if (error) {
-    console.log(error);
     throw new Error("Song could not be created");
   }
 
