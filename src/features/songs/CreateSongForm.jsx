@@ -1,15 +1,17 @@
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import FileInput from "../../ui/FileInput";
 import Button from "../../ui/Button";
-import { useCreateSong } from "./useCreateSong";
 import toast from "react-hot-toast";
+import { useCreateSong } from "./useCreateSong";
 
 function CreateSongForm() {
   const { handleSubmit, formState, register, reset } = useForm();
   const { errors } = formState;
+  const { playlistId } = useParams();
 
   const { createSong, isCreating } = useCreateSong();
 
@@ -17,7 +19,7 @@ function CreateSongForm() {
     const url = typeof data.url === "string" ? data.url : data.url[0];
 
     createSong(
-      { ...data, url: url },
+      { ...data, url: url, toPlaylistId: Number(playlistId) },
       {
         onSuccess: () => {
           reset();

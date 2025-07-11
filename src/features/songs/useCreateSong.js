@@ -12,6 +12,9 @@ export function useCreateSong() {
       queryClient.invalidateQueries({
         queryKey: ["songs"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["playlists_songs"],
+      });
     },
     onError: (error) => {
       toast.error(error.message);

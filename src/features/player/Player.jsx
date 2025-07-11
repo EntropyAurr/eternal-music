@@ -10,7 +10,6 @@ import TogglePlaySong from "./TogglePlaySong";
 import ToggleVolume from "./ToggleVolume";
 
 const StyledPlayer = styled.div`
-  border: 1px solid #dd2d4a;
   grid-column: 1 / -1;
   display: flex;
   justify-content: center;

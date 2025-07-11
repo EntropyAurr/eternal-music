@@ -8,7 +8,6 @@ const StyledSidebar = styled.aside`
   gap: 2rem;
   flex-direction: column;
   padding: 2rem 2.5rem;
-  border-right: 1px solid green;
 `;
 
 function Sidebar() {
