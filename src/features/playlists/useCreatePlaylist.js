@@ -9,7 +9,7 @@ export function useCreatePlaylist() {
     mutationFn: createUpdatePlaylist,
     onSuccess: () => {
       toast.success("New playlist successfully created");
-      queryClient.invalidateQueries({ queryKey: ["playlists"] });
+      queryClient.invalidateQueries({ queryKey: ["playlist"] });
     },
     onError: (error) => {
       toast.error(error.message);

@@ -1,7 +1,7 @@
 import supabase, { supabaseUrl } from "./supabase";
 
 export async function getSongs() {
-  const { data, error } = await supabase.from("songs").select("*");
+  const { data, error } = await supabase.from("song").select("*");
 
   if (error) throw new Error("Songs could not be loaded");
 
@@ -10,7 +10,7 @@ export async function getSongs() {
 
 export async function createUpdateSong(newSong, songId) {
   const hasSongPath = newSong.url?.startsWith?.(supabaseUrl);
-  const songName = `${newSong.url.name}`.replaceAll(" ", "-");
+  const songName = `${newSong.url.name}`.replaceAll(/[^\w.-]/g, "_");
   const songPath = hasSongPath ? newSong.url : `${supabaseUrl}/storage/v1/object/public/song-files/${songName}`;
 
   if (!hasSongPath) {
@@ -26,7 +26,7 @@ export async function createUpdateSong(newSong, songId) {
 
   if (!songId) {
     query = supabase
-      .from("songs")
+      .from("song")
       .insert([{ ...newSong, url: songPath }])
       .select()
       .single();
@@ -36,7 +36,7 @@ export async function createUpdateSong(newSong, songId) {
 
   if (songError) throw new Error("Song could not be created");
 
-  const { error: linkError } = await supabase.from("playlists_songs").insert([{ playlist_id: newSong.toPlaylistId, song_id: song.id }]);
+  const { error: linkError } = await supabase.from("playlist_song").insert([{ playlist_id: newSong.toPlaylistId, song_id: song.id }]);
 
   if (linkError) throw new Error("There was an error why linking song and playlist");
 

@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+import { SongPlayerProvider } from "../context/SongPlayerContext";
 import styled from "styled-components";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
@@ -19,18 +20,20 @@ const Container = styled.div``;
 
 function AppLayout() {
   return (
-    <StyledAppLayout>
-      <Sidebar />
-      <Header />
+    <SongPlayerProvider>
+      <StyledAppLayout>
+        <Sidebar />
+        <Header />
 
-      <Main>
-        <Container>
-          <Outlet />
-        </Container>
-      </Main>
+        <Main>
+          <Container>
+            <Outlet />
+          </Container>
+        </Main>
 
-      <Player />
-    </StyledAppLayout>
+        <Player />
+      </StyledAppLayout>
+    </SongPlayerProvider>
   );
 }
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "../../ui/Button";
 import Empty from "../../ui/Empty";
@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import { usePlaylistSong } from "./usePlaylistSong";
 import Spinner from "../../ui/Spinner";
 import Song from "../songs/Song";
+import { useSongPlayer } from "../../context/SongPlayerContext";
 
 const StyledPlaylist = styled.div`
   display: flex;
@@ -22,17 +23,22 @@ const Header = styled.div`
   gap: 1.5rem;
 `;
 
-const SongTitle = styled.p`
-  cursor: pointer;
-  font-size: 1.8rem;
-  font-weight: 600;
-`;
-
 function Playlist() {
-  const [showForm, setShowForm] = useState(false);
+  const { songsFromPlaylist, isPending } = usePlaylistSong();
   const { playlists, isPendingPlaylists } = usePlaylists();
   const { playlistId } = useParams();
-  const { songsFromPlaylist, isPending } = usePlaylistSong();
+  const [showForm, setShowForm] = useState(false);
+  const { handlePlaySong, setCurrentPlaylist } = useSongPlayer();
+
+  useEffect(() => {
+    if (songsFromPlaylist) {
+      setCurrentPlaylist(songsFromPlaylist);
+    }
+  }, [songsFromPlaylist, setCurrentPlaylist]);
+
+  const handlePlay = (songId) => {
+    handlePlaySong(songId, songsFromPlaylist);
+  };
 
   if (isPendingPlaylists && isPending) return <Spinner />;
   if (!playlists || !songsFromPlaylist) return <Empty />;
@@ -48,7 +54,7 @@ function Playlist() {
       <Header as="h2">{playlist.playlistName}</Header>
 
       {songsFromPlaylist.map((song) => (
-        <Song song={song.songs} songIdForPlaylist={song.song_id} key={song.song_id} />
+        <Song songContain={song.song} songIdForPlaylist={song.song_id} key={song.song_id} onPlay={handlePlay} />
       ))}
 
       <Button $variation="primary" size="medium" onClick={handleShowForm}>

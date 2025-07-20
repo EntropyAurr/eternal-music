@@ -3,7 +3,7 @@ import { getPlaylists } from "../../services/apiPlaylists";
 
 export function usePlaylists() {
   const { data: playlists, isPendingPlaylists } = useQuery({
-    queryKey: ["playlists"],
+    queryKey: ["playlist"],
     queryFn: getPlaylists,
   });
 

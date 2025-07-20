@@ -3,7 +3,7 @@ import { getSongs } from "../../services/apiSongs";
 
 export function useSongs() {
   const { isPending, data: songs } = useQuery({
-    queryKey: ["songs"],
+    queryKey: ["song"],
     queryFn: getSongs,
   });
 

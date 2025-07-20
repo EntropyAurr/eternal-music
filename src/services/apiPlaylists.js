@@ -1,7 +1,7 @@
 import supabase from "./supabase";
 
 export async function getPlaylists() {
-  const { data, error } = await supabase.from("playlists").select("*");
+  const { data, error } = await supabase.from("playlist").select("*");
 
   if (error) throw new Error("Playlists could not be loaded");
 
@@ -9,7 +9,7 @@ export async function getPlaylists() {
 }
 
 export async function createUpdatePlaylist(newPlaylist) {
-  const { data, error } = await supabase.from("playlists").insert([newPlaylist]).select();
+  const { data, error } = await supabase.from("playlist").insert([newPlaylist]).select();
 
   if (error) throw new Error("Playlist could not be created");
 
@@ -17,7 +17,11 @@ export async function createUpdatePlaylist(newPlaylist) {
 }
 
 export async function getSongFromPlaylist(playlistId) {
-  const { data, error } = await supabase.from("playlists_songs").select("*, songs(name, artist, duration)").eq("playlist_id", playlistId);
+  if (!playlistId) {
+    throw new Error("playlistId is required to fetch songs.");
+  }
+
+  const { data, error } = await supabase.from("playlist_song").select("*, song(name, artist, duration, url)").eq("playlist_id", playlistId);
 
   if (error) throw new Error("Song could not display for this playlist");
 

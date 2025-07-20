@@ -1,11 +1,8 @@
 import styled from "styled-components";
 import { useSongPlayer } from "../../context/SongPlayerContext";
-import { useSongs } from "../songs/useSongs";
 import { formatDuration } from "../../utils/helpers";
 import { RxTrackNext, RxTrackPrevious } from "react-icons/rx";
 import ButtonIcon from "../../ui/ButtonIcon";
-import Spinner from "../../ui/Spinner";
-import Empty from "../../ui/Empty";
 import TogglePlaySong from "./TogglePlaySong";
 import ToggleVolume from "./ToggleVolume";
 
@@ -45,11 +42,7 @@ const ProgressBar = styled.input`
 `;
 
 function Player() {
-  const { songs, isPending } = useSongs();
   const { currentSongId, volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress } = useSongPlayer();
-
-  if (isPending) return <Spinner />;
-  if (!songs) return <Empty />;
 
   return (
     <StyledPlayer>

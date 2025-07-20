@@ -6,7 +6,7 @@ import supabase from "../../services/supabase";
 export async function uploadSongToPlaylist(songForPlaylist) {
   const { songId, playlistId } = songForPlaylist;
 
-  const { data, error } = await supabase.from("playlists_songs").insert([{ playlist_id: playlistId, song_id: songId }]);
+  const { data, error } = await supabase.from("playlist_song").insert([{ playlist_id: playlistId, song_id: songId }]);
   // const { data, error } = await supabase.from("playlists_songs").insert([{ playlist_id: playlistId, song_id: songId }]);
 
   if (error) throw new Error(error.message);

@@ -6,7 +6,7 @@ export function usePlaylistSong() {
   const { playlistId } = useParams();
 
   const { isPending, data: songsFromPlaylist } = useQuery({
-    queryKey: ["playlists_songs", playlistId],
+    queryKey: ["playlist_song", playlistId],
     queryFn: () => getSongFromPlaylist(playlistId),
   });
 
