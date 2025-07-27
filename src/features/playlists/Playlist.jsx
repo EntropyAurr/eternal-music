@@ -26,15 +26,16 @@ const Header = styled.div`
 function Playlist() {
   const { songsFromPlaylist, isPending } = usePlaylistSong();
   const { playlists, isPendingPlaylists } = usePlaylists();
+
+  const { handlePlaySong, setCurrentPlaylist, currentSongId } = useSongPlayer();
   const { playlistId } = useParams();
   const [showForm, setShowForm] = useState(false);
-  const { handlePlaySong, setCurrentPlaylist } = useSongPlayer();
 
   useEffect(() => {
-    if (songsFromPlaylist) {
+    if (songsFromPlaylist && !currentSongId) {
       setCurrentPlaylist(songsFromPlaylist);
     }
-  }, [songsFromPlaylist, setCurrentPlaylist]);
+  }, [songsFromPlaylist, setCurrentPlaylist, currentSongId]);
 
   const handlePlay = (songId) => {
     handlePlaySong(songId, songsFromPlaylist);
