@@ -5,6 +5,7 @@ import { useUploadSong } from "./useUploadSong";
 import { usePlaylists } from "../playlists/usePlaylists";
 import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
+import { useParams } from "react-router-dom";
 
 const StyledSong = styled.div`
   display: grid;
@@ -23,9 +24,12 @@ function Song({ songContain, songIdForPlaylist, onPlay }) {
   const { name, artist, duration } = songContain;
   const { uploadSong } = useUploadSong();
   const { playlists, isPendingPlaylists } = usePlaylists();
+  const { playlistId } = useParams();
 
   if (isPendingPlaylists) return <Spinner />;
   if (!playlists) return <Empty />;
+
+  const optionPlaylist = playlists.filter((playlist) => playlist.id !== Number(playlistId));
 
   function handleAdd(playlistId) {
     const songForPlaylist = {
@@ -41,7 +45,7 @@ function Song({ songContain, songIdForPlaylist, onPlay }) {
       <p>{artist}</p>
       <p>{formatDuration(duration)}</p>
       {songIdForPlaylist &&
-        playlists.map((playlist) => (
+        optionPlaylist.map((playlist) => (
           <Button $variation="primary" size="small" onClick={() => handleAdd(playlist.id)} key={playlist.id}>
             Add to {playlist.playlistName}
           </Button>

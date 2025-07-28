@@ -11,7 +11,7 @@ function ToggleVolume() {
   const [prevVolume, setPrevVolume] = useState(audio?.volume ?? volume / 100);
 
   function handleToggle() {
-    if (isMuted) {
+    if (isMuted || audio.volume === 0) {
       audio.volume = prevVolume;
       setIsMuted(false);
       setVolume(Math.floor(prevVolume * 100));

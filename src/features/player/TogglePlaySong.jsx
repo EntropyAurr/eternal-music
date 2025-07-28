@@ -9,29 +9,30 @@ function TogglePlaySong() {
   const { playlistId } = useParams();
 
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isEnding, setIsEnding] = useState(false);
 
-  const audio = audioRef.current;
+  useEffect(function () {
+    const audio = audioRef.current;
 
-  useEffect(
-    function () {
-      if (!audio) return;
+    if (!audio) return;
 
-      const handlePlay = () => setIsPlaying(true);
-      const handlePause = () => setIsPlaying(false);
-      const handleEnded = () => setIsPlaying(false);
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    const handleEnded = () => {
+      setIsPlaying(false);
+      setIsEnding(true);
+    };
 
-      audio.addEventListener("play", handlePlay);
-      audio.addEventListener("pause", handlePause);
-      audio.addEventListener("ended", handleEnded);
+    audio.addEventListener("play", handlePlay);
+    audio.addEventListener("pause", handlePause);
+    audio.addEventListener("ended", handleEnded);
 
-      return () => {
-        audio.removeEventListener("play", handlePlay);
-        audio.removeEventListener("pause", handlePause);
-        audio.removeEventListener("ended", handleEnded);
-      };
-    },
-    [audio]
-  );
+    return () => {
+      audio.removeEventListener("play", handlePlay);
+      audio.removeEventListener("pause", handlePause);
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, []);
 
   function handleToggle() {
     const currentPlaylistId = currentPlaylist?.[0]?.playlist_id;
@@ -56,7 +57,7 @@ function TogglePlaySong() {
       handlePlaySong(currentSongId, currentPlaylist);
     }
 
-    if (songIndex === currentPlaylist.length - 1 && currentPlaylist.length > 1) {
+    if (songIndex === currentPlaylist.length - 1 && currentPlaylist.length > 1 && isEnding) {
       handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
     }
   }

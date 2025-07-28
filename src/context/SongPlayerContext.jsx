@@ -1,6 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
-import { HiOutlineSpeakerXMark } from "react-icons/hi2";
 
 const SongPlayerContext = createContext();
 
