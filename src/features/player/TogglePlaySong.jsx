@@ -56,7 +56,7 @@ function TogglePlaySong() {
       handlePlaySong(currentSongId, currentPlaylist);
     }
 
-    if (songIndex === currentPlaylist.length - 1) {
+    if (songIndex === currentPlaylist.length - 1 && currentPlaylist.length > 1) {
       handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
     }
   }

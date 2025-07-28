@@ -4,9 +4,10 @@ import { HiOutlineSpeakerWave, HiOutlineSpeakerXMark } from "react-icons/hi2";
 import { useSongPlayer } from "../../context/SongPlayerContext";
 
 function ToggleVolume() {
-  const [isMuted, setIsMuted] = useState(false);
   const { audioRef, volume, setVolume } = useSongPlayer();
   const audio = audioRef.current;
+
+  const [isMuted, setIsMuted] = useState(false);
   const [prevVolume, setPrevVolume] = useState(audio?.volume ?? volume / 100);
 
   function handleToggle() {
@@ -22,7 +23,7 @@ function ToggleVolume() {
     }
   }
 
-  return <ButtonIcon onClick={handleToggle}>{isMuted ? <HiOutlineSpeakerXMark /> : <HiOutlineSpeakerWave />}</ButtonIcon>;
+  return <ButtonIcon onClick={handleToggle}>{isMuted || audio.volume === 0 ? <HiOutlineSpeakerXMark /> : <HiOutlineSpeakerWave />}</ButtonIcon>;
 }
 
 export default ToggleVolume;
