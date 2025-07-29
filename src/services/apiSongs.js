@@ -8,10 +8,30 @@ export async function getSongs() {
   return data;
 }
 
-export async function createUpdateSong(newSong, songId) {
+export async function createUpdateSong(newSong, id) {
   const hasSongPath = newSong.url?.startsWith?.(supabaseUrl);
   const songName = `${newSong.url.name}`.replaceAll(/[^\w.-]/g, "_");
   const songPath = hasSongPath ? newSong.url : `${supabaseUrl}/storage/v1/object/public/song-files/${songName}`;
+
+  let query = supabase.from("song");
+
+  // Create new song
+  if (!id) {
+    query = query.insert([{ ...newSong, url: songPath }]);
+  }
+
+  // Update song
+  if (id) {
+    query = query
+      .update({ ...newSong, url: songPath })
+      .eq("id", id)
+      .select();
+  }
+
+  const { data: song, error: songError } = await query.select().single();
+
+  if (songError) throw new Error("Song could not be created");
+  if (hasSongPath) return song;
 
   if (!hasSongPath) {
     const { error: storageError } = await supabase.storage.from("song-files").upload(songName, newSong.url);
@@ -22,23 +42,29 @@ export async function createUpdateSong(newSong, songId) {
     }
   }
 
-  let query;
-
-  if (!songId) {
-    query = supabase
-      .from("song")
-      .insert([{ ...newSong, url: songPath }])
-      .select()
-      .single();
-  }
-
-  const { data: song, error: songError } = await query;
-
-  if (songError) throw new Error("Song could not be created");
-
+  // Link song and playlist
   const { error: linkError } = await supabase.from("playlist_song").insert([{ playlist_id: newSong.toPlaylistId, song_id: song.id }]);
 
-  if (linkError) throw new Error("There was an error why linking song and playlist");
+  if (linkError) throw new Error("There was an error while linking song and playlist");
 
   return song;
+}
+
+// Delete song
+export async function deleteSong(id) {
+  // Remove related playlist entries first
+  const { error: playlistError } = await supabase.from("playlist_song").delete().eq("song_id", id);
+
+  if (playlistError) {
+    console.error(error);
+    throw new Error("Failed to remove song from playlist");
+  }
+
+  // Then delete the song itself
+  const { error: songError } = await supabase.from("song").delete().eq("id", id);
+
+  if (songError) {
+    console.error(error);
+    throw new Error("Song could not be deleted");
+  }
 }

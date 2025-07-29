@@ -14,19 +14,6 @@ const Header = styled.div`
   gap: 1.5rem;
 `;
 
-const AllSongsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  margin-top: 4rem;
-`;
-
-const Songs = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-`;
-
 function Home() {
   return (
     <StyledHome>
