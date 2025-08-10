@@ -1,19 +1,20 @@
-import { useParams } from "react-router-dom";
 import { HiPencil, HiTrash, HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
 
 import { formatDuration } from "../../utils/helpers";
 import { useUploadSong } from "./useUploadSong";
 import { useDeleteSong } from "./useDeleteSong";
+import { useRemoveSong } from "./useRemoveSong";
 import { usePlaylists } from "../playlists/usePlaylists";
-import Spinner from "../../ui/Spinner";
 
+import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
 import CreateSongForm from "../songs/CreateSongForm";
 import ConfirmDelete from "../../ui/ConfirmDelete";
+import ConfirmRemove from "../../ui/ConfirmRemove";
 
 const StyledSong = styled.div`
   display: grid;
@@ -28,17 +29,17 @@ const SongTitle = styled.p`
   font-weight: 600;
 `;
 
-function Song({ songContain, songIdForPlaylist, onPlay }) {
+function Song({ songContain, songIdForPlaylist, playlistId, onPlay }) {
   const { name, artist, duration } = songContain;
   const { uploadSong } = useUploadSong();
   const { playlists, isPendingPlaylists } = usePlaylists();
-  const { playlistId } = useParams();
   const { isDeleting, deleteSong } = useDeleteSong();
+  const { isRemoving, removeSong } = useRemoveSong();
 
   if (isPendingPlaylists) return <Spinner />;
   if (!playlists) return <Empty />;
 
-  const optionPlaylist = playlists.filter((playlist) => playlist.id !== Number(playlistId));
+  const optionPlaylist = playlists.filter((playlist) => playlist.id !== playlistId);
 
   function handleAdd(playlistId) {
     const songForPlaylist = {
@@ -84,7 +85,9 @@ function Song({ songContain, songIdForPlaylist, onPlay }) {
                 <CreateSongForm songToUpdate={songContain} id={songIdForPlaylist} />
               </Modal.Window>
 
-              <Modal.Window name="remove"></Modal.Window>
+              <Modal.Window name="remove">
+                <ConfirmRemove resourceName="song" disabled={isRemoving} onConfirm={() => removeSong({ songId: songIdForPlaylist, playlistId })} />
+              </Modal.Window>
 
               <Modal.Window name="delete">
                 <ConfirmDelete resourceName="song" disabled={isDeleting} onConfirm={() => deleteSong(songIdForPlaylist)} />

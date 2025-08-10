@@ -59,15 +59,19 @@ function Modal({ children }) {
   return <ModalContext.Provider value={{ openName, setOpenName, close }}>{children}</ModalContext.Provider>;
 }
 
-function Open({ children, opens: opensWindowName }) {
+function Open({ children, opens: opensWindowName, onOpen }) {
   const { setOpenName } = useContext(ModalContext);
 
-  return cloneElement(children, { onClick: () => setOpenName(opensWindowName) });
+  function handleClick() {
+    onOpen?.();
+    setOpenName(opensWindowName);
+  }
+
+  return cloneElement(children, { onClick: handleClick });
 }
 
 function Window({ children, name }) {
   const { openName, close } = useContext(ModalContext);
-
   const ref = useOutsideClick(close);
 
   if (name !== openName) return null;

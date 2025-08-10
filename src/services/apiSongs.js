@@ -37,7 +37,6 @@ export async function createUpdateSong(newSong, id) {
     const { error: storageError } = await supabase.storage.from("song-files").upload(songName, newSong.url);
 
     if (storageError) {
-      console.log(storageError);
       throw new Error("Song URL could not be found");
     }
   }
@@ -56,15 +55,22 @@ export async function deleteSong(id) {
   const { error: playlistError } = await supabase.from("playlist_song").delete().eq("song_id", id);
 
   if (playlistError) {
-    console.error(error);
     throw new Error("Failed to remove song from playlist");
   }
 
   // Then delete the song itself
-  const { error: songError } = await supabase.from("song").delete().eq("id", id);
+  const { error: deleteError } = await supabase.from("song").delete().eq("id", id);
 
-  if (songError) {
-    console.error(error);
+  if (deleteError) {
     throw new Error("Song could not be deleted");
+  }
+}
+
+// Remove song from playlist
+export async function removeSong({ songId, playlistId }) {
+  const { error: removeError } = await supabase.from("playlist_song").delete().match({ song_id: songId, playlist_id: playlistId });
+
+  if (removeError) {
+    throw new Error("Song could not be removed from this playlist");
   }
 }

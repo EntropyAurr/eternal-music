@@ -49,7 +49,7 @@ function Playlist() {
       <Header as="h2">{playlist.playlistName}</Header>
 
       {songsFromPlaylist.map((song) => (
-        <Song songContain={song.song} songIdForPlaylist={song.song_id} key={song.song_id} onPlay={handlePlay} />
+        <Song songContain={song.song} songIdForPlaylist={song.song_id} playlistId={song.playlist_id} key={song.song_id} onPlay={handlePlay} />
       ))}
 
       <AddSong />
