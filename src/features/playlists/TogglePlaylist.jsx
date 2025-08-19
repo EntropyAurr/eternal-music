@@ -2,11 +2,10 @@ import { useEffect } from "react";
 import { HiOutlinePause, HiOutlinePlay } from "react-icons/hi2";
 
 import { useSongPlayer } from "../../context/SongPlayerContext";
-
 import ButtonIcon from "../../ui/ButtonIcon";
 
-function TogglePlaySong() {
-  const { handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding } = useSongPlayer();
+function TogglePlaylist({ currentPlaylistId, songsFromPlaylist }) {
+  const { handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, audioRef, songRef, isPlaying, setIsPlaying } = useSongPlayer();
 
   useEffect(function () {
     const audio = audioRef.current;
@@ -15,10 +14,7 @@ function TogglePlaySong() {
 
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
-    const handleEnded = () => {
-      setIsPlaying(false);
-      setIsEnding(true);
-    };
+    const handleEnded = () => setIsPlaying(false);
 
     audio.addEventListener("play", handlePlay);
     audio.addEventListener("pause", handlePause);
@@ -31,9 +27,17 @@ function TogglePlaySong() {
     };
   }, []);
 
+  const isSamePlaylist = songRef?.current?.playlist_id === currentPlaylistId;
+
   function handleToggle() {
     if (!currentSongId && currentPlaylist?.length > 0) {
       handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
+      return;
+    }
+
+    if (!isSamePlaylist) {
+      setCurrentPlaylist(songsFromPlaylist);
+      handlePlaySong(songsFromPlaylist[0].song_id, songsFromPlaylist);
       return;
     }
 
@@ -42,13 +46,9 @@ function TogglePlaySong() {
     } else {
       handlePlaySong(currentSongId, currentPlaylist);
     }
-
-    if (songIndex === currentPlaylist.length - 1 && currentPlaylist.length > 1 && isEnding) {
-      handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
-    }
   }
 
-  return <ButtonIcon onClick={handleToggle}>{isPlaying && songRef.current ? <HiOutlinePause /> : <HiOutlinePlay />}</ButtonIcon>;
+  return <ButtonIcon onClick={handleToggle}>{isSamePlaylist && isPlaying ? <HiOutlinePause /> : <HiOutlinePlay />}</ButtonIcon>;
 }
 
-export default TogglePlaySong;
+export default TogglePlaylist;

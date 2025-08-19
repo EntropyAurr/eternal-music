@@ -15,6 +15,8 @@ function SongPlayerProvider({ children }) {
   const [currentSongTime, setCurrentSongTime] = useState(0);
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(15);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isEnding, setIsEnding] = useState(false);
 
   // VOLUME adjustment
   if (!songRef.current) audio.volume = volume / 100;
@@ -130,7 +132,7 @@ function SongPlayerProvider({ children }) {
     [handleNext, audio, duration]
   );
 
-  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex }}>{children}</SongPlayerContext.Provider>;
+  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding }}>{children}</SongPlayerContext.Provider>;
 }
 
 function useSongPlayer() {
