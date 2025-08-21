@@ -3,7 +3,7 @@ import { useSongPlayer } from "../../context/SongPlayerContext";
 import { formatDuration } from "../../utils/helpers";
 import { RxTrackNext, RxTrackPrevious } from "react-icons/rx";
 import ButtonIcon from "../../ui/ButtonIcon";
-import TogglePlaySong from "./TogglePlaySong";
+import TogglePlay from "./TogglePlay";
 import ToggleVolume from "./ToggleVolume";
 
 const StyledPlayer = styled.div`
@@ -57,7 +57,7 @@ function Player() {
         <RxTrackPrevious />
       </ButtonIcon>
 
-      <TogglePlaySong />
+      <TogglePlay type="song" />
 
       <ButtonIcon onClick={() => handleNext(currentSongId)}>
         <RxTrackNext />

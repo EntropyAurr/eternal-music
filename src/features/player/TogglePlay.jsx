@@ -2,10 +2,11 @@ import { useEffect } from "react";
 import { HiOutlinePause, HiOutlinePlay } from "react-icons/hi2";
 
 import { useSongPlayer } from "../../context/SongPlayerContext";
+
 import ButtonIcon from "../../ui/ButtonIcon";
 
-function TogglePlaylist({ currentPlaylistId, songsFromPlaylist }) {
-  const { handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, audioRef, songRef, isPlaying, setIsPlaying } = useSongPlayer();
+function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
+  const { handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding } = useSongPlayer();
 
   useEffect(function () {
     const audio = audioRef.current;
@@ -14,7 +15,10 @@ function TogglePlaylist({ currentPlaylistId, songsFromPlaylist }) {
 
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
-    const handleEnded = () => setIsPlaying(false);
+    const handleEnded = () => {
+      setIsPlaying(false);
+      setIsEnding(true);
+    };
 
     audio.addEventListener("play", handlePlay);
     audio.addEventListener("pause", handlePause);
@@ -30,15 +34,19 @@ function TogglePlaylist({ currentPlaylistId, songsFromPlaylist }) {
   const isSamePlaylist = songRef?.current?.playlist_id === currentPlaylistId;
 
   function handleToggle() {
+    if (!currentPlaylist || currentPlaylist.length === 0) return;
+
     if (!currentSongId && currentPlaylist?.length > 0) {
       handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
       return;
     }
 
-    if (!isSamePlaylist) {
-      setCurrentPlaylist(songsFromPlaylist);
-      handlePlaySong(songsFromPlaylist[0].song_id, songsFromPlaylist);
-      return;
+    if (type === "playlist") {
+      if (!isSamePlaylist) {
+        setCurrentPlaylist(songsFromPlaylist);
+        handlePlaySong(songsFromPlaylist[0].song_id, songsFromPlaylist);
+        return;
+      }
     }
 
     if (isPlaying) {
@@ -46,9 +54,13 @@ function TogglePlaylist({ currentPlaylistId, songsFromPlaylist }) {
     } else {
       handlePlaySong(currentSongId, currentPlaylist);
     }
+
+    if (songIndex === currentPlaylist.length - 1 && currentPlaylist.length > 1 && isEnding) {
+      handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
+    }
   }
 
-  return <ButtonIcon onClick={handleToggle}>{isSamePlaylist && isPlaying ? <HiOutlinePause /> : <HiOutlinePlay />}</ButtonIcon>;
+  return <ButtonIcon onClick={handleToggle}>{type === "playlist" ? isSamePlaylist && isPlaying ? <HiOutlinePause /> : <HiOutlinePlay /> : isPlaying && songRef.current ? <HiOutlinePause /> : <HiOutlinePlay />}</ButtonIcon>;
 }
 
-export default TogglePlaylist;
+export default TogglePlay;

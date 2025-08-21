@@ -1,19 +1,19 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createUpdateSong } from "../../services/apiSongs";
 import { toast } from "react-hot-toast";
+import { createUpdateSong } from "../../services/apiSongs";
 
 export function useCreateSong() {
   const queryClient = useQueryClient();
 
   const { mutate: createSong, isPending: isCreating } = useMutation({
     mutationFn: createUpdateSong,
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       toast.success("New song successfully created");
       queryClient.invalidateQueries({
         queryKey: ["song"],
       });
       queryClient.invalidateQueries({
-        queryKey: ["playlist_song"],
+        queryKey: ["playlist_song", variables.toPlaylistId],
       });
     },
     onError: (error) => {

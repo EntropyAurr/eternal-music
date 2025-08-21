@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import styled from "styled-components";
+import { HiPencil, HiTrash } from "react-icons/hi2";
 
 import { usePlaylists } from "./usePlaylists";
 import { useParams } from "react-router-dom";
@@ -11,7 +12,12 @@ import Spinner from "../../ui/Spinner";
 import Song from "../songs/Song";
 import AddSong from "../songs/AddSong";
 import Heading from "../../ui/Heading";
-import TogglePlaylist from "./TogglePlaylist";
+import TogglePlay from "../player/TogglePlay";
+import Menus from "../../ui/Menus";
+import Modal from "../../ui/Modal";
+import CreatePlaylistForm from "./CreatePlaylistForm";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import { useDeletePlaylist } from "./useDeletePlaylist";
 
 const StyledPlaylist = styled.div`
   display: flex;
@@ -30,6 +36,7 @@ function Playlist() {
 
   const { songsFromPlaylist, isPending } = usePlaylistSong();
   const { playlists, isPendingPlaylists } = usePlaylists();
+  const { isDeleting, deletePlaylist } = useDeletePlaylist();
   const { handlePlaySong, setCurrentPlaylist, currentSongId } = useSongPlayer();
 
   useEffect(() => {
@@ -51,7 +58,35 @@ function Playlist() {
     <StyledPlaylist>
       <Header>
         <Heading as="h2">{playlist.playlistName}</Heading>
-        <TogglePlaylist currentPlaylistId={playlist.id} songsFromPlaylist={songsFromPlaylist} />
+        <TogglePlay type="playlist" currentPlaylistId={playlist.id} songsFromPlaylist={songsFromPlaylist} />
+
+        <div>
+          <Modal>
+            <Menus>
+              <Menus.Menu>
+                <Menus.Toggle id={playlist.id} />
+
+                <Menus.List id={playlist.id}>
+                  <Modal.Open opens="edit">
+                    <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+                  </Modal.Open>
+
+                  <Modal.Open opens="delete">
+                    <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+                  </Modal.Open>
+                </Menus.List>
+
+                <Modal.Window name="edit">
+                  <CreatePlaylistForm id={playlist.id} playlistToUpdate={playlist} />
+                </Modal.Window>
+
+                <Modal.Window name="delete">
+                  <ConfirmDelete resourceName="playlist" onConfirm={() => deletePlaylist(playlist.id)} disabled={isDeleting} />
+                </Modal.Window>
+              </Menus.Menu>
+            </Menus>
+          </Modal>
+        </div>
       </Header>
 
       {songsFromPlaylist.map((song) => (

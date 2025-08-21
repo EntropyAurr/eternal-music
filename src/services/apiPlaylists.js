@@ -8,8 +8,23 @@ export async function getPlaylists() {
   return data;
 }
 
-export async function createUpdatePlaylist(newPlaylist) {
-  const { data, error } = await supabase.from("playlist").insert([newPlaylist]).select();
+export async function createUpdatePlaylist(newPlaylist, id) {
+  let query = supabase.from("playlist");
+
+  // Create new playlist
+  if (!id) {
+    query = query.insert([{ ...newPlaylist }]);
+  }
+
+  // Update playlist
+  if (id) {
+    query = query
+      .update({ ...newPlaylist })
+      .eq("id", id)
+      .select();
+  }
+
+  const { data, error } = await query.select();
 
   if (error) throw new Error("Playlist could not be created");
 
@@ -26,4 +41,19 @@ export async function getSongFromPlaylist(playlistId) {
   if (error) throw new Error("Song could not display for this playlist");
 
   return data;
+}
+
+// Delete playlist
+export async function deletePlaylist(id) {
+  const { error: playlistError } = await supabase.from("playlist_song").delete().eq("playlist_id", id);
+
+  if (playlistError) {
+    throw new Error("Failed to delete the link between playlist and song");
+  }
+
+  const { error: deleteError } = await supabase.from("playlist").delete().eq("id", id);
+
+  if (deleteError) {
+    throw new Error("Playlist could not be deleted");
+  }
 }
