@@ -58,7 +58,7 @@ export async function removeSong({ songId, playlistId }) {
   }
 }
 
-// Delete song
+// DELETE SONG
 export async function deleteSong(id) {
   // Get the song row to know the file path
   const { data: song, error: fetchError } = await supabase.from("song").select("url").eq("id", id).single();

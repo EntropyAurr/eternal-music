@@ -51,9 +51,17 @@ export async function deletePlaylist(id) {
     throw new Error("Failed to delete the link between playlist and song");
   }
 
+  const { error: songError } = await supabase.from("song").delete().eq("toPlaylistId", id);
+
+  if (songError) {
+    throw new Error("Failed to delete the link between playlist and song");
+  }
+
   const { error: deleteError } = await supabase.from("playlist").delete().eq("id", id);
 
   if (deleteError) {
     throw new Error("Playlist could not be deleted");
   }
 }
+
+// idea: when deleting a playlist, if the song in this playlist belong to other playlist => the song still in the bucket storage; but if the songs in the target deleted playlist does not belong to other playlists => delete them in song tables and storage
