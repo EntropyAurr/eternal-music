@@ -48,13 +48,13 @@ export async function deletePlaylist(id) {
   const { error: playlistError } = await supabase.from("playlist_song").delete().eq("playlist_id", id);
 
   if (playlistError) {
-    throw new Error("Failed to delete the link between playlist and song");
+    throw new Error("Failed to delete playlist-song links");
   }
 
   const { error: songError } = await supabase.from("song").delete().eq("toPlaylistId", id);
 
   if (songError) {
-    throw new Error("Failed to delete the link between playlist and song");
+    throw new Error("Failed to delete associated songs");
   }
 
   const { error: deleteError } = await supabase.from("playlist").delete().eq("id", id);

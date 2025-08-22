@@ -7,6 +7,7 @@ export function useCreateSong() {
 
   const { mutate: createSong, isPending: isCreating } = useMutation({
     mutationFn: createUpdateSong,
+
     onSuccess: (_, variables) => {
       toast.success("New song successfully created");
       queryClient.invalidateQueries({
@@ -16,6 +17,7 @@ export function useCreateSong() {
         queryKey: ["playlist_song", variables.toPlaylistId],
       });
     },
+
     onError: (error) => {
       toast.error(error.message);
     },

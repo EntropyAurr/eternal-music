@@ -10,6 +10,7 @@ export function useDeleteSong() {
 
     onSuccess: () => {
       toast.success("Song successfully deleted");
+
       queryClient.invalidateQueries({
         queryKey: ["playlist_song"],
       });
@@ -17,6 +18,7 @@ export function useDeleteSong() {
         queryKey: ["song"],
       });
     },
+
     onError: (err) => toast.error(err.message),
   });
 

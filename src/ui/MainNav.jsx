@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import styled from "styled-components";
 import { HiOutlineChevronDown, HiOutlineChevronUp, HiOutlineHome, HiOutlineUser } from "react-icons/hi2";
 import { PiPlaylist } from "react-icons/pi";
+import styled from "styled-components";
+
 import ButtonIcon from "./ButtonIcon";
 import Spinner from "./Spinner";
 import Empty from "./Empty";
 import Button from "./Button";
 import RenderBody from "./RenderBody";
-import { usePlaylists } from "../features/playlists/usePlaylists";
 import Modal from "./Modal";
 import CreatePlaylistForm from "../features/playlists/CreatePlaylistForm";
+import { usePlaylists } from "../features/playlists/usePlaylists";
 
 const NavList = styled.ul`
   display: flex;
@@ -108,6 +109,7 @@ function MainNav() {
                     Add new playlist
                   </Button>
                 </Modal.Open>
+
                 <Modal.Window name="playlist-form">
                   <CreatePlaylistForm />
                 </Modal.Window>

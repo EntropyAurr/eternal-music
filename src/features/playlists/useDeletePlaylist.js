@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-
+import toast from "react-hot-toast";
 import { deletePlaylist as deletePlaylistApi } from "../../services/apiPlaylists";
 
 export function useDeletePlaylist() {
@@ -22,6 +22,7 @@ export function useDeletePlaylist() {
         queryKey: ["playlist"],
       });
     },
+
     onError: (err) => toast.error(err.message),
   });
 
