@@ -1,35 +1,22 @@
 import { useEffect } from "react";
-import styled from "styled-components";
-import { HiPencil, HiTrash } from "react-icons/hi2";
 
-import { usePlaylists } from "./usePlaylists";
 import { useParams } from "react-router-dom";
-import { usePlaylistSong } from "./usePlaylistSong";
 import { useSongPlayer } from "../../context/SongPlayerContext";
+import { usePlaylists } from "./usePlaylists";
+import { usePlaylistSong } from "./usePlaylistSong";
 
+import { Pencil, X } from "lucide-react";
+import ConfirmDelete from "../../ui/ConfirmDelete";
 import Empty from "../../ui/Empty";
-import Spinner from "../../ui/Spinner";
-import Song from "../songs/Song";
-import AddSong from "../songs/AddSong";
 import Heading from "../../ui/Heading";
-import TogglePlay from "../player/TogglePlay";
 import Menus from "../../ui/Menus";
 import Modal from "../../ui/Modal";
+import Spinner from "../../ui/Spinner";
+import TogglePlay from "../player/TogglePlay";
+import AddSong from "../songs/AddSong";
+import Song from "../songs/Song";
 import CreatePlaylistForm from "./CreatePlaylistForm";
-import ConfirmDelete from "../../ui/ConfirmDelete";
 import { useDeletePlaylist } from "./useDeletePlaylist";
-
-const StyledPlaylist = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 3.5rem;
-`;
 
 function Playlist() {
   const { playlistId } = useParams();
@@ -55,8 +42,8 @@ function Playlist() {
   const playlist = playlists.find((playlist) => playlist.id === Number(playlistId));
 
   return (
-    <StyledPlaylist>
-      <Header>
+    <div className="flex flex-col gap-2.5">
+      <div className="flex items-center gap-9">
         <Heading as="h2">{playlist.playlistName}</Heading>
         <TogglePlay type="playlist" currentPlaylistId={playlist.id} songsFromPlaylist={songsFromPlaylist} />
 
@@ -68,11 +55,11 @@ function Playlist() {
 
                 <Menus.List id={playlist.id}>
                   <Modal.Open opens="edit">
-                    <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+                    <Menus.Button icon={<Pencil />}>Edit</Menus.Button>
                   </Modal.Open>
 
                   <Modal.Open opens="delete">
-                    <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+                    <Menus.Button icon={<X />}>Delete</Menus.Button>
                   </Modal.Open>
                 </Menus.List>
 
@@ -87,14 +74,14 @@ function Playlist() {
             </Menus>
           </Modal>
         </div>
-      </Header>
+      </div>
 
       {songsFromPlaylist.map((song) => (
         <Song songContain={song.song} songIdForPlaylist={song.song_id} playlistId={song.playlist_id} key={song.song_id} onPlay={handlePlay} />
       ))}
 
       <AddSong />
-    </StyledPlaylist>
+    </div>
   );
 }
 

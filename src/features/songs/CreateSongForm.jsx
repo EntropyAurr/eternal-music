@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
+import FileInput from "../../ui/FileInput";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
-import FileInput from "../../ui/FileInput";
-import Button from "../../ui/Button";
 
 import { useCreateSong } from "./useCreateSong";
 import { useUpdateSong } from "./useUpdateSong";
@@ -45,7 +44,7 @@ function CreateSongForm({ songToUpdate = {}, id: updateId, onCloseModal }) {
             reset();
             onCloseModal?.();
           },
-        }
+        },
       );
       return null;
     } else
@@ -56,7 +55,7 @@ function CreateSongForm({ songToUpdate = {}, id: updateId, onCloseModal }) {
             reset();
             onCloseModal?.();
           },
-        }
+        },
       );
   }
 
@@ -83,13 +82,13 @@ function CreateSongForm({ songToUpdate = {}, id: updateId, onCloseModal }) {
       </FormRow>
 
       <FormRow>
-        <Button $variation="secondary" size="medium" type="reset" onClick={handleClose}>
+        <button className="btn secondary medium" type="reset" onClick={handleClose}>
           Cancle
-        </Button>
+        </button>
 
-        <Button $variation="primary" size="medium" disabled={isWorking}>
+        <button className="btn primary medium" disabled={isWorking}>
           {isUpdateSession ? "Edit song" : "Create new song"}
-        </Button>
+        </button>
       </FormRow>
     </Form>
   );

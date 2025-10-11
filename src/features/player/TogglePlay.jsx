@@ -1,9 +1,8 @@
 import { useEffect } from "react";
-import { HiOutlinePause, HiOutlinePlay } from "react-icons/hi2";
 
 import { useSongPlayer } from "../../context/SongPlayerContext";
 
-import ButtonIcon from "../../ui/ButtonIcon";
+import { Pause, Play } from "lucide-react";
 
 function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
   const { handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding } = useSongPlayer();
@@ -60,7 +59,11 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
     }
   }
 
-  return <ButtonIcon onClick={handleToggle}>{type === "playlist" ? isSamePlaylist && isPlaying ? <HiOutlinePause /> : <HiOutlinePlay /> : isPlaying && songRef.current ? <HiOutlinePause /> : <HiOutlinePlay />}</ButtonIcon>;
+  return (
+    <button className="button-icon" onClick={handleToggle}>
+      {type === "playlist" ? isSamePlaylist && isPlaying ? <Pause /> : <Play /> : isPlaying && songRef.current ? <Pause /> : <Play />}
+    </button>
+  );
 }
 
 export default TogglePlay;

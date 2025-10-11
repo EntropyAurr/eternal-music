@@ -1,21 +1,18 @@
-import styled from "styled-components";
-import UserAvatar from "../features/authentication/UserAvatar";
-import HeaderMenu from "./HeaderMenu";
-
-const StyledHeader = styled.header`
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 2rem 2.2rem;
-`;
+import ThemeToggle from "./ThemeToggle";
 
 function Header() {
   return (
-    <StyledHeader>
-      <UserAvatar />
-      <HeaderMenu />
-    </StyledHeader>
+    <header className="bg-background flex h-20 items-center justify-end gap-3 border-2 border-green-400 px-4 py-5">
+      <div className="flex gap-2">
+        <img src="/avatar-1.jpg" className="block w-14 rounded-full object-cover object-center" />
+      </div>
+
+      <ul className="flex gap-2">
+        <li>
+          <ThemeToggle />
+        </li>
+      </ul>
+    </header>
   );
 }
 

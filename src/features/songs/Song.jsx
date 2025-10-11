@@ -1,33 +1,30 @@
-import { HiPencil, HiTrash, HiXMark } from "react-icons/hi2";
-import styled from "styled-components";
-
 import { formatDuration } from "../../utils/helpers";
-import { useUploadSong } from "./useUploadSong";
+import { usePlaylists } from "../playlists/usePlaylists";
 import { useDeleteSong } from "./useDeleteSong";
 import { useRemoveSong } from "./useRemoveSong";
-import { usePlaylists } from "../playlists/usePlaylists";
+import { useUploadSong } from "./useUploadSong";
 
-import Spinner from "../../ui/Spinner";
-import Empty from "../../ui/Empty";
-import Button from "../../ui/Button";
-import Modal from "../../ui/Modal";
-import Menus from "../../ui/Menus";
-import CreateSongForm from "../songs/CreateSongForm";
+import { Pencil, Trash, X } from "lucide-react";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import ConfirmRemove from "../../ui/ConfirmRemove";
+import Empty from "../../ui/Empty";
+import Menus from "../../ui/Menus";
+import Modal from "../../ui/Modal";
+import Spinner from "../../ui/Spinner";
+import CreateSongForm from "../songs/CreateSongForm";
 
-const StyledSong = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 20rem 10rem auto auto;
-  gap: 3rem;
-  align-items: center;
-  justify-content: space-between;
-`;
-const SongTitle = styled.p`
-  cursor: pointer;
-  font-size: 1.8rem;
-  font-weight: 600;
-`;
+// const StyledSong = styled.div`
+//   display: grid;
+//   grid-template-columns: 2fr 20rem 10rem auto auto;
+//   gap: 3rem;
+//   align-items: center;
+//   justify-content: space-between;
+// `;
+// const SongTitle = styled.p`
+//   cursor: pointer;
+//   font-size: 1.8rem;
+//   font-weight: 600;
+// `;
 
 function Song({ songContain, songIdForPlaylist, playlistId, onPlay }) {
   const { name, artist, duration } = songContain;
@@ -50,15 +47,17 @@ function Song({ songContain, songIdForPlaylist, playlistId, onPlay }) {
   }
 
   return (
-    <StyledSong>
-      <SongTitle onClick={() => onPlay(songIdForPlaylist)}>{name}</SongTitle>
+    <div className="grid grid-cols-[2fr_20rem_10rem_auto_auto] items-center justify-between gap-7">
+      <p onClick={() => onPlay(songIdForPlaylist)} className="cursor-pointer text-xl font-semibold">
+        {name}
+      </p>
       <p>{artist}</p>
       <p>{formatDuration(duration)}</p>
       {songIdForPlaylist &&
         optionPlaylist.map((playlist) => (
-          <Button $variation="primary" size="small" onClick={() => handleAdd(playlist.id)} key={playlist.id}>
+          <button className="btn primary small" onClick={() => handleAdd(playlist.id)} key={playlist.id}>
             Add to {playlist.playlistName}
-          </Button>
+          </button>
         ))}
 
       <div>
@@ -69,15 +68,15 @@ function Song({ songContain, songIdForPlaylist, playlistId, onPlay }) {
 
               <Menus.List id={songIdForPlaylist}>
                 <Modal.Open opens="edit">
-                  <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+                  <Menus.Button icon={<Pencil />}>Edit</Menus.Button>
                 </Modal.Open>
 
                 <Modal.Open opens="remove">
-                  <Menus.Button icon={<HiXMark />}>Remove</Menus.Button>
+                  <Menus.Button icon={<X />}>Remove</Menus.Button>
                 </Modal.Open>
 
                 <Modal.Open opens="delete">
-                  <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+                  <Menus.Button icon={<Trash />}>Delete</Menus.Button>
                 </Modal.Open>
               </Menus.List>
 
@@ -96,7 +95,7 @@ function Song({ songContain, songIdForPlaylist, playlistId, onPlay }) {
           </Menus>
         </Modal>
       </div>
-    </StyledSong>
+    </div>
   );
 }
 

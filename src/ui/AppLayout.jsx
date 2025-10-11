@@ -1,39 +1,25 @@
 import { Outlet } from "react-router-dom";
 import { SongPlayerProvider } from "../context/SongPlayerContext";
-import styled from "styled-components";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Player from "../features/player/Player";
 
-const StyledAppLayout = styled.div`
-  display: grid;
-  grid-template-columns: 25rem 1fr;
-  grid-template-rows: 8rem auto 1fr;
-  height: 100vh;
-`;
-
-const Main = styled.main`
-  padding: 2rem 2.2rem;
-  background-color: var(--color-grey-200);
-`;
-
-const Container = styled.div``;
-
 function AppLayout() {
   return (
     <SongPlayerProvider>
-      <StyledAppLayout>
-        <Sidebar />
+      <div className="flex min-h-screen flex-col border">
         <Header />
 
-        <Main>
-          <Container>
+        <main className="bg-background grid flex-1 grid-cols-[15rem_auto]">
+          <Sidebar />
+
+          <div className="flex border-2 border-b-pink-600">
             <Outlet />
-          </Container>
-        </Main>
+          </div>
+        </main>
 
         <Player />
-      </StyledAppLayout>
+      </div>
     </SongPlayerProvider>
   );
 }

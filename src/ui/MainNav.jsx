@@ -1,79 +1,14 @@
+import { ChevronDown, ChevronUp, CircleUserRound, ListMusic } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { HiOutlineChevronDown, HiOutlineChevronUp, HiOutlineHome, HiOutlineUser } from "react-icons/hi2";
-import { PiPlaylist } from "react-icons/pi";
-import styled from "styled-components";
 
-import ButtonIcon from "./ButtonIcon";
-import Spinner from "./Spinner";
-import Empty from "./Empty";
-import Button from "./Button";
-import RenderBody from "./RenderBody";
-import Modal from "./Modal";
-import CreatePlaylistForm from "../features/playlists/CreatePlaylistForm";
 import { usePlaylists } from "../features/playlists/usePlaylists";
-
-const NavList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-const List = styled.li`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-const StyledNavLink = styled(NavLink)`
-  &:link,
-  &:visited {
-    display: flex;
-    align-items: center;
-    gap: 1.2rem;
-
-    color: var(--color-grey-600);
-    font-size: 1.6rem;
-    font-weight: 500;
-    padding: 1.2rem 2.4rem;
-    transition: all 0.3s;
-  }
-
-  /* This works because react-router places the active class on the active NavLink */
-  &:hover,
-  &:active,
-  &.active:link,
-  &.active:visited {
-    color: var(--color-grey-800);
-    background-color: var(--color-grey-200);
-    border-radius: var(--border-radius-sm);
-  }
-
-  & svg {
-    width: 2.4rem;
-    height: 2.4rem;
-    color: var(--color-grey-400);
-    transition: all 0.3s;
-  }
-
-  &:hover svg,
-  &:active svg,
-  &.active:link svg,
-  &.active:visited svg {
-    color: var(--color-brand-600);
-  }
-`;
-
-const StyledLink = styled(Link)`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 1.2rem;
-  background-color: var(--color-grey-400);
-  color: var(--color-grey-50);
-  border-radius: var(--border-radius-sm);
-  padding: 1.5rem 2.4rem;
-`;
+import CreatePlaylistForm from "../features/playlists/CreatePlaylistForm";
+import Empty from "./Empty";
+import Modal from "./Modal";
+import RenderBody from "./RenderBody";
+import Spinner from "./Spinner";
+import Button from "./Button";
 
 function MainNav() {
   const [showPlaylists, setShowPlaylists] = useState(false);
@@ -84,28 +19,30 @@ function MainNav() {
 
   return (
     <nav>
-      <NavList>
-        <List>
-          <StyledNavLink to="/home">
-            <PiPlaylist />
-            <span>Playlists</span>
-            <ButtonIcon onClick={() => setShowPlaylists((show) => !show)}>{!showPlaylists ? <HiOutlineChevronDown /> : <HiOutlineChevronUp />}</ButtonIcon>
-          </StyledNavLink>
+      <ul className="flex flex-col gap-5">
+        <li className="flex flex-col gap-2.5">
+          <NavLink to="/home" className="navlink">
+            <ListMusic className="h-7 w-7" />
+            <span className="text-xl">Playlists</span>
+            <button className="button-icon" onClick={() => setShowPlaylists((show) => !show)}>
+              {!showPlaylists ? <ChevronDown className="h-7 w-7" /> : <ChevronUp className="h-7 w-7" />}
+            </button>
+          </NavLink>
 
           {showPlaylists && (
             <>
               <RenderBody
                 data={playlists}
                 render={(playlist) => (
-                  <StyledLink key={playlist.id} to={`/playlist/${playlist.id}`}>
+                  <Link key={playlist.id} to={`/playlist/${playlist.id}`} className="link">
                     {playlist.playlistName}
-                  </StyledLink>
+                  </Link>
                 )}
               />
 
               <Modal>
                 <Modal.Open opens="playlist-form">
-                  <Button $variation="primary" size="medium">
+                  <Button variant="primary" size="small">
                     Add new playlist
                   </Button>
                 </Modal.Open>
@@ -116,15 +53,15 @@ function MainNav() {
               </Modal>
             </>
           )}
-        </List>
+        </li>
 
-        <List>
-          <StyledNavLink to="/user">
-            <HiOutlineUser />
-            <span>User</span>
-          </StyledNavLink>
-        </List>
-      </NavList>
+        <li className="flex flex-col gap-2.5">
+          <NavLink to="/user" className="navlink">
+            <CircleUserRound className="h-7 w-7" />
+            <span className="text-xl">User</span>
+          </NavLink>
+        </li>
+      </ul>
     </nav>
   );
 }

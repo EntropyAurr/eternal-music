@@ -1,6 +1,5 @@
+import { Volume2, VolumeX } from "lucide-react";
 import { useState } from "react";
-import ButtonIcon from "../../ui/ButtonIcon";
-import { HiOutlineSpeakerWave, HiOutlineSpeakerXMark } from "react-icons/hi2";
 import { useSongPlayer } from "../../context/SongPlayerContext";
 
 function ToggleVolume() {
@@ -23,7 +22,11 @@ function ToggleVolume() {
     }
   }
 
-  return <ButtonIcon onClick={handleToggle}>{isMuted || audio.volume === 0 ? <HiOutlineSpeakerXMark /> : <HiOutlineSpeakerWave />}</ButtonIcon>;
+  return (
+    <button className="button-icon" onClick={handleToggle}>
+      {isMuted || audio.volume === 0 ? <VolumeX /> : <Volume2 />}
+    </button>
+  );
 }
 
 export default ToggleVolume;

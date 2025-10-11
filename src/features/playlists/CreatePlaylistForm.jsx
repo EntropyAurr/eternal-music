@@ -1,10 +1,9 @@
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
-import Button from "../../ui/Button";
 import Input from "../../ui/Input";
 import { useCreatePlaylist } from "./useCreatePlaylist";
-import toast from "react-hot-toast";
 import { useUpdatePlaylist } from "./useUpdatePlaylist";
 
 function CreatePlaylistForm({ playlistToUpdate = {}, id: updateId, onCloseModal }) {
@@ -27,7 +26,7 @@ function CreatePlaylistForm({ playlistToUpdate = {}, id: updateId, onCloseModal 
             reset();
             onCloseModal?.();
           },
-        }
+        },
       );
       return null;
     } else
@@ -38,7 +37,7 @@ function CreatePlaylistForm({ playlistToUpdate = {}, id: updateId, onCloseModal 
             reset();
             onCloseModal?.();
           },
-        }
+        },
       );
   }
 
@@ -52,9 +51,7 @@ function CreatePlaylistForm({ playlistToUpdate = {}, id: updateId, onCloseModal 
         <Input type="text" id="playlistName" {...register("playlistName", { required: "This field is required" })} disabled={isWorking} />
       </FormRow>
 
-      <Button $variation="primary" size="medium">
-        {isUpdateSession ? "Edit playlist" : "Create new playlist"}
-      </Button>
+      <button className="btn primary medium">{isUpdateSession ? "Edit playlist" : "Create new playlist"}</button>
     </Form>
   );
 }

@@ -1,22 +1,14 @@
-import styled from "styled-components";
-import Logo from "./Logo";
 import MainNav from "./MainNav";
-
-const StyledSidebar = styled.aside`
-  background-color: var(--color-grey-200);
-  grid-row: 1 / -1;
-  display: flex;
-  gap: 2rem;
-  flex-direction: column;
-  padding: 2rem 2.5rem;
-`;
 
 function Sidebar() {
   return (
-    <StyledSidebar>
-      <Logo />
+    <aside className="flex flex-col border-2 border-orange-400 px-5 py-6">
+      <div className="mb-5 flex items-center justify-center gap-2.5">
+        <h2 className="text-3xl font-semibold">Aurora</h2>
+      </div>
+
       <MainNav />
-    </StyledSidebar>
+    </aside>
   );
 }
 

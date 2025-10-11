@@ -1,5 +1,4 @@
 import Modal from "../../ui/Modal";
-import Button from "../../ui/Button";
 import CreateSongForm from "./CreateSongForm";
 
 function AddSong() {
@@ -7,9 +6,7 @@ function AddSong() {
     <div>
       <Modal>
         <Modal.Open opens="song-form">
-          <Button $variation="primary" size="medium">
-            Add new Song
-          </Button>
+          <button className="btn primary medium">Add new Song</button>
         </Modal.Open>
 
         <Modal.Window name="song-form">
