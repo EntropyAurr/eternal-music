@@ -7,13 +7,13 @@ import Player from "../features/player/Player";
 function AppLayout() {
   return (
     <SongPlayerProvider>
-      <div className="flex min-h-screen flex-col border">
+      <div className="flex h-screen flex-col">
         <Header />
 
-        <main className="bg-background grid flex-1 grid-cols-[15rem_auto]">
+        <main className="bg-background grid flex-1 grid-cols-[18rem_auto] overflow-hidden">
           <Sidebar />
 
-          <div className="flex border-2 border-b-pink-600">
+          <div className="flex overflow-auto">
             <Outlet />
           </div>
         </main>

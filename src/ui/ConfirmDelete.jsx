@@ -1,5 +1,3 @@
-import Heading from "./Heading";
-
 // const StyledConfirmDelete = styled.div`
 //   width: 50rem;
 //   display: flex;
@@ -21,7 +19,7 @@ import Heading from "./Heading";
 function ConfirmDelete({ resourceName, onCloseModal, disabled, onConfirm }) {
   return (
     <div>
-      <Heading as="h3">Delete {resourceName}</Heading>
+      <h3>Delete {resourceName}</h3>
       <p>Are you sure you want to delete this {resourceName} permanently? This action cannot be undone.</p>
 
       <div>

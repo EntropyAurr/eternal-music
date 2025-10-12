@@ -21,13 +21,16 @@ function MainNav() {
     <nav>
       <ul className="flex flex-col gap-5">
         <li className="flex flex-col gap-2.5">
-          <NavLink to="/home" className="navlink">
-            <ListMusic className="h-7 w-7" />
-            <span className="text-xl">Playlists</span>
-            <button className="button-icon" onClick={() => setShowPlaylists((show) => !show)}>
+          <div className="navlink flex items-center justify-between">
+            <NavLink to="/home" className="navlink">
+              <ListMusic className="h-7 w-7" />
+              <span className="text-xl">Playlists</span>
+            </NavLink>
+
+            <button className="button-icon" onClick={() => setShowPlaylists(!showPlaylists)}>
               {!showPlaylists ? <ChevronDown className="h-7 w-7" /> : <ChevronUp className="h-7 w-7" />}
             </button>
-          </NavLink>
+          </div>
 
           {showPlaylists && (
             <>

@@ -1,5 +1,3 @@
-import Heading from "./Heading";
-
 // const StyledConfirmRemove = styled.div`
 //   width: 50rem;
 //   display: flex;
@@ -21,7 +19,7 @@ import Heading from "./Heading";
 function ConfirmRemove({ resourceName, onCloseModal, disabled, onConfirm }) {
   return (
     <div className="flex w-xl flex-col">
-      <Heading as="h3">Remove {resourceName}</Heading>
+      <h3>Remove {resourceName}</h3>
       <p>Are you sure you want to remove this {resourceName} from the playlist? This action cannot be undone.</p>
 
       <div>

@@ -1,8 +1,6 @@
 import { useEffect } from "react";
-
-import { useSongPlayer } from "../../context/SongPlayerContext";
-
 import { Pause, Play } from "lucide-react";
+import { useSongPlayer } from "../../context/SongPlayerContext";
 
 function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
   const { handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding } = useSongPlayer();

@@ -8,7 +8,6 @@ import { usePlaylistSong } from "./usePlaylistSong";
 import { Pencil, X } from "lucide-react";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Empty from "../../ui/Empty";
-import Heading from "../../ui/Heading";
 import Menus from "../../ui/Menus";
 import Modal from "../../ui/Modal";
 import Spinner from "../../ui/Spinner";
@@ -44,7 +43,7 @@ function Playlist() {
   return (
     <div className="flex flex-col gap-2.5">
       <div className="flex items-center gap-9">
-        <Heading as="h2">{playlist.playlistName}</Heading>
+        <h2 className="text-2xl font-semibold">{playlist.playlistName}</h2>
         <TogglePlay type="playlist" currentPlaylistId={playlist.id} songsFromPlaylist={songsFromPlaylist} />
 
         <div>

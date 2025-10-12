@@ -40,12 +40,6 @@ import { useOutsideClick } from "../hooks/useOutsideClick";
 //   &:hover {
 //     background-color: var(--color-grey-100);
 //   }
-
-//   & svg {
-//     width: 2.4rem;
-//     height: 2.4rem;
-//     color: var(--color-grey-500);
-//   }
 // `;
 
 const ModalContext = createContext();
@@ -76,11 +70,12 @@ function Window({ children, name }) {
   if (name !== openName) return null;
 
   return createPortal(
-    <div className="fixed top-0 left-0 z-100 h-screen w-full">
-      <div ref={ref}>
-        <button onClick={close}>
+    <div className="fixed top-0 left-0 z-100 h-screen w-full bg-[var(--backdrop-color)] backdrop-blur-sm transition-all duration-500">
+      <div ref={ref} className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[var(--border-radius-sm)] px-8 py-10 shadow-[var(--shadow-lg)] transition-all duration-500">
+        <button onClick={close} className="rounded-[var(--border-radius-sm) translate-x-2] absolute top-3 right-5 bg-none transition-all duration-200">
           <X />
         </button>
+
         <div>{cloneElement(children, { onCloseModal: close })}</div>
       </div>
     </div>,

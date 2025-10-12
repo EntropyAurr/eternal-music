@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 
-import { EllipsisVertical } from "lucide-react";
+import { CircleEllipsis } from "lucide-react";
 import { useOutsideClick } from "../hooks/useOutsideClick";
 
 // const Menu = styled.div`
@@ -74,8 +74,8 @@ function Menus({ children }) {
   return <MenusContext.Provider value={{ openId, close, setOpenId, position, setPosition }}>{children}</MenusContext.Provider>;
 }
 
-function Menu() {
-  return <div></div>;
+function Menu({ children }) {
+  return <div className="flex items-center justify-end">{children}</div>;
 }
 
 function Toggle({ id }) {
@@ -86,8 +86,8 @@ function Toggle({ id }) {
     const rect = e.target.closest("button").getBoundingClientRect();
 
     setPosition({
-      x: window.innerWidth - rect.width - rect.x,
-      y: rect.y + rect.height + 8,
+      x: window.innerWidth - rect.width - rect.x - 90,
+      y: rect.y + rect.height,
     });
 
     openId === "" || openId !== id ? setOpenId(id) : close();
@@ -95,7 +95,7 @@ function Toggle({ id }) {
 
   return (
     <button onClick={handleClick}>
-      <EllipsisVertical />
+      <CircleEllipsis />
     </button>
   );
 }
@@ -109,7 +109,7 @@ function List({ id, children }) {
   return (
     position &&
     createPortal(
-      <ul $position={position} ref={ref}>
+      <ul ref={ref} className="fixed rounded-[var(--border-radius-sm)] bg-[var(--color-primary-50)] shadow-[var(--shadow-md)]" style={{ top: `${position.y}px`, right: `${position.x}px` }}>
         {children}
       </ul>,
       document.body,
@@ -127,7 +127,7 @@ function Button({ children, icon, onClick }) {
 
   return (
     <li>
-      <button onClick={handleClick}>
+      <button onClick={handleClick} className="flex w-full items-center gap-4 px-3 py-6 text-left text-sm transition-all duration-200 hover:bg-[var(--color-primary-700)]">
         {icon}
         <span>{children}</span>
       </button>

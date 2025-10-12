@@ -43,7 +43,7 @@ function Player() {
   const { currentSongId, volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress } = useSongPlayer();
 
   return (
-    <div className="col-span-full flex justify-center gap-10 border-2 border-b-cyan-400 px-5 py-6">
+    <div className="gap-10px-5 col-span-full flex justify-center py-6">
       <div className="flex items-center gap-5">
         <ToggleVolume />
         <input type="range" min={0} max={100} value={volume} onChange={(e) => handleVolume(e.target.value)} />
