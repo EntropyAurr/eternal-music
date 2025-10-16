@@ -119,9 +119,9 @@
   .form-row {
     display: grid;
     align-items: center;
-    grid-template-columns: 27rem 1fr 1.2fr;
-    gap: 2.4rem;
-    padding: 1.2rem 0;
+    grid-template-columns: 12rem 1fr 1.2fr;
+    gap: 1.4rem;
+    padding: 0.6rem 0;
   }
 
   .form-row:first-child {
@@ -133,7 +133,7 @@
   }
 
   .form-row:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
+    border-bottom: 1px solid var(--color-primary-100);
   }
 
   .form-row:has(button) {
@@ -232,7 +232,37 @@
     transition: all 0.2s;
   }
   .button-icon:hover {
-    background-color: var(--color-grey-100);
+    background-color: var(--color-primary-100);
+  }
+
+  .input {
+    font-size: 1.7rem;
+    background-color: var(--color-primary-100);
+    padding: 0.5rem 1rem;
+    outline: none;
+    border: 1px solid var(--color-primary-400);
+  }
+
+  .input-file[type="file"] {
+    font-size: 1.2rem;
+    border-radius: var(--border-radius-sm);
+  }
+  .input-file[type="file"]::file-selector-button {
+    cursor: pointer;
+    font: inherit;
+    font-weight: 500;
+    padding: 0.8rem 1.2rem;
+    margin-right: 1.2rem;
+    border-radius: var(--border-radius-sm);
+    border: none;
+    color: var(--color-primary-50);
+    background-color: var(--color-primary-600);
+    transition:
+      color 0.2s,
+      background-color 0.2s;
+  }
+  .input-file[type="file"]:hover {
+    background-color: var(--color-primary-700);
   }
 }
 

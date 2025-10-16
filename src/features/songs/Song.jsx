@@ -47,18 +47,14 @@ function Song({ songContain, songIdForPlaylist, playlistId, onPlay }) {
   }
 
   return (
-    <div className="grid grid-cols-[2fr_20rem_10rem_auto_auto] items-center justify-between gap-7">
+    <div className="grid grid-cols-[2fr_12rem_7rem_auto_auto] items-center justify-between gap-7">
       <p onClick={() => onPlay(songIdForPlaylist)} className="cursor-pointer text-xl font-semibold">
         {name}
       </p>
+
       <p>{artist}</p>
+
       <p>{formatDuration(duration)}</p>
-      {songIdForPlaylist &&
-        optionPlaylist.map((playlist) => (
-          <button className="btn primary small" onClick={() => handleAdd(playlist.id)} key={playlist.id}>
-            Add to {playlist.playlistName}
-          </button>
-        ))}
 
       <div>
         <Modal>
@@ -95,6 +91,13 @@ function Song({ songContain, songIdForPlaylist, playlistId, onPlay }) {
           </Menus>
         </Modal>
       </div>
+
+      {songIdForPlaylist &&
+        optionPlaylist.map((playlist) => (
+          <button className="btn primary small" onClick={() => handleAdd(playlist.id)} key={playlist.id}>
+            Add to {playlist.playlistName}
+          </button>
+        ))}
     </div>
   );
 }

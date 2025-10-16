@@ -9,22 +9,28 @@ export async function getPlaylists() {
 }
 
 export async function createUpdatePlaylist(newPlaylist, id) {
-  let query = supabase.from("playlist");
+  let query;
+
+  const playlistId = typeof id === "object" ? id?.id : id;
 
   // Create new playlist
-  if (!id) {
-    query = query.insert([{ ...newPlaylist }]);
-  }
-
-  // Update playlist
-  if (id) {
-    query = query
-      .update({ ...newPlaylist })
-      .eq("id", id)
+  if (!playlistId) {
+    query = await supabase
+      .from("playlist")
+      .insert([{ ...newPlaylist }])
       .select();
   }
 
-  const { data, error } = await query.select();
+  // Update playlist
+  if (playlistId) {
+    query = await supabase
+      .from("playlist")
+      .update({ ...newPlaylist })
+      .eq("id", playlistId)
+      .select();
+  }
+
+  const { data, error } = query;
 
   if (error) throw new Error("Playlist could not be created");
 

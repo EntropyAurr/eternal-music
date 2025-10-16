@@ -2,13 +2,12 @@ import { ChevronDown, ChevronUp, CircleUserRound, ListMusic } from "lucide-react
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
-import { usePlaylists } from "../features/playlists/usePlaylists";
 import CreatePlaylistForm from "../features/playlists/CreatePlaylistForm";
+import { usePlaylists } from "../features/playlists/usePlaylists";
 import Empty from "./Empty";
 import Modal from "./Modal";
 import RenderBody from "./RenderBody";
 import Spinner from "./Spinner";
-import Button from "./Button";
 
 function MainNav() {
   const [showPlaylists, setShowPlaylists] = useState(false);
@@ -45,9 +44,7 @@ function MainNav() {
 
               <Modal>
                 <Modal.Open opens="playlist-form">
-                  <Button variant="primary" size="small">
-                    Add new playlist
-                  </Button>
+                  <button className="btn primary small">Add new playlist</button>
                 </Modal.Open>
 
                 <Modal.Window name="playlist-form">

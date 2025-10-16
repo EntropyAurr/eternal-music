@@ -13,18 +13,24 @@ export async function createUpdateSong(newSong, id) {
   const songName = `${newSong.url.name}`.replaceAll(/[^\w.-]/g, "_");
   const songPath = hasSongPath ? newSong.url : `${supabaseUrl}/storage/v1/object/public/song-files/${songName}`;
 
-  let query = supabase.from("song");
+  let query;
+
+  const songId = typeof id === "object" ? id?.id : id;
 
   // Create new song
-  if (!id) {
-    query = query.insert([{ ...newSong, url: songPath }]);
+  if (!songId) {
+    query = supabase
+      .from("song")
+      .insert([{ ...newSong, url: songPath }])
+      .select();
   }
 
   // Update song
-  if (id) {
-    query = query
+  if (songId) {
+    query = supabase
+      .from("song")
       .update({ ...newSong, url: songPath })
-      .eq("id", id)
+      .eq("id", songId)
       .select();
   }
 

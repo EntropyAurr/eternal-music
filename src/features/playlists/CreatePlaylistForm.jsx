@@ -46,13 +46,13 @@ function CreatePlaylistForm({ playlistToUpdate = {}, id: updateId, onCloseModal 
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, onError)} type={onCloseModal ? "modal" : "regular"} className="form">
+    <Form onSubmit={handleSubmit(onSubmit, onError)} type={onCloseModal ? "modal" : "regular"}>
       <FormRow label="Playlist name" error={errors?.name?.message}>
         <Input type="text" id="playlistName" {...register("playlistName", { required: "This field is required" })} disabled={isWorking} />
       </FormRow>
 
       <button className="btn primary medium">{isUpdateSession ? "Edit playlist" : "Create new playlist"}</button>
-    </form>
+    </Form>
   );
 }
 

@@ -6,7 +6,7 @@ function AddSong() {
     <div>
       <Modal>
         <Modal.Open opens="song-form">
-          <button className="btn primary medium">Add new Song</button>
+          <button className="btn primary small">Add new Song</button>
         </Modal.Open>
 
         <Modal.Window name="song-form">

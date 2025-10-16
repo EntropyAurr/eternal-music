@@ -16,7 +16,9 @@ function FormRow({ label, error, children }) {
           {label}
         </label>
       )}
+
       {children}
+
       {error && <span className="text-sm">{error}</span>}
     </div>
   );

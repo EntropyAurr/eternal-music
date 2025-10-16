@@ -1,6 +1,6 @@
-import { X } from "lucide-react";
 import { cloneElement, createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
+import { X } from "lucide-react";
 import { useOutsideClick } from "../hooks/useOutsideClick";
 
 // const Overlay = styled.div`

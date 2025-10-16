@@ -1,15 +1,5 @@
-// const Input = styled.input`
-//   font-size: 1.7rem;
-//   background-color: var(--color-grey-0);
-//   padding: 0.5rem 1rem;
-//   outline: none;
-//   border: 1px solid var(--color-grey-400);
-// `;
-
-// export default Input;
-
-function Input() {
-  return <div></div>;
+function Input({ ...props }) {
+  return <input {...props} className="border-border bg-[var(--color-primary-100)] px-1 py-2.5 text-lg outline-none" />;
 }
 
 export default Input;

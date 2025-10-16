@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import FileInput from "../../ui/FileInput";
 import Form from "../../ui/Form";
@@ -64,7 +64,7 @@ function CreateSongForm({ songToUpdate = {}, id: updateId, onCloseModal }) {
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form onSubmit={handleSubmit(onSubmit, onError)} type={onCloseModal ? "modal" : "regular"}>
       <FormRow label="Song name" error={errors?.name?.message}>
         <Input type="text" id="name" {...register("name", { required: "This field is required" })} disabled={isWorking} />
       </FormRow>
