@@ -17,7 +17,7 @@ function DarkModeProvider({ children }) {
         document.documentElement.classList.remove("dark-mode");
       }
     },
-    [isDarkMode]
+    [isDarkMode],
   );
 
   function ToggleDarkMode() {

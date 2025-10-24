@@ -10,12 +10,9 @@ export function useCreateSong() {
 
     onSuccess: (_, variables) => {
       toast.success("New song successfully created");
-      queryClient.invalidateQueries({
-        queryKey: ["song"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["playlist_song", variables.toPlaylistId],
-      });
+
+      queryClient.invalidateQueries({ queryKey: ["song"] });
+      queryClient.invalidateQueries({ queryKey: ["playlist_song", variables.toPlaylistId] });
     },
 
     onError: (error) => {

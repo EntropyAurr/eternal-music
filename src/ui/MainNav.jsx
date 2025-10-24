@@ -2,8 +2,8 @@ import { ChevronDown, ChevronUp, CircleUserRound, ListMusic } from "lucide-react
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
-import CreatePlaylistForm from "../features/playlists/CreatePlaylistForm";
 import { usePlaylists } from "../features/playlists/usePlaylists";
+import CreatePlaylistForm from "../features/playlists/CreatePlaylistForm";
 import Empty from "./Empty";
 import Modal from "./Modal";
 import RenderBody from "./RenderBody";
@@ -20,16 +20,21 @@ function MainNav() {
     <nav>
       <ul className="flex flex-col gap-5">
         <li className="flex flex-col gap-2.5">
-          <div className="navlink flex items-center justify-between">
-            <NavLink to="/home" className="navlink">
+          <NavLink to="/home" className="navlink justify-between">
+            <div className="flex gap-4">
               <ListMusic className="h-7 w-7" />
               <span className="text-xl">Playlists</span>
-            </NavLink>
+            </div>
 
-            <button className="button-icon" onClick={() => setShowPlaylists(!showPlaylists)}>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setShowPlaylists(!showPlaylists);
+              }}
+            >
               {!showPlaylists ? <ChevronDown className="h-7 w-7" /> : <ChevronUp className="h-7 w-7" />}
             </button>
-          </div>
+          </NavLink>
 
           {showPlaylists && (
             <>

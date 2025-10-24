@@ -1,9 +1,9 @@
-import { useEffect } from "react";
 import { Pause, Play } from "lucide-react";
+import { useEffect } from "react";
 import { useSongPlayer } from "../../context/SongPlayerContext";
 
 function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
-  const { handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding } = useSongPlayer();
+  const { handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, nextSong, nextSongIndex } = useSongPlayer();
 
   useEffect(function () {
     const audio = audioRef.current;
@@ -35,6 +35,7 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
 
     if (!currentSongId && currentPlaylist?.length > 0) {
       handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
+
       return;
     }
 
@@ -48,6 +49,12 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
 
     if (isPlaying) {
       handlePauseSong();
+
+      // console.log(currentPlaylist);
+      console.log(songsFromPlaylist);
+      console.log(`Current index: ${songIndex}`);
+      console.log(nextSong);
+      console.log(`Next song index: ${nextSongIndex}`);
     } else {
       handlePlaySong(currentSongId, currentPlaylist);
     }

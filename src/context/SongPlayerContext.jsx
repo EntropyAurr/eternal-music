@@ -8,7 +8,7 @@ function SongPlayerProvider({ children }) {
   const songRef = useRef(null); // songRef.current: used to store the current song object
   const audio = audioRef.current;
 
-  const [currentPlaylist, setCurrentPlaylist] = useState(null);
+  const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [currentSongId, setCurrentSongId] = useState(null);
   const [songIndex, setSongIndex] = useState(null);
   const [duration, setDuration] = useState(null);
@@ -18,20 +18,30 @@ function SongPlayerProvider({ children }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isEnding, setIsEnding] = useState(false);
 
+  const [nextSong, setNextSong] = useState(null);
+  const [nextSongIndex, setNextSongIndex] = useState(null);
+
   // VOLUME adjustment
-  if (!songRef.current) audio.volume = volume / 100;
+  if (!songRef.current) audio.volume = volume / 100; // default volume: 15
 
   function handleVolume(value) {
     audio.volume = value / 100;
     setVolume(value);
   }
 
+  const currentPlaylistRef = useRef(currentPlaylist);
+
+  useEffect(() => {
+    currentPlaylistRef.current = currentPlaylist;
+  }, [currentPlaylist]);
+
   // PLAY song
   const handlePlaySong = useCallback(
     (id, songList) => {
-      const effectiveList = songList || currentPlaylist;
+      const effectiveList = songList || currentPlaylistRef.current;
+
       if (!effectiveList) {
-        console.log("No playlist available.");
+        console.log("No playlist available");
         return;
       }
 
@@ -39,8 +49,6 @@ function SongPlayerProvider({ children }) {
       const index = effectiveList.indexOf(song);
 
       if (!song) return;
-
-      setDuration(song.song.duration);
 
       if (!songRef.current || songRef.current.song_id !== id) {
         audio.src = song.song.url;
@@ -52,6 +60,7 @@ function SongPlayerProvider({ children }) {
       }
 
       songRef.current = song;
+      setDuration(song.song.duration);
 
       audio.play().catch((error) => {
         if (error.name !== "AbortError") {
@@ -62,9 +71,15 @@ function SongPlayerProvider({ children }) {
       setCurrentSongId(song.song_id);
       setSongIndex(index);
 
+      const nextIndex = (index + 1) % songList.length || null;
+      const playNextSong = effectiveList[nextIndex];
+
+      setNextSong(playNextSong);
+      setNextSongIndex(nextIndex);
+
       // because React's state updates are asynchronous => currentSongId still holds the old value until the next render => currentSongId !== song.id
     },
-    [audio, currentSongTime, currentPlaylist]
+    [audio, currentSongTime, currentPlaylistRef.current],
   );
 
   // PAUSE song
@@ -75,28 +90,34 @@ function SongPlayerProvider({ children }) {
 
   // NEXT song
   const handleNext = useCallback(() => {
-    if (!currentPlaylist || !currentPlaylist.length || currentSongId === null) return;
+    const playlist = currentPlaylistRef.current;
 
-    const index = currentPlaylist.findIndex((song) => song.song_id === currentSongId);
+    if (!playlist || !playlist.length || currentSongId === null) return;
 
-    if (index === -1 || index === currentPlaylist.length - 1) return;
+    // const index = playlist.findIndex((song) => song.song_id === currentSongId);
 
-    const nextSong = currentPlaylist[index + 1];
-    if (nextSong) handlePlaySong(nextSong.song_id, currentPlaylist);
-  }, [currentPlaylist, currentSongId, handlePlaySong]);
+    // if (index === -1 || index === playlist.length - 1) return;
+    if (songIndex === -1 || songIndex === playlist.length - 1) return;
+
+    const nextIndex = (songIndex + 1) % playlist.length;
+    const playNextSong = playlist[nextIndex];
+
+    if (playNextSong) handlePlaySong(playNextSong.song_id, playlist);
+  }, [songIndex, currentPlaylistRef.current]);
 
   // PREVIOUS song
   const handlePrevious = useCallback(() => {
-    if (!currentPlaylist || !currentPlaylist.length || currentSongId === null) return;
+    const playlist = currentPlaylistRef.current;
+    if (!playlist || !playlist.length || currentSongId === null) return;
 
-    const index = currentPlaylist.findIndex((song) => song.song_id === currentSongId);
+    const index = playlist.findIndex((song) => song.song_id === currentSongId);
 
     if (index === 0) return;
 
-    const prevSong = currentPlaylist[index - 1];
+    const prevSong = playlist[index - 1];
 
-    if (prevSong) handlePlaySong(prevSong.song_id, currentPlaylist);
-  }, [currentPlaylist, currentSongId, handlePlaySong]);
+    if (prevSong) handlePlaySong(prevSong.song_id, playlist);
+  }, [currentSongId, handlePlaySong]);
 
   // PROGRESS of a song
   function handleProgressSong(value) {
@@ -129,10 +150,10 @@ function SongPlayerProvider({ children }) {
         audio.removeEventListener("ended", handleEnded);
       };
     },
-    [handleNext, audio, duration]
+    [handleNext, audio, duration],
   );
 
-  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding }}>{children}</SongPlayerContext.Provider>;
+  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, currentPlaylist, nextSong, nextSongIndex }}>{children}</SongPlayerContext.Provider>;
 }
 
 function useSongPlayer() {

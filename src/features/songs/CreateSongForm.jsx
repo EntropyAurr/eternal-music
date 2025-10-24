@@ -10,6 +10,7 @@ import Input from "../../ui/Input";
 
 import { useCreateSong } from "./useCreateSong";
 import { useUpdateSong } from "./useUpdateSong";
+import { useSongPlayer } from "../../context/SongPlayerContext";
 
 function CreateSongForm({ songToUpdate = {}, id: updateId, onCloseModal }) {
   const { playlistId } = useParams();
@@ -25,6 +26,8 @@ function CreateSongForm({ songToUpdate = {}, id: updateId, onCloseModal }) {
 
   const { handleSubmit, formState, register, reset } = useForm({ defaultValues: isUpdateSession ? updateValue : {} });
   const { errors } = formState;
+
+  const { setCurrentPlaylist } = useSongPlayer();
 
   if (!showForm) return null;
 
@@ -52,6 +55,7 @@ function CreateSongForm({ songToUpdate = {}, id: updateId, onCloseModal }) {
         { ...data, url: url, toPlaylistId: Number(playlistId) },
         {
           onSuccess: () => {
+            // setCurrentPlaylist((prev) => [...prev, { ...data, url }]);
             reset();
             onCloseModal?.();
           },

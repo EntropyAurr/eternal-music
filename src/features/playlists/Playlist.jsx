@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { useSongPlayer } from "../../context/SongPlayerContext";
 import { usePlaylists } from "./usePlaylists";
 import { usePlaylistSong } from "./usePlaylistSong";
-
 import { Pencil, X } from "lucide-react";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Empty from "../../ui/Empty";
@@ -14,8 +13,8 @@ import Spinner from "../../ui/Spinner";
 import TogglePlay from "../player/TogglePlay";
 import AddSong from "../songs/AddSong";
 import Song from "../songs/Song";
-import CreatePlaylistForm from "./CreatePlaylistForm";
 import { useDeletePlaylist } from "./useDeletePlaylist";
+import CreatePlaylistForm from "./CreatePlaylistForm";
 
 function Playlist() {
   const { playlistId } = useParams();
@@ -23,17 +22,17 @@ function Playlist() {
   const { songsFromPlaylist, isPending } = usePlaylistSong();
   const { playlists, isPendingPlaylists } = usePlaylists();
   const { isDeleting, deletePlaylist } = useDeletePlaylist();
-  const { handlePlaySong, setCurrentPlaylist, currentSongId } = useSongPlayer();
+  const { handlePlaySong, setCurrentPlaylist, currentPlaylist } = useSongPlayer();
 
   useEffect(() => {
-    if (songsFromPlaylist && !currentSongId) {
+    if (songsFromPlaylist && currentPlaylist.length === 0) {
       setCurrentPlaylist(songsFromPlaylist);
     }
-  }, [songsFromPlaylist, setCurrentPlaylist, currentSongId]);
+  }, [songsFromPlaylist, setCurrentPlaylist, currentPlaylist.length]);
 
-  const handlePlay = (songId) => {
+  function handlePlay(songId) {
     handlePlaySong(songId, songsFromPlaylist);
-  };
+  }
 
   if (isPendingPlaylists && isPending) return <Spinner />;
   if (!playlists || !songsFromPlaylist) return <Empty />;
