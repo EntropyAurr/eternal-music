@@ -17,7 +17,7 @@ export async function createUpdateSong(newSong, id) {
 
   const songId = typeof id === "object" ? id?.id : id;
 
-  // Create new song
+  // CREATE new song
   if (!songId) {
     query = supabase
       .from("song")
@@ -25,7 +25,7 @@ export async function createUpdateSong(newSong, id) {
       .select();
   }
 
-  // Update song
+  // UPDATE song
   if (songId) {
     query = supabase
       .from("song")
@@ -55,7 +55,7 @@ export async function createUpdateSong(newSong, id) {
   return song;
 }
 
-// Remove song from playlist
+// REMOVE song from playlist
 export async function removeSong({ songId, playlistId }) {
   const { error: removeError } = await supabase.from("playlist_song").delete().match({ song_id: songId, playlist_id: playlistId });
 
