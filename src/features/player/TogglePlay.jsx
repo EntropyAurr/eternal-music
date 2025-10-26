@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Pause, Play } from "lucide-react";
 import { useEffect } from "react";
 import { useSongPlayer } from "../../context/SongPlayerContext";
@@ -39,13 +40,18 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
       return;
     }
 
-    if (type === "playlist") {
-      if (!isSamePlaylist) {
-        setCurrentPlaylist(songsFromPlaylist);
-        handlePlaySong(songsFromPlaylist[0].song_id, songsFromPlaylist);
-        return;
-      }
+    if (type === "playlist" && !isSamePlaylist) {
+      setCurrentPlaylist(songsFromPlaylist);
+      handlePlaySong(songsFromPlaylist[0].song_id, songsFromPlaylist);
+
+      return;
     }
+
+    // test - s
+    if (type === "song") {
+      console.log(currentPlaylist);
+    }
+    // test - e
 
     if (isPlaying) {
       handlePauseSong();
@@ -56,7 +62,7 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
       console.log(nextSong);
       console.log(`Next song index: ${nextSongIndex}`);
     } else {
-      handlePlaySong(currentSongId, currentPlaylist);
+      handlePlaySong(currentSongId, songsFromPlaylist);
     }
 
     if (songIndex === currentPlaylist.length - 1 && currentPlaylist.length > 1 && isEnding) {
@@ -65,7 +71,7 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
   }
 
   return (
-    <button className="button-icon" onClick={handleToggle}>
+    <button className={clsx("button-icon", type === "playlist" ? "bg-primary text-white" : "bg-gray-700 text-white hover:bg-gray-800")} onClick={handleToggle}>
       {type === "playlist" ? isSamePlaylist && isPlaying ? <Pause /> : <Play /> : isPlaying && songRef.current ? <Pause /> : <Play />}
     </button>
   );

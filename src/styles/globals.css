@@ -143,6 +143,12 @@
     animation: rotate 1s infinite linear;
   }
 
+  @keyframes rotate {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
   .form {
     overflow: hidden;
     font-size: 1.4rem;

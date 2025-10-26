@@ -50,7 +50,7 @@ function Player() {
         <span>Volume: {volume}</span>
       </div>
 
-      <button className="button-icon" onClick={() => handlePrevious(currentSongId)}>
+      <button className="button-icon" onClick={() => handlePrevious()}>
         <SkipBack />
       </button>
 
@@ -59,7 +59,7 @@ function Player() {
       <button
         className="button-icon"
         onClick={function () {
-          handleNext(currentSongId);
+          handleNext();
         }}
       >
         <SkipForward />

@@ -1,8 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { usePlaylistSong } from "../features/playlists/usePlaylistSong";
-import Spinner from "../ui/Spinner";
-import Empty from "../ui/Empty";
 
 const SongPlayerContext = createContext();
 
@@ -34,16 +32,18 @@ function SongPlayerProvider({ children }) {
     setVolume(value);
   }
 
-  const currentPlaylistRef = useRef(currentPlaylist);
+  // const currentPlaylistRef = useRef(currentPlaylist);
+  // const currentPlaylistRef = useRef(songsFromPlaylist);
 
-  useEffect(() => {
-    currentPlaylistRef.current = currentPlaylist;
-  }, [currentPlaylist]);
+  // useEffect(() => {
+  //   currentPlaylistRef.current = currentPlaylist;
+  // }, [currentPlaylist]);
 
   // PLAY song
   const handlePlaySong = useCallback(
     (id, songList) => {
-      const effectiveList = songList || currentPlaylistRef.current;
+      const effectiveList = songList || currentPlaylist;
+      // const effectiveList = songList || songsFromPlaylist;
 
       if (!effectiveList) {
         console.log("No playlist available");
@@ -77,7 +77,7 @@ function SongPlayerProvider({ children }) {
       setSongIndex(index);
 
       // test - s
-      const nextIndex = (index + 1) % songList.length || null;
+      const nextIndex = (index + 1) % effectiveList.length || null;
       const playNextSong = effectiveList[nextIndex];
 
       setNextSong(playNextSong);
@@ -86,7 +86,7 @@ function SongPlayerProvider({ children }) {
 
       // because React's state updates are asynchronous => currentSongId still holds the old value until the next render => currentSongId !== song.id
     },
-    [audio, currentSongTime, currentPlaylistRef.current],
+    [audio, currentSongTime, songsFromPlaylist],
   );
 
   // PAUSE song
@@ -97,39 +97,28 @@ function SongPlayerProvider({ children }) {
 
   // NEXT song
   const handleNext = useCallback(() => {
-    // const playlist = currentPlaylistRef.current;
+    console.log(currentPlaylist);
 
-    if (!songsFromPlaylist || !songsFromPlaylist.length || currentSongId === null) return;
+    if (!currentPlaylist || !currentPlaylist.length || currentSongId === null) return;
 
-    // const index = playlist.findIndex((song) => song.song_id === currentSongId);
-    // if (index === -1 || index === playlist.length - 1) return;
+    if (songIndex === -1 || songIndex === currentPlaylist.length - 1) return;
 
-    if (songIndex === -1 || songIndex === songsFromPlaylist.length - 1) return;
+    const nextIndex = (songIndex + 1) % currentPlaylist.length || null;
+    const playNextSong = currentPlaylist[nextIndex];
 
-    const nextIndex = (songIndex + 1) % songsFromPlaylist.length || null;
-    const playNextSong = songsFromPlaylist[nextIndex];
-
-    if (playNextSong) handlePlaySong(playNextSong.song_id, songsFromPlaylist);
-
-    // test - s
-    console.log(songsFromPlaylist);
-    // test - e
-  }, [songIndex, songsFromPlaylist]);
+    if (playNextSong) handlePlaySong(playNextSong.song_id, currentPlaylist);
+  }, [songIndex, currentPlaylist]);
 
   // PREVIOUS song
   const handlePrevious = useCallback(() => {
-    // const playlist = currentPlaylistRef.current;
+    if (!currentPlaylist || !currentPlaylist.length || currentSongId === null) return;
 
-    if (!songsFromPlaylist || !songsFromPlaylist.length || currentSongId === null) return;
+    if (songIndex === -1 || songIndex === 0) return;
 
-    const index = songsFromPlaylist.findIndex((song) => song.song_id === currentSongId);
+    const prevSong = currentPlaylist[songIndex - 1];
 
-    if (index === 0) return;
-
-    const prevSong = songsFromPlaylist[index - 1];
-
-    if (prevSong) handlePlaySong(prevSong.song_id, songsFromPlaylist);
-  }, [currentSongId, handlePlaySong]);
+    if (prevSong) handlePlaySong(prevSong.song_id, currentPlaylist);
+  }, [songIndex, currentPlaylist]);
 
   // PROGRESS of a song
   function handleProgressSong(value) {
@@ -165,8 +154,8 @@ function SongPlayerProvider({ children }) {
     [handleNext, audio, duration],
   );
 
-  if (isPending) return <Spinner />;
-  if (!songsFromPlaylist) return <Empty />;
+  // if (isPending) return <Spinner />;
+  // if (!songsFromPlaylist) return <Empty />;
 
   return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, currentPlaylist, nextSong, nextSongIndex }}>{children}</SongPlayerContext.Provider>;
 }

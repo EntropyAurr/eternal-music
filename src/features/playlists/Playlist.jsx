@@ -22,13 +22,13 @@ function Playlist() {
   const { songsFromPlaylist, isPending } = usePlaylistSong();
   const { playlists, isPendingPlaylists } = usePlaylists();
   const { isDeleting, deletePlaylist } = useDeletePlaylist();
-  const { handlePlaySong, setCurrentPlaylist, currentPlaylist } = useSongPlayer();
+  const { handlePlaySong, currentPlaylist, setCurrentPlaylist } = useSongPlayer();
 
   useEffect(() => {
-    if (songsFromPlaylist && currentPlaylist.length === 0) {
+    if (songsFromPlaylist && currentPlaylist.length == 0) {
       setCurrentPlaylist(songsFromPlaylist);
     }
-  }, [songsFromPlaylist, setCurrentPlaylist, currentPlaylist.length]);
+  }, [songsFromPlaylist, currentPlaylist]);
 
   function handlePlay(songId) {
     handlePlaySong(songId, songsFromPlaylist);

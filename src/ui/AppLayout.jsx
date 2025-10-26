@@ -1,13 +1,13 @@
 import { Outlet } from "react-router-dom";
 import { SongPlayerProvider } from "../context/SongPlayerContext";
-import Header from "./Header";
 import Player from "../features/player/Player";
+import Header from "./Header";
 import MainNav from "./MainNav";
 
 function AppLayout() {
   return (
-    <SongPlayerProvider>
-      <div className="flex h-screen flex-col">
+    <div className="flex h-screen flex-col">
+      <SongPlayerProvider>
         <Header />
 
         <main className="bg-background grid flex-1 grid-cols-[18rem_1fr] overflow-hidden">
@@ -25,8 +25,8 @@ function AppLayout() {
         </main>
 
         <Player />
-      </div>
-    </SongPlayerProvider>
+      </SongPlayerProvider>
+    </div>
   );
 }
 
