@@ -47,11 +47,9 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
       return;
     }
 
-    // test - s
     if (type === "song") {
-      console.log(currentPlaylist);
+      setCurrentPlaylist(songsFromPlaylist);
     }
-    // test - e
 
     if (isPlaying) {
       handlePauseSong();

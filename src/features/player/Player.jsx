@@ -40,10 +40,10 @@ import ToggleVolume from "./ToggleVolume";
 // `;
 
 function Player() {
-  const { currentSongId, volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress } = useSongPlayer();
+  const { volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress } = useSongPlayer();
 
   return (
-    <div className="col-span-full flex justify-center gap-10 px-5 py-6">
+    <div className="border-border col-span-full flex h-20 items-center justify-center gap-10 border-t-2">
       <div className="flex items-center gap-5">
         <ToggleVolume />
         <input type="range" min={0} max={100} value={volume} onChange={(e) => handleVolume(e.target.value)} />

@@ -1,4 +1,4 @@
-import MainNav from "./MainNav";
+/* import MainNav from "./MainNav";
 
 function Sidebar() {
   return (
@@ -13,3 +13,4 @@ function Sidebar() {
 }
 
 export default Sidebar;
+ */

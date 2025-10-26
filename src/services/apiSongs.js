@@ -1,7 +1,7 @@
 import supabase, { supabaseUrl } from "./supabase";
 
 export async function getSongs() {
-  const { data, error } = await supabase.from("song").select("*");
+  const { data, error } = await supabase.from("song").select("*").order("id", { ascending: true });
 
   if (error) throw new Error("Songs could not be loaded");
 
