@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { useSongPlayer } from "../../context/SongPlayerContext";
 import { usePlaylists } from "./usePlaylists";
 import { usePlaylistSong } from "./usePlaylistSong";
-import { Pencil, X } from "lucide-react";
+import { Pencil, Repeat, Repeat1, X } from "lucide-react";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Empty from "../../ui/Empty";
 import Menus from "../../ui/Menus";
@@ -22,13 +22,13 @@ function Playlist() {
   const { songsFromPlaylist, isPending } = usePlaylistSong();
   const { playlists, isPendingPlaylists } = usePlaylists();
   const { isDeleting, deletePlaylist } = useDeletePlaylist();
-  const { handlePlaySong, currentPlaylist, setCurrentPlaylist } = useSongPlayer();
+  const { handlePlaySong, setCurrentPlaylist, isLoopPlaylist, setIsLoopPlaylist, handleLoopPlaylist } = useSongPlayer();
 
   useEffect(() => {
-    if (songsFromPlaylist && currentPlaylist.length == 0) {
+    if (songsFromPlaylist && songsFromPlaylist.length > 0) {
       setCurrentPlaylist(songsFromPlaylist);
     }
-  }, [songsFromPlaylist, currentPlaylist]);
+  }, [songsFromPlaylist]);
 
   function handlePlay(songId) {
     handlePlaySong(songId, songsFromPlaylist);
@@ -44,6 +44,8 @@ function Playlist() {
       <div className="flex items-center gap-9">
         <h2 className="text-2xl font-semibold">{playlist.playlistName}</h2>
         <TogglePlay type="playlist" currentPlaylistId={playlist.id} songsFromPlaylist={songsFromPlaylist} />
+
+        <button onClick={handleLoopPlaylist}>{isLoopPlaylist ? <Repeat1 /> : <Repeat />}</button>
 
         <div>
           <Modal>

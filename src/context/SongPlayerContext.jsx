@@ -18,9 +18,8 @@ function SongPlayerProvider({ children }) {
   const [volume, setVolume] = useState(15);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isEnding, setIsEnding] = useState(false);
-
-  const [nextSong, setNextSong] = useState(null);
-  const [nextSongIndex, setNextSongIndex] = useState(null);
+  const [isLoopPlaylist, setIsLoopPlaylist] = useState(false);
+  const [isLoopSong, setIsLoopSong] = useState(false);
 
   const { songsFromPlaylist, isPending } = usePlaylistSong();
 
@@ -32,18 +31,10 @@ function SongPlayerProvider({ children }) {
     setVolume(value);
   }
 
-  // const currentPlaylistRef = useRef(currentPlaylist);
-  // const currentPlaylistRef = useRef(songsFromPlaylist);
-
-  // useEffect(() => {
-  //   currentPlaylistRef.current = currentPlaylist;
-  // }, [currentPlaylist]);
-
   // PLAY song
   const handlePlaySong = useCallback(
     (id, songList) => {
       const effectiveList = songList || currentPlaylist;
-      // const effectiveList = songList || songsFromPlaylist;
 
       if (!effectiveList) {
         console.log("No playlist available");
@@ -76,14 +67,6 @@ function SongPlayerProvider({ children }) {
       setCurrentSongId(song.song_id);
       setSongIndex(index);
 
-      // test - s
-      const nextIndex = (index + 1) % effectiveList.length || null;
-      const playNextSong = effectiveList[nextIndex];
-
-      setNextSong(playNextSong);
-      setNextSongIndex(nextIndex);
-      // test - e
-
       // because React's state updates are asynchronous => currentSongId still holds the old value until the next render => currentSongId !== song.id
     },
     [audio, currentSongTime, songsFromPlaylist],
@@ -97,9 +80,7 @@ function SongPlayerProvider({ children }) {
 
   // NEXT song
   const handleNext = useCallback(() => {
-    console.log(currentPlaylist);
-
-    if (!currentPlaylist || !currentPlaylist.length || currentSongId === null) return;
+    if (!currentPlaylist?.length || currentSongId === null) return;
 
     if (songIndex === -1 || songIndex === currentPlaylist.length - 1) return;
 
@@ -126,6 +107,25 @@ function SongPlayerProvider({ children }) {
     setCurrentSongTime(value);
   }
 
+  // SHUFFLE
+
+  // LOOP
+  // Loop playlist
+  function handleLoopPlaylist() {
+    setIsLoopPlaylist((toggle) => !toggle);
+  }
+
+  if (isLoopPlaylist && songIndex === currentPlaylist.length - 1 && audio.currentTime === audio.duration) {
+    handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
+    return;
+  }
+
+  // Loop single song
+  function handleLoopSong() {
+    setIsLoopSong((toggle) => !toggle);
+  }
+
+  //
   useEffect(
     function () {
       if (!songRef.current) return;
@@ -135,12 +135,17 @@ function SongPlayerProvider({ children }) {
           setProgress(0);
           return;
         }
+
         setProgress((audio.currentTime / audio.duration) * 100);
         setCurrentSongTime(audio.currentTime);
       }
 
       function handleEnded() {
-        handleNext();
+        if (!isLoopSong) {
+          handleNext();
+        } else {
+          handlePlaySong(currentPlaylist[songIndex].song_id, currentPlaylist);
+        }
       }
 
       audio.addEventListener("timeupdate", handleProgressUpdate);
@@ -151,13 +156,10 @@ function SongPlayerProvider({ children }) {
         audio.removeEventListener("ended", handleEnded);
       };
     },
-    [handleNext, audio, duration],
+    [handleNext, audio, duration, isLoopSong],
   );
 
-  // if (isPending) return <Spinner />;
-  // if (!songsFromPlaylist) return <Empty />;
-
-  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, currentPlaylist, nextSong, nextSongIndex }}>{children}</SongPlayerContext.Provider>;
+  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, currentPlaylist, isLoopPlaylist, setIsLoopPlaylist, handleLoopPlaylist, isLoopSong, setIsLoopSong, handleLoopSong }}>{children}</SongPlayerContext.Provider>;
 }
 
 function useSongPlayer() {

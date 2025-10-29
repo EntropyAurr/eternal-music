@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useSongPlayer } from "../../context/SongPlayerContext";
 
 function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
-  const { handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, nextSong, nextSongIndex } = useSongPlayer();
+  const { handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding } = useSongPlayer();
 
   useEffect(function () {
     const audio = audioRef.current;
@@ -36,7 +36,6 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
 
     if (!currentSongId && currentPlaylist?.length > 0) {
       handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
-
       return;
     }
 
@@ -47,18 +46,8 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
       return;
     }
 
-    if (type === "song") {
-      setCurrentPlaylist(songsFromPlaylist);
-    }
-
     if (isPlaying) {
       handlePauseSong();
-
-      // console.log(currentPlaylist);
-      console.log(songsFromPlaylist);
-      console.log(`Current index: ${songIndex}`);
-      console.log(nextSong);
-      console.log(`Next song index: ${nextSongIndex}`);
     } else {
       handlePlaySong(currentSongId, songsFromPlaylist);
     }

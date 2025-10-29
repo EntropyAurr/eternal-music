@@ -1,4 +1,4 @@
-import { SkipBack, SkipForward } from "lucide-react";
+import { Repeat, Repeat1, SkipBack, SkipForward } from "lucide-react";
 import { useSongPlayer } from "../../context/SongPlayerContext";
 import { formatDuration } from "../../utils/helpers";
 import TogglePlay from "./TogglePlay";
@@ -40,7 +40,7 @@ import ToggleVolume from "./ToggleVolume";
 // `;
 
 function Player() {
-  const { volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress } = useSongPlayer();
+  const { volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress, isLoopSong, handleLoopSong } = useSongPlayer();
 
   return (
     <div className="border-border col-span-full flex h-20 items-center justify-center gap-10 border-t-2">
@@ -64,6 +64,8 @@ function Player() {
       >
         <SkipForward />
       </button>
+
+      <button onClick={handleLoopSong}>{isLoopSong ? <Repeat1 /> : <Repeat />}</button>
 
       <div className="flex items-center gap-2.5">
         <span className="w-16 text-center text-lg">{formatDuration(currentSongTime)}</span>
