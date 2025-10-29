@@ -1,10 +1,11 @@
 import { useEffect } from "react";
+import clsx from "clsx";
 
 import { useParams } from "react-router-dom";
 import { useSongPlayer } from "../../context/SongPlayerContext";
 import { usePlaylists } from "./usePlaylists";
 import { usePlaylistSong } from "./usePlaylistSong";
-import { Pencil, Repeat, Repeat1, X } from "lucide-react";
+import { Pencil, Repeat, Repeat1, Shuffle, X } from "lucide-react";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Empty from "../../ui/Empty";
 import Menus from "../../ui/Menus";
@@ -15,6 +16,7 @@ import AddSong from "../songs/AddSong";
 import Song from "../songs/Song";
 import { useDeletePlaylist } from "./useDeletePlaylist";
 import CreatePlaylistForm from "./CreatePlaylistForm";
+import { useRandomSong } from "./useRandomSong";
 
 function Playlist() {
   const { playlistId } = useParams();
@@ -22,20 +24,27 @@ function Playlist() {
   const { songsFromPlaylist, isPending } = usePlaylistSong();
   const { playlists, isPendingPlaylists } = usePlaylists();
   const { isDeleting, deletePlaylist } = useDeletePlaylist();
-  const { handlePlaySong, setCurrentPlaylist, isLoopPlaylist, setIsLoopPlaylist, handleLoopPlaylist } = useSongPlayer();
+  const { randomSongs } = useRandomSong();
+  const { handlePlaySong, setCurrentPlaylist, isLoopPlaylist, handleLoopPlaylist, isShuffle, handleShuffle } = useSongPlayer();
 
   useEffect(() => {
-    if (songsFromPlaylist && songsFromPlaylist.length > 0) {
-      setCurrentPlaylist(songsFromPlaylist);
+    let listToUse = songsFromPlaylist;
+
+    if (isShuffle && randomSongs?.length > 0) {
+      listToUse = randomSongs;
     }
-  }, [songsFromPlaylist]);
+
+    if (listToUse?.length > 0) {
+      setCurrentPlaylist(listToUse);
+    }
+  }, [songsFromPlaylist, randomSongs, isShuffle]);
 
   function handlePlay(songId) {
     handlePlaySong(songId, songsFromPlaylist);
   }
 
-  if (isPendingPlaylists && isPending) return <Spinner />;
-  if (!playlists || !songsFromPlaylist) return <Empty />;
+  if (isPendingPlaylists && isPending && isPendingRandom) return <Spinner />;
+  if (!playlists || !songsFromPlaylist || !randomSongs) return <Empty />;
 
   const playlist = playlists.find((playlist) => playlist.id === Number(playlistId));
 
@@ -46,6 +55,10 @@ function Playlist() {
         <TogglePlay type="playlist" currentPlaylistId={playlist.id} songsFromPlaylist={songsFromPlaylist} />
 
         <button onClick={handleLoopPlaylist}>{isLoopPlaylist ? <Repeat1 /> : <Repeat />}</button>
+
+        <button onClick={handleShuffle}>
+          <Shuffle className={clsx(isShuffle && "text-primary")} />
+        </button>
 
         <div>
           <Modal>

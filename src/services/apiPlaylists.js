@@ -37,6 +37,7 @@ export async function createUpdatePlaylist(newPlaylist, id) {
   return data;
 }
 
+// Get song
 export async function getSongFromPlaylist(playlistId) {
   if (!playlistId) {
     throw new Error("playlistId is required to fetch songs.");
@@ -45,6 +46,17 @@ export async function getSongFromPlaylist(playlistId) {
   const { data, error } = await supabase.from("playlist_song").select("*, song(name, artist, duration, url)").eq("playlist_id", playlistId);
 
   if (error) throw new Error("Song could not display for this playlist");
+
+  return data;
+}
+
+// Get song - random
+export async function getRandomSongsFromPlaylist(playlistId) {
+  const { data, error } = await supabase.rpc("get_random_songs_from_playlist", { pid: Number(playlistId) });
+
+  if (error) {
+    throw new Error("Error fetching random songs");
+  }
 
   return data;
 }
@@ -69,5 +81,3 @@ export async function deletePlaylist(id) {
     throw new Error("Playlist could not be deleted");
   }
 }
-
-// idea: when deleting a playlist, if the song in this playlist belong to other playlist => the song still in the bucket storage; but if the songs in the target deleted playlist does not belong to other playlists => delete them in song tables and storage

@@ -20,8 +20,9 @@ function SongPlayerProvider({ children }) {
   const [isEnding, setIsEnding] = useState(false);
   const [isLoopPlaylist, setIsLoopPlaylist] = useState(false);
   const [isLoopSong, setIsLoopSong] = useState(false);
+  const [isShuffle, setIsShuffle] = useState(false);
 
-  const { songsFromPlaylist, isPending } = usePlaylistSong();
+  const { songsFromPlaylist } = usePlaylistSong();
 
   // VOLUME adjustment
   if (!songRef.current) audio.volume = volume / 100; // default volume: 15
@@ -108,6 +109,9 @@ function SongPlayerProvider({ children }) {
   }
 
   // SHUFFLE
+  function handleShuffle() {
+    setIsShuffle((toggle) => !toggle);
+  }
 
   // LOOP
   // Loop playlist
@@ -159,7 +163,7 @@ function SongPlayerProvider({ children }) {
     [handleNext, audio, duration, isLoopSong],
   );
 
-  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, currentPlaylist, isLoopPlaylist, setIsLoopPlaylist, handleLoopPlaylist, isLoopSong, setIsLoopSong, handleLoopSong }}>{children}</SongPlayerContext.Provider>;
+  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, currentPlaylist, isLoopPlaylist, setIsLoopPlaylist, handleLoopPlaylist, isLoopSong, setIsLoopSong, handleLoopSong, isShuffle, setIsShuffle, handleShuffle }}>{children}</SongPlayerContext.Provider>;
 }
 
 function useSongPlayer() {

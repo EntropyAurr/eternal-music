@@ -4,41 +4,6 @@ import { formatDuration } from "../../utils/helpers";
 import TogglePlay from "./TogglePlay";
 import ToggleVolume from "./ToggleVolume";
 
-// const StyledPlayer = styled.div`
-//   background-color: var(--color-grey-50);
-//   grid-column: 1 / -1;
-//   display: flex;
-//   justify-content: center;
-//   gap: 4rem;
-//   padding: 2rem 2.2rem;
-// `;
-
-// const Volume = styled.div`
-//   display: flex;
-//   align-items: center;
-//   gap: 2rem;
-// `;
-
-// const VolumeBar = styled.input``;
-
-// const SongTrack = styled.div`
-//   display: flex;
-//   gap: 1rem;
-//   align-items: center;
-// `;
-
-// const TimeTrack = styled.span`
-//   width: 6rem;
-//   text-align: center;
-//   line-height: 1.5;
-//   font-size: 1.7rem;
-//   font-family: "Ubuntu";
-// `;
-
-// const ProgressBar = styled.input`
-//   width: 20rem;
-// `;
-
 function Player() {
   const { volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress, isLoopSong, handleLoopSong } = useSongPlayer();
 
@@ -50,18 +15,13 @@ function Player() {
         <span>Volume: {volume}</span>
       </div>
 
-      <button className="button-icon" onClick={() => handlePrevious()}>
+      <button className="button-icon" onClick={handlePrevious}>
         <SkipBack />
       </button>
 
       <TogglePlay type="song" />
 
-      <button
-        className="button-icon"
-        onClick={function () {
-          handleNext();
-        }}
-      >
+      <button className="button-icon" onClick={handleNext}>
         <SkipForward />
       </button>
 

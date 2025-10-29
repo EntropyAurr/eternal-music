@@ -1,0 +1,19 @@
+select * from get_random_songs_from_playlist(48); -> playlist_id = 48
+=> check to see whether it return any row
+    + If has error: Could not choose a best candidate function. You might need to add explicit type casts => in DB has functions with the same name (in this case is: get_random_songs_from_playlist(...))
+    => run this in supabase sql to return all functions with the same name:
+SELECT
+    proname AS function_name,
+    pg_get_function_identity_arguments(p.oid) AS arguments,
+    pg_get_function_result(p.oid) AS return_type,
+    n.nspname AS schema_name
+FROM pg_proc p
+JOIN pg_namespace n ON p.pronamespace = n.oid
+WHERE proname = 'get_random_songs_from_playlist';
+
+    => for clean, delete all function and create the new one
+DROP FUNCTION IF EXISTS get_random_songs_from_playlist(integer);
+...
+
+After that, run this query again: select * from get_random_songs_from_playlist(48); -> playlist_id = 48
+
