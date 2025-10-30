@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
 import FileInput from "../../ui/FileInput";
 import Form from "../../ui/Form";
@@ -10,7 +10,6 @@ import Input from "../../ui/Input";
 
 import { useCreateSong } from "./useCreateSong";
 import { useUpdateSong } from "./useUpdateSong";
-import { useSongPlayer } from "../../context/SongPlayerContext";
 
 function CreateSongForm({ songToUpdate = {}, id: updateId, onCloseModal }) {
   const { playlistId } = useParams();
@@ -24,16 +23,27 @@ function CreateSongForm({ songToUpdate = {}, id: updateId, onCloseModal }) {
   const { ...updateValue } = songToUpdate;
   const isUpdateSession = Boolean(updateId);
 
-  const { handleSubmit, formState, register, reset } = useForm({ defaultValues: isUpdateSession ? updateValue : {} });
+  const { handleSubmit, formState, register, reset, setValue } = useForm({ defaultValues: isUpdateSession ? updateValue : {} });
   const { errors } = formState;
-
-  const { setCurrentPlaylist } = useSongPlayer();
 
   if (!showForm) return null;
 
   function handleClose() {
     onCloseModal?.();
     setShowForm(false);
+  }
+
+  function handleFileInput(e) {
+    const selectedFile = e.target.files[0];
+    if (!selectedFile) return;
+
+    const audio = document.createElement("audio");
+    audio.src = URL.createObjectURL(selectedFile);
+
+    audio.addEventListener("loadedmetadata", () => {
+      const durationInSeconds = Math.floor(audio.duration);
+      setValue("duration", durationInSeconds);
+    });
   }
 
   function onSubmit(data) {
@@ -55,7 +65,6 @@ function CreateSongForm({ songToUpdate = {}, id: updateId, onCloseModal }) {
         { ...data, url: url, toPlaylistId: Number(playlistId) },
         {
           onSuccess: () => {
-            // setCurrentPlaylist((prev) => [...prev, { ...data, url }]);
             reset();
             onCloseModal?.();
           },
@@ -77,12 +86,10 @@ function CreateSongForm({ songToUpdate = {}, id: updateId, onCloseModal }) {
         <Input type="text" id="artist" {...register("artist", { required: "This field is required" })} disabled={isWorking} />
       </FormRow>
 
-      <FormRow label="Duration" error={errors?.duration?.message}>
-        <Input type="number" id="duration" {...register("duration", { required: "This field is required" })} disabled={isWorking} />
-      </FormRow>
+      <input type="hidden" {...register("duration")} />
 
       <FormRow label="Song URL">
-        <FileInput id="url" accept="audio/*" {...register("url", { required: isUpdateSession ? false : "This field is required" })} disabled={isWorking} />
+        <FileInput id="url" accept="audio/*" {...register("url", { required: isUpdateSession ? false : "This field is required" })} disabled={isWorking} onChange={(e) => handleFileInput(e)} />
       </FormRow>
 
       <FormRow>

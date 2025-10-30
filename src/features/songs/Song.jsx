@@ -1,10 +1,9 @@
+import { Pencil, Plus, Trash, X } from "lucide-react";
 import { formatDuration } from "../../utils/helpers";
 import { usePlaylists } from "../playlists/usePlaylists";
 import { useDeleteSong } from "./useDeleteSong";
 import { useRemoveSong } from "./useRemoveSong";
-import { useUploadSong } from "./useUploadSong";
 
-import { Pencil, Trash, X } from "lucide-react";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import ConfirmRemove from "../../ui/ConfirmRemove";
 import Empty from "../../ui/Empty";
@@ -12,23 +11,11 @@ import Menus from "../../ui/Menus";
 import Modal from "../../ui/Modal";
 import Spinner from "../../ui/Spinner";
 import CreateSongForm from "../songs/CreateSongForm";
-
-// const StyledSong = styled.div`
-//   display: grid;
-//   grid-template-columns: 2fr 20rem 10rem auto auto;
-//   gap: 3rem;
-//   align-items: center;
-//   justify-content: space-between;
-// `;
-// const SongTitle = styled.p`
-//   cursor: pointer;
-//   font-size: 1.8rem;
-//   font-weight: 600;
-// `;
+import AddSongToPlaylist from "./AddSongToPlaylist";
 
 function Song({ songContain, songIdForPlaylist, playlistId, onPlay }) {
   const { name, artist, duration } = songContain;
-  const { uploadSong } = useUploadSong();
+
   const { playlists, isPendingPlaylists } = usePlaylists();
   const { isDeleting, deleteSong } = useDeleteSong();
   const { isRemoving, removeSong } = useRemoveSong();
@@ -38,16 +25,8 @@ function Song({ songContain, songIdForPlaylist, playlistId, onPlay }) {
 
   const optionPlaylist = playlists.filter((playlist) => playlist.id !== playlistId);
 
-  function handleAdd(playlistId) {
-    const songForPlaylist = {
-      songIdForPlaylist,
-      playlistId,
-    };
-    uploadSong(songForPlaylist);
-  }
-
   return (
-    <div className="grid grid-cols-[2fr_12rem_7rem_auto_auto] items-center justify-between gap-7">
+    <div className="grid grid-cols-[2fr_1fr_1fr_auto] items-center justify-between gap-7">
       <p onClick={() => onPlay(songIdForPlaylist)} className="cursor-pointer text-xl font-semibold">
         {name}
       </p>
@@ -63,6 +42,10 @@ function Song({ songContain, songIdForPlaylist, playlistId, onPlay }) {
               <Menus.Toggle id={songIdForPlaylist} />
 
               <Menus.List id={songIdForPlaylist}>
+                <Modal.Open opens="add">
+                  <Menus.Button icon={<Plus />}>Add</Menus.Button>
+                </Modal.Open>
+
                 <Modal.Open opens="edit">
                   <Menus.Button icon={<Pencil />}>Edit</Menus.Button>
                 </Modal.Open>
@@ -75,6 +58,10 @@ function Song({ songContain, songIdForPlaylist, playlistId, onPlay }) {
                   <Menus.Button icon={<Trash />}>Delete</Menus.Button>
                 </Modal.Open>
               </Menus.List>
+
+              <Modal.Window name="add">
+                <AddSongToPlaylist optionPlaylist={optionPlaylist} songToUpdate={songContain} songIdForPlaylist={songIdForPlaylist} />
+              </Modal.Window>
 
               <Modal.Window name="edit">
                 <CreateSongForm songToUpdate={songContain} id={songIdForPlaylist} />
@@ -91,13 +78,6 @@ function Song({ songContain, songIdForPlaylist, playlistId, onPlay }) {
           </Menus>
         </Modal>
       </div>
-
-      {songIdForPlaylist &&
-        optionPlaylist.map((playlist) => (
-          <button className="btn primary small" onClick={() => handleAdd(playlist.id)} key={playlist.id}>
-            Add to {playlist.playlistName}
-          </button>
-        ))}
     </div>
   );
 }

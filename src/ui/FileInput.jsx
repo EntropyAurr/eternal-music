@@ -1,9 +1,5 @@
-function FileInput({ children, ...props }) {
-  return (
-    <input {...props} className="input-file" type="file">
-      {children}
-    </input>
-  );
+function FileInput({ ...props }) {
+  return <input {...props} className="input-file" type="file" />;
 }
 
 export default FileInput;
