@@ -66,7 +66,7 @@ export async function removeSong({ songId, playlistId }) {
 
 // DELETE SONG
 export async function deleteSong(id) {
-  // Get the song row to know the file path
+  // 1. Get the song row to know the file path
   const { data: song, error: fetchError } = await supabase.from("song").select("url").eq("id", id).single();
 
   if (fetchError) {
@@ -78,21 +78,21 @@ export async function deleteSong(id) {
     pathToRemove = song.url.split("/storage/v1/object/public/song-files/")[1];
   }
 
-  // Remove related playlist entries first
+  // 2. Remove related playlist entries first
   const { error: playlistError } = await supabase.from("playlist_song").delete().eq("song_id", id);
 
   if (playlistError) {
     throw new Error("Failed to remove song from playlist");
   }
 
-  // Then delete the song itself
+  // 3. Delete the song itself
   const { error: deleteError } = await supabase.from("song").delete().eq("id", id);
 
   if (deleteError) {
     throw new Error("Song could not be deleted");
   }
 
-  // Delete song from storage bucket
+  // 4. Delete song from storage bucket
   const { error: storageError } = await supabase.storage.from("song-files").remove([pathToRemove]);
 
   if (storageError) {
