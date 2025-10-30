@@ -1,8 +1,11 @@
 import { Pencil, Plus, Trash, X } from "lucide-react";
+import clsx from "clsx";
+
 import { formatDuration } from "../../utils/helpers";
 import { usePlaylists } from "../playlists/usePlaylists";
 import { useDeleteSong } from "./useDeleteSong";
 import { useRemoveSong } from "./useRemoveSong";
+import { useSongPlayer } from "../../context/SongPlayerContext";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import ConfirmRemove from "../../ui/ConfirmRemove";
@@ -19,15 +22,17 @@ function Song({ songContain, songIdForPlaylist, playlistId, onPlay }) {
   const { playlists, isPendingPlaylists } = usePlaylists();
   const { isDeleting, deleteSong } = useDeleteSong();
   const { isRemoving, removeSong } = useRemoveSong();
+  const { isPlaying, currentSongId } = useSongPlayer();
 
   if (isPendingPlaylists) return <Spinner />;
   if (!playlists) return <Empty />;
 
   const optionPlaylist = playlists.filter((playlist) => playlist.id !== playlistId);
+  const isPlayingThisSong = songIdForPlaylist === currentSongId && isPlaying;
 
   return (
     <div className="grid grid-cols-[2fr_1fr_1fr_auto] items-center justify-between gap-7">
-      <p onClick={() => onPlay(songIdForPlaylist)} className="cursor-pointer text-xl font-semibold">
+      <p onClick={() => onPlay(songIdForPlaylist)} className={clsx("cursor-pointer text-xl font-semibold", isPlayingThisSong && "text-primary")}>
         {name}
       </p>
 

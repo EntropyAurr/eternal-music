@@ -1,6 +1,6 @@
 import { useUploadSong } from "./useUploadSong";
 
-function AddSongToPlaylist({ optionPlaylist, songIdForPlaylist }) {
+function AddSongToPlaylist({ optionPlaylist, songIdForPlaylist, onCloseModal }) {
   const { uploadSong } = useUploadSong();
 
   function handleAdd(playlistId) {
@@ -9,6 +9,7 @@ function AddSongToPlaylist({ optionPlaylist, songIdForPlaylist }) {
       playlistId,
     };
     uploadSong(songForPlaylist);
+    onCloseModal?.();
   }
 
   return (

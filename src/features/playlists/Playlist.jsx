@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import clsx from "clsx";
-
 import { useParams } from "react-router-dom";
+import clsx from "clsx";
+import { Pencil, Repeat, Repeat1, Shuffle, X } from "lucide-react";
 import { useSongPlayer } from "../../context/SongPlayerContext";
 import { usePlaylists } from "./usePlaylists";
 import { usePlaylistSong } from "./usePlaylistSong";
-import { Pencil, Repeat, Repeat1, Shuffle, X } from "lucide-react";
+import { useDeletePlaylist } from "./useDeletePlaylist";
+import { useRandomSong } from "./useRandomSong";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Empty from "../../ui/Empty";
 import Menus from "../../ui/Menus";
@@ -14,9 +15,7 @@ import Spinner from "../../ui/Spinner";
 import TogglePlay from "../player/TogglePlay";
 import AddSong from "../songs/AddSong";
 import Song from "../songs/Song";
-import { useDeletePlaylist } from "./useDeletePlaylist";
 import CreatePlaylistForm from "./CreatePlaylistForm";
-import { useRandomSong } from "./useRandomSong";
 
 function Playlist() {
   const { playlistId } = useParams();
@@ -52,6 +51,7 @@ function Playlist() {
     <div className="flex flex-col gap-2.5">
       <div className="flex items-center gap-9">
         <h2 className="text-2xl font-semibold">{playlist.playlistName}</h2>
+
         <TogglePlay type="playlist" currentPlaylistId={playlist.id} songsFromPlaylist={songsFromPlaylist} />
 
         <button onClick={handleLoopPlaylist}>{isLoopPlaylist ? <Repeat1 /> : <Repeat />}</button>

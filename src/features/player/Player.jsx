@@ -5,14 +5,24 @@ import TogglePlay from "./TogglePlay";
 import ToggleVolume from "./ToggleVolume";
 
 function Player() {
-  const { volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress, isLoopSong, handleLoopSong } = useSongPlayer();
+  const { volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress, isLoopSong, handleLoopSong, currentPlaylist, songIndex } = useSongPlayer();
+
+  const currentSong = currentPlaylist?.[songIndex]?.song;
 
   return (
-    <div className="border-border col-span-full flex h-20 items-center justify-center gap-10 border-t-2">
-      <div className="flex items-center gap-5">
+    <div className="border-border col-span-full flex h-20 items-center justify-between gap-10 border-t-2 px-15">
+      <div className="flex flex-col gap-1">
+        {currentSong && (
+          <>
+            <h2 className="text-xl font-semibold">{currentSong.name}</h2>
+            <p className="text-md text-gray-400">{currentSong.artist}</p>
+          </>
+        )}
+      </div>
+
+      <div className="group relative flex items-center">
         <ToggleVolume />
-        <input type="range" min={0} max={100} value={volume} onChange={(e) => handleVolume(e.target.value)} />
-        <span>Volume: {volume}</span>
+        <input type="range" min={0} max={100} value={volume} onChange={(e) => handleVolume(e.target.value)} className="w-0 opacity-0 transition-all duration-300 ease-out group-hover:w-30 group-hover:opacity-100" />
       </div>
 
       <button className="button-icon" onClick={handlePrevious}>

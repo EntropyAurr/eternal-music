@@ -42,7 +42,12 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
     if (type === "playlist" && !isSamePlaylist) {
       setCurrentPlaylist(songsFromPlaylist);
       handlePlaySong(songsFromPlaylist[0].song_id, songsFromPlaylist);
+      return;
+    }
 
+    if (songIndex === currentPlaylist.length - 1 && isEnding) {
+      handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
+      setIsEnding(false);
       return;
     }
 
@@ -50,10 +55,6 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
       handlePauseSong();
     } else {
       handlePlaySong(currentSongId, songsFromPlaylist);
-    }
-
-    if (songIndex === currentPlaylist.length - 1 && currentPlaylist.length > 1 && isEnding) {
-      handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
     }
   }
 
