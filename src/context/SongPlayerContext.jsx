@@ -1,6 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
-import { usePlaylistSong } from "../features/playlists/usePlaylistSong";
 
 const SongPlayerContext = createContext();
 
@@ -22,14 +21,16 @@ function SongPlayerProvider({ children }) {
   const [isLoopSong, setIsLoopSong] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
 
-  const { songsFromPlaylist } = usePlaylistSong();
-
   // VOLUME adjustment
   if (!songRef.current) audio.volume = volume / 100; // default volume: 15
 
   function handleVolume(value) {
     audio.volume = value / 100;
     setVolume(value);
+  }
+
+  function getCurrentSong() {
+    return currentPlaylist?.find((song) => song.song_id === currentSongId)?.song ?? songRef.current?.song ?? null;
   }
 
   // PLAY song
@@ -52,8 +53,6 @@ function SongPlayerProvider({ children }) {
         audio.currentTime = 0;
         setCurrentSongTime(0);
         setProgress(0);
-      } else {
-        audio.currentTime = currentSongTime;
       }
 
       songRef.current = song;
@@ -67,10 +66,8 @@ function SongPlayerProvider({ children }) {
 
       setCurrentSongId(song.song_id);
       setSongIndex(index);
-
-      // because React's state updates are asynchronous => currentSongId still holds the old value until the next render => currentSongId !== song.id
     },
-    [audio, currentSongTime, songsFromPlaylist],
+    [audio],
   );
 
   // PAUSE song
@@ -86,9 +83,9 @@ function SongPlayerProvider({ children }) {
     if (songIndex === -1 || songIndex === currentPlaylist.length - 1) return;
 
     const nextIndex = (songIndex + 1) % currentPlaylist.length || null;
-    const playNextSong = currentPlaylist[nextIndex];
+    const nextSong = currentPlaylist[nextIndex];
 
-    if (playNextSong) handlePlaySong(playNextSong.song_id, currentPlaylist);
+    if (nextSong) handlePlaySong(nextSong.song_id, currentPlaylist);
   }, [songIndex, currentPlaylist]);
 
   // PREVIOUS song
@@ -163,7 +160,7 @@ function SongPlayerProvider({ children }) {
     [handleNext, audio, duration, isLoopSong],
   );
 
-  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, currentPlaylist, isLoopPlaylist, setIsLoopPlaylist, handleLoopPlaylist, isLoopSong, setIsLoopSong, handleLoopSong, isShuffle, setIsShuffle, handleShuffle, songsFromPlaylist }}>{children}</SongPlayerContext.Provider>;
+  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, currentPlaylist, isLoopPlaylist, setIsLoopPlaylist, handleLoopPlaylist, isLoopSong, setIsLoopSong, handleLoopSong, isShuffle, setIsShuffle, handleShuffle, getCurrentSong }}>{children}</SongPlayerContext.Provider>;
 }
 
 function useSongPlayer() {

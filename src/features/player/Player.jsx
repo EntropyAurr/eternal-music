@@ -5,9 +5,11 @@ import TogglePlay from "./TogglePlay";
 import ToggleVolume from "./ToggleVolume";
 
 function Player() {
-  const { volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress, isLoopSong, handleLoopSong, currentPlaylist, songIndex } = useSongPlayer();
+  const { volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress, isLoopSong, handleLoopSong, getCurrentSong } = useSongPlayer();
 
-  const currentSong = currentPlaylist?.[songIndex]?.song;
+  // const currentSong = currentPlaylist?.[songIndex]?.song;
+  // const currentSong = currentPlaylist?.find((item) => item.song_id === currentSongId)?.song || songRef.current?.song;
+  const currentSong = getCurrentSong();
 
   return (
     <div className="border-border col-span-full flex h-20 items-center justify-between gap-10 border-t-2 px-15">

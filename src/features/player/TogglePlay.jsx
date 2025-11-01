@@ -31,10 +31,15 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
 
   const isSamePlaylist = songRef?.current?.playlist_id === currentPlaylistId;
 
-  function handleToggle() {
-    if (!currentPlaylist || currentPlaylist.length === 0) return;
+  useEffect(() => {
+    if (type === "playlist" && (!currentPlaylist || currentPlaylist.length === 0)) {
+      setCurrentPlaylist(songsFromPlaylist);
+      return;
+    }
+  }, []);
 
-    if (!currentSongId && currentPlaylist?.length > 0) {
+  function handleToggle() {
+    if (!currentSongId) {
       handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
       return;
     }
@@ -51,10 +56,16 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
       return;
     }
 
-    if (isPlaying) {
+    if (type === "song" && isPlaying) {
       handlePauseSong();
     } else {
-      handlePlaySong(currentSongId, songsFromPlaylist);
+      handlePlaySong(currentSongId, currentPlaylist);
+    }
+
+    if (type === "playlist" && isPlaying) {
+      handlePauseSong();
+    } else {
+      handlePlaySong(currentSongId, currentPlaylist);
     }
   }
 
