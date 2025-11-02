@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useSongPlayer } from "../../context/SongPlayerContext";
 
 function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
-  const { handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding } = useSongPlayer();
+  const { handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, activePlaylistId, setActivePlaylistId } = useSongPlayer();
 
   useEffect(function () {
     const audio = audioRef.current;
@@ -29,22 +29,36 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
     };
   }, []);
 
-  const isSamePlaylist = songRef?.current?.playlist_id === currentPlaylistId;
-
   useEffect(() => {
-    if (type === "playlist" && (!currentPlaylist || currentPlaylist.length === 0)) {
-      setCurrentPlaylist(songsFromPlaylist);
-      return;
-    }
-  }, []);
+    if (!songsFromPlaylist) return;
+    if (activePlaylistId !== currentPlaylistId) return;
+
+    setCurrentPlaylist((prev) => {
+      const currentSong = prev.find((song) => song.isPlaying);
+
+      if (currentSong && songsFromPlaylist.some((s) => s.id === currentSong.id)) {
+        return songsFromPlaylist.map((song) => ({
+          ...song,
+          isPlaying: song.id === currentSong.id,
+        }));
+      }
+
+      return songsFromPlaylist;
+    });
+  }, [songsFromPlaylist, activePlaylistId, currentPlaylistId]);
+
+  const isSamePlaylist = songRef?.current?.playlist_id === currentPlaylistId;
 
   function handleToggle() {
     if (!currentSongId) {
-      handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
+      setActivePlaylistId(currentPlaylistId);
+      setCurrentPlaylist(songsFromPlaylist);
+      handlePlaySong(songsFromPlaylist[0].song_id, songsFromPlaylist);
       return;
     }
 
     if (type === "playlist" && !isSamePlaylist) {
+      setActivePlaylistId(currentPlaylistId);
       setCurrentPlaylist(songsFromPlaylist);
       handlePlaySong(songsFromPlaylist[0].song_id, songsFromPlaylist);
       return;
@@ -56,13 +70,7 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist }) {
       return;
     }
 
-    if (type === "song" && isPlaying) {
-      handlePauseSong();
-    } else {
-      handlePlaySong(currentSongId, currentPlaylist);
-    }
-
-    if (type === "playlist" && isPlaying) {
+    if (isPlaying) {
       handlePauseSong();
     } else {
       handlePlaySong(currentSongId, currentPlaylist);

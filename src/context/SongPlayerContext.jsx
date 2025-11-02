@@ -20,6 +20,7 @@ function SongPlayerProvider({ children }) {
   const [isLoopPlaylist, setIsLoopPlaylist] = useState(false);
   const [isLoopSong, setIsLoopSong] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
+  const [activePlaylistId, setActivePlaylistId] = useState(null);
 
   // VOLUME adjustment
   if (!songRef.current) audio.volume = volume / 100; // default volume: 15
@@ -48,7 +49,7 @@ function SongPlayerProvider({ children }) {
 
       if (!song) return;
 
-      if (!songRef.current || songRef.current.song_id !== id || (isPlaying && songRef.current.song_id === id)) {
+      if (!songRef.current || songRef.current.song_id !== id) {
         audio.src = song.song.url;
         audio.currentTime = 0;
         setCurrentSongTime(0);
@@ -160,7 +161,7 @@ function SongPlayerProvider({ children }) {
     [handleNext, audio, duration, isLoopSong],
   );
 
-  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, currentPlaylist, isLoopPlaylist, setIsLoopPlaylist, handleLoopPlaylist, isLoopSong, setIsLoopSong, handleLoopSong, isShuffle, setIsShuffle, handleShuffle, getCurrentSong }}>{children}</SongPlayerContext.Provider>;
+  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, currentPlaylist, isLoopPlaylist, setIsLoopPlaylist, handleLoopPlaylist, isLoopSong, setIsLoopSong, handleLoopSong, isShuffle, setIsShuffle, handleShuffle, getCurrentSong, activePlaylistId, setActivePlaylistId }}>{children}</SongPlayerContext.Provider>;
 }
 
 function useSongPlayer() {
