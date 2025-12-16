@@ -16,7 +16,7 @@ function MainNav({ active, setActive }) {
   if (!playlists) return <Empty />;
 
   return (
-    <nav className={clsx("navbar", { active })}>
+    <nav className={clsx("navbar border-border border-r-2", { active })}>
       <div className="mb-5 flex h-12 w-full items-center justify-between gap-2.5">
         <h2 className={clsx("transition-all duration-300", active ? "text-2xl font-semibold opacity-100" : "opacity-0")}>Aurora</h2>
 

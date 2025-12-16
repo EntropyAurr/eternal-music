@@ -24,19 +24,29 @@ function Playlist() {
   const { randomSongs } = useRandomSong();
   const { playlists, isPendingPlaylists } = usePlaylists();
   const { isDeleting, deletePlaylist } = useDeletePlaylist();
-  const { handlePlaySong, setCurrentPlaylist, isLoopPlaylist, handleLoopPlaylist, isShuffle, handleShuffle } = useSongPlayer();
+  const { handlePlaySong, setCurrentPlaylist, isLoopPlaylist, handleLoopPlaylist, isShuffle, handleShuffle, currentPlaylist, setActivePlaylistId } = useSongPlayer();
 
   useEffect(() => {
-    let shuffledPlaylist = songsFromPlaylist;
+    if (playlistId) {
+      setActivePlaylistId(Number(playlistId));
+    }
+  }, [playlistId]);
+
+  // Shuffle songs in playlist
+  useEffect(() => {
+    /* if (!currentPlaylist) {
+      setCurrentPlaylist(songsFromPlaylist);
+    } */
 
     if (isShuffle && randomSongs?.length > 0) {
-      shuffledPlaylist = randomSongs;
-      setCurrentPlaylist(shuffledPlaylist);
-    }
+      setCurrentPlaylist(randomSongs);
+    } /* else {
+      setCurrentPlaylist(songsFromPlaylist);
+    } */
   }, [songsFromPlaylist, randomSongs, isShuffle]);
 
   function handlePlay(songId) {
-    handlePlaySong(songId, songsFromPlaylist);
+    handlePlaySong(songId, currentPlaylist);
   }
 
   if (isPendingPlaylists && isPending && isPendingRandom) return <Spinner />;
@@ -49,7 +59,7 @@ function Playlist() {
       <div className="flex items-center gap-9">
         <h2 className="text-2xl font-semibold">{playlist.playlistName}</h2>
 
-        <TogglePlay type="playlist" currentPlaylistId={playlist.id} songsFromPlaylist={songsFromPlaylist} />
+        <TogglePlay type="playlist" currentPlaylistId={playlist.id} songsFromPlaylist={songsFromPlaylist} randomSongs={randomSongs} />
 
         <button onClick={handleLoopPlaylist}>{isLoopPlaylist ? <Repeat1 /> : <Repeat />}</button>
 

@@ -92,18 +92,12 @@
 
 @layer components {
   .navbar {
-    position: fixed;
-    left: 0;
-    top: 5rem;
-    bottom: 5rem;
-    width: 8rem;
+    height: 100%;
+    padding: 1.25rem;
     overflow-y: auto;
     overflow-x: hidden;
     background: transparent;
     backdrop-filter: blur(30px);
-    border-right: 3px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    padding: 1.25rem;
     transition: 0.5s;
   }
 
@@ -271,9 +265,11 @@
   .button-icon {
     background: none;
     border: none;
-    padding: 0.6rem;
+    padding: 0.5rem;
     border-radius: var(--border-radius-sm);
     transition: all 0.2s;
+    width: 2.5rem;
+    height: 2.5rem;
   }
   .button-icon:hover {
     background-color: var(--color-primary-100);
@@ -314,7 +310,7 @@
   margin-inline: auto;
   padding-inline: 2rem;
 
-  @media (width >= 640px) {
+  /* @media (width >= 640px) {
     max-width: 640px;
   }
   @media (width >= 768px) {
@@ -328,7 +324,7 @@
   }
   @media (width >= 1400px) {
     max-width: 1400px;
-  }
+  } */
 }
 
 #root {

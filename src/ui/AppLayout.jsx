@@ -15,7 +15,7 @@ function AppLayout() {
         <Header />
 
         <main className="bg-background flex flex-1 overflow-hidden">
-          <aside className={clsx("flex flex-col overflow-y-auto px-5 py-6 transition-all duration-500", active ? "w-[17rem]" : "w-[8rem]")}>
+          <aside className={clsx("flex flex-col overflow-y-auto px-0 transition-all duration-500", active ? "w-[17rem]" : "w-[8rem]")}>
             <MainNav active={active} setActive={setActive} />
           </aside>
 

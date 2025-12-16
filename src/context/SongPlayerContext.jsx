@@ -7,6 +7,7 @@ function SongPlayerProvider({ children }) {
   const audioRef = useRef(new Audio());
   const songRef = useRef(null); // songRef.current: used to store the current song object
   const audio = audioRef.current;
+  const shuffleRef = useRef({});
 
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [currentSongId, setCurrentSongId] = useState(null);
@@ -127,7 +128,6 @@ function SongPlayerProvider({ children }) {
     setIsLoopSong((toggle) => !toggle);
   }
 
-  //
   useEffect(
     function () {
       if (!songRef.current) return;
@@ -161,7 +161,7 @@ function SongPlayerProvider({ children }) {
     [handleNext, audio, duration, isLoopSong],
   );
 
-  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, currentPlaylist, isLoopPlaylist, setIsLoopPlaylist, handleLoopPlaylist, isLoopSong, setIsLoopSong, handleLoopSong, isShuffle, setIsShuffle, handleShuffle, getCurrentSong, activePlaylistId, setActivePlaylistId }}>{children}</SongPlayerContext.Provider>;
+  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, currentPlaylist, isLoopPlaylist, setIsLoopPlaylist, handleLoopPlaylist, isLoopSong, setIsLoopSong, handleLoopSong, isShuffle, setIsShuffle, handleShuffle, getCurrentSong, activePlaylistId, setActivePlaylistId, shuffleRef }}>{children}</SongPlayerContext.Provider>;
 }
 
 function useSongPlayer() {
