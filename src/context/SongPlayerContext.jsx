@@ -11,6 +11,7 @@ function SongPlayerProvider({ children }) {
 
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [currentSongId, setCurrentSongId] = useState(null);
+  const [activePlaylistId, setActivePlaylistId] = useState(null);
   const [songIndex, setSongIndex] = useState(null);
   const [duration, setDuration] = useState(null);
   const [currentSongTime, setCurrentSongTime] = useState(0);
@@ -21,7 +22,6 @@ function SongPlayerProvider({ children }) {
   const [isLoopPlaylist, setIsLoopPlaylist] = useState(false);
   const [isLoopSong, setIsLoopSong] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
-  const [activePlaylistId, setActivePlaylistId] = useState(null);
 
   // VOLUME adjustment
   if (!songRef.current) audio.volume = volume / 100; // default volume: 15

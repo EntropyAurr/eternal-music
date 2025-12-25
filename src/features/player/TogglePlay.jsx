@@ -35,7 +35,7 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist, rando
     };
   }, []);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (!songsFromPlaylist) return;
     if (activePlaylistId !== currentPlaylistId) {
       return;
@@ -53,26 +53,20 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist, rando
 
       return songsFromPlaylist;
     });
-  }, [songsFromPlaylist, randomSongs, activePlaylistId, currentPlaylistId]);
+  }, [songsFromPlaylist, randomSongs, activePlaylistId, currentPlaylistId]); */
 
   function handleToggle() {
-    console.log(currentPlaylistId);
     console.log(activePlaylistId);
+    console.log(currentPlaylistId);
     console.log(isSamePlaylist);
 
     if (!currentSongId) {
-      console.log("TEST-0");
-
       setActivePlaylistId(currentPlaylistId);
 
       if (isShuffle) {
-        console.log("TEST-1");
-
         setCurrentPlaylist(randomSongs);
         handlePlaySong(randomSongs[0].song_id, randomSongs);
       } else {
-        console.log("TEST-2");
-
         setCurrentPlaylist(songsFromPlaylist);
         handlePlaySong(songsFromPlaylist[0].song_id, songsFromPlaylist);
       }
@@ -81,11 +75,7 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist, rando
     }
 
     if (type === "playlist" && !isSamePlaylist) {
-      console.log("TEST-3");
-      console.log(currentPlaylist);
-
       setActivePlaylistId(currentPlaylistId);
-
       handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
 
       return;
@@ -99,14 +89,8 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist, rando
 
     if (isPlaying) {
       handlePauseSong();
-
-      console.log("TEST-7");
     } else {
       handlePlaySong(currentSongId, currentPlaylist);
-
-      console.log("TEST-8");
-      console.log(currentSongId);
-      console.log(currentPlaylist);
     }
   }
 

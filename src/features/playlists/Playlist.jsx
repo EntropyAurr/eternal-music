@@ -24,10 +24,10 @@ function Playlist() {
   const { randomSongs } = useRandomSong();
   const { playlists, isPendingPlaylists } = usePlaylists();
   const { isDeleting, deletePlaylist } = useDeletePlaylist();
-  const { handlePlaySong, setCurrentPlaylist, isLoopPlaylist, handleLoopPlaylist, isShuffle, handleShuffle, currentPlaylist, setActivePlaylistId } = useSongPlayer();
+  const { handlePlaySong, setCurrentPlaylist, isLoopPlaylist, handleLoopPlaylist, isShuffle, handleShuffle, currentPlaylist, setActivePlaylistId, isPlaying } = useSongPlayer();
 
   useEffect(() => {
-    if (playlistId) {
+    if (playlistId && isPlaying) {
       setActivePlaylistId(Number(playlistId));
     }
   }, [playlistId]);
