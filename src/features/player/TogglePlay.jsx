@@ -3,14 +3,14 @@ import { Pause, Play } from "lucide-react";
 import { useEffect } from "react";
 import { useSongPlayer } from "../../context/SongPlayerContext";
 
-function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist, randomSongs }) {
-  const { handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, activePlaylistId, setActivePlaylistId, isShuffle, shuffleRef } = useSongPlayer();
+function TogglePlay({ type = "song", currentPlayedPlaylistId, songsFromPlaylist, randomSongs }) {
+  const { handlePlaySong, handlePauseSong, currentSongId, currentPlayedPlaylist, setCurrentPlayedPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, activePlaylistId, setActivePlaylistId, isShuffle, shuffleRef } = useSongPlayer();
 
-  // const isSamePlaylist = songRef?.current?.playlist_id === currentPlaylistId;
-  // const isSamePlaylist = activePlaylistId === currentPlaylistId;
-  const isSamePlaylist = activePlaylistId === currentPlaylistId && songRef?.current?.playlist_id === currentPlaylistId;
+  // const isSamePlaylist = songRef?.current?.playlist_id === currentPlayedPlaylistId;
+  // const isSamePlaylist = activePlaylistId === currentPlayedPlaylistId;
+  const isSamePlaylist = activePlaylistId === currentPlayedPlaylistId && songRef?.current?.playlist_id === currentPlayedPlaylistId;
 
-  const effectivePlaylist = isShuffle ? shuffleRef.current[currentPlaylistId] || randomSongs : songsFromPlaylist;
+  const effectivePlaylist = isShuffle ? shuffleRef.current[currentPlayedPlaylistId] || randomSongs : songsFromPlaylist;
 
   useEffect(function () {
     const audio = audioRef.current;
@@ -37,11 +37,11 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist, rando
 
   /*   useEffect(() => {
     if (!songsFromPlaylist) return;
-    if (activePlaylistId !== currentPlaylistId) {
+    if (activePlaylistId !== currentPlayedPlaylistId) {
       return;
     }
 
-    setCurrentPlaylist((prev) => {
+    setCurrentPlayedPlaylist((prev) => {
       const currentSong = prev.find((song) => song.isPlaying);
 
       if (currentSong && songsFromPlaylist.some((song) => song.id === currentSong.id)) {
@@ -53,21 +53,17 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist, rando
 
       return songsFromPlaylist;
     });
-  }, [songsFromPlaylist, randomSongs, activePlaylistId, currentPlaylistId]); */
+  }, [songsFromPlaylist, randomSongs, activePlaylistId, currentPlayedPlaylistId]); */
 
   function handleToggle() {
-    console.log(activePlaylistId);
-    console.log(currentPlaylistId);
-    console.log(isSamePlaylist);
-
     if (!currentSongId) {
-      setActivePlaylistId(currentPlaylistId);
+      setActivePlaylistId(currentPlayedPlaylistId);
 
       if (isShuffle) {
-        setCurrentPlaylist(randomSongs);
+        setCurrentPlayedPlaylist(randomSongs);
         handlePlaySong(randomSongs[0].song_id, randomSongs);
       } else {
-        setCurrentPlaylist(songsFromPlaylist);
+        setCurrentPlayedPlaylist(songsFromPlaylist);
         handlePlaySong(songsFromPlaylist[0].song_id, songsFromPlaylist);
       }
 
@@ -75,22 +71,24 @@ function TogglePlay({ type = "song", currentPlaylistId, songsFromPlaylist, rando
     }
 
     if (type === "playlist" && !isSamePlaylist) {
-      setActivePlaylistId(currentPlaylistId);
-      handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
+      console.log("Switch to new playlist");
+
+      handlePlaySong(songsFromPlaylist[0].song_id, songsFromPlaylist);
 
       return;
     }
 
-    if (songIndex === currentPlaylist.length - 1 && isEnding) {
-      handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
+    if (songIndex === currentPlayedPlaylist.length - 1 && isEnding) {
+      handlePlaySong(currentPlayedPlaylist[0].song_id, currentPlayedPlaylist);
       setIsEnding(false);
       return;
     }
 
     if (isPlaying) {
       handlePauseSong();
+      console.log("PAUSE");
     } else {
-      handlePlaySong(currentSongId, currentPlaylist);
+      handlePlaySong(currentSongId, currentPlayedPlaylist);
     }
   }
 

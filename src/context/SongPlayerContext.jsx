@@ -9,7 +9,7 @@ function SongPlayerProvider({ children }) {
   const audio = audioRef.current;
   const shuffleRef = useRef({});
 
-  const [currentPlaylist, setCurrentPlaylist] = useState([]);
+  const [currentPlayedPlaylist, setCurrentPlayedPlaylist] = useState([]);
   const [currentSongId, setCurrentSongId] = useState(null);
   const [activePlaylistId, setActivePlaylistId] = useState(null);
   const [songIndex, setSongIndex] = useState(null);
@@ -32,13 +32,13 @@ function SongPlayerProvider({ children }) {
   }
 
   function getCurrentSong() {
-    return currentPlaylist?.find((song) => song.song_id === currentSongId)?.song ?? songRef.current?.song ?? null;
+    return currentPlayedPlaylist?.find((song) => song.song_id === currentSongId)?.song ?? songRef.current?.song ?? null;
   }
 
   // PLAY song
   const handlePlaySong = useCallback(
     (id, songList) => {
-      const effectiveList = songList || currentPlaylist;
+      const effectiveList = songList || currentPlayedPlaylist;
 
       if (!effectiveList) {
         console.log("No playlist available");
@@ -80,26 +80,26 @@ function SongPlayerProvider({ children }) {
 
   // NEXT song
   const handleNext = useCallback(() => {
-    if (!currentPlaylist?.length || currentSongId === null) return;
+    if (!currentPlayedPlaylist?.length || currentSongId === null) return;
 
-    if (songIndex === -1 || songIndex === currentPlaylist.length - 1) return;
+    if (songIndex === -1 || songIndex === currentPlayedPlaylist.length - 1) return;
 
-    const nextIndex = (songIndex + 1) % currentPlaylist.length || null;
-    const nextSong = currentPlaylist[nextIndex];
+    const nextIndex = (songIndex + 1) % currentPlayedPlaylist.length || null;
+    const nextSong = currentPlayedPlaylist[nextIndex];
 
-    if (nextSong) handlePlaySong(nextSong.song_id, currentPlaylist);
-  }, [songIndex, currentPlaylist]);
+    if (nextSong) handlePlaySong(nextSong.song_id, currentPlayedPlaylist);
+  }, [songIndex, currentPlayedPlaylist]);
 
   // PREVIOUS song
   const handlePrevious = useCallback(() => {
-    if (!currentPlaylist || !currentPlaylist.length || currentSongId === null) return;
+    if (!currentPlayedPlaylist || !currentPlayedPlaylist.length || currentSongId === null) return;
 
     if (songIndex === -1 || songIndex === 0) return;
 
-    const prevSong = currentPlaylist[songIndex - 1];
+    const prevSong = currentPlayedPlaylist[songIndex - 1];
 
-    if (prevSong) handlePlaySong(prevSong.song_id, currentPlaylist);
-  }, [songIndex, currentPlaylist]);
+    if (prevSong) handlePlaySong(prevSong.song_id, currentPlayedPlaylist);
+  }, [songIndex, currentPlayedPlaylist]);
 
   // PROGRESS of a song
   function handleProgressSong(value) {
@@ -118,8 +118,8 @@ function SongPlayerProvider({ children }) {
     setIsLoopPlaylist((toggle) => !toggle);
   }
 
-  if (isLoopPlaylist && songIndex === currentPlaylist.length - 1 && audio.currentTime === audio.duration) {
-    handlePlaySong(currentPlaylist[0].song_id, currentPlaylist);
+  if (isLoopPlaylist && songIndex === currentPlayedPlaylist.length - 1 && audio.currentTime === audio.duration) {
+    handlePlaySong(currentPlayedPlaylist[0].song_id, currentPlayedPlaylist);
     return;
   }
 
@@ -146,7 +146,7 @@ function SongPlayerProvider({ children }) {
         if (!isLoopSong) {
           handleNext();
         } else {
-          handlePlaySong(currentPlaylist[songIndex].song_id, currentPlaylist);
+          handlePlaySong(currentPlayedPlaylist[songIndex].song_id, currentPlayedPlaylist);
         }
       }
 
@@ -161,7 +161,7 @@ function SongPlayerProvider({ children }) {
     [handleNext, audio, duration, isLoopSong],
   );
 
-  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlaylist, setCurrentPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, currentPlaylist, isLoopPlaylist, setIsLoopPlaylist, handleLoopPlaylist, isLoopSong, setIsLoopSong, handleLoopSong, isShuffle, setIsShuffle, handleShuffle, getCurrentSong, activePlaylistId, setActivePlaylistId, shuffleRef }}>{children}</SongPlayerContext.Provider>;
+  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlayedPlaylist, setCurrentPlayedPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, currentPlayedPlaylist, isLoopPlaylist, setIsLoopPlaylist, handleLoopPlaylist, isLoopSong, setIsLoopSong, handleLoopSong, isShuffle, setIsShuffle, handleShuffle, getCurrentSong, activePlaylistId, setActivePlaylistId, shuffleRef }}>{children}</SongPlayerContext.Provider>;
 }
 
 function useSongPlayer() {
