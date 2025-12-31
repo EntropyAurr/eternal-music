@@ -94,7 +94,6 @@
   .navbar {
     height: 100%;
     padding: 1.25rem;
-    overflow-y: auto;
     overflow-x: hidden;
     background: transparent;
     backdrop-filter: blur(30px);

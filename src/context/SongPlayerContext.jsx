@@ -6,8 +6,9 @@ const SongPlayerContext = createContext();
 function SongPlayerProvider({ children }) {
   const audioRef = useRef(new Audio());
   const songRef = useRef(null); // songRef.current: used to store the current song object
-  const audio = audioRef.current;
   const shuffleRef = useRef({});
+
+  const audio = audioRef.current;
 
   const [currentPlayedPlaylist, setCurrentPlayedPlaylist] = useState([]);
   const [currentSongId, setCurrentSongId] = useState(null);
