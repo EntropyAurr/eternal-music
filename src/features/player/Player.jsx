@@ -15,6 +15,7 @@ function Player() {
   // TEST
   function handleTest() {
     console.log();
+    console.log(currentSong);
   }
 
   return (

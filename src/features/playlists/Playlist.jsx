@@ -24,18 +24,13 @@ function Playlist() {
   const { randomSongs } = useRandomSong();
   const { playlists, isPendingPlaylists } = usePlaylists();
   const { isDeleting, deletePlaylist } = useDeletePlaylist();
-  const { handlePlaySong, setCurrentPlayedPlaylist, isLoopPlaylist, handleLoopPlaylist, isShuffle, handleShuffle, currentPlayedPlaylist, isPlaying, isActivePlaylist, setIsActivePlaylist } = useSongPlayer();
+  const { handlePlaySong, setCurrentPlayedPlaylist, isLoopPlaylist, handleLoopPlaylist, isShuffle, handleShuffle, currentPlayedPlaylist, isPlaying, isActivePlaylist, setIsActivePlaylist, getCurrentSong, updatePlaylist, setUpdatePlaylist } = useSongPlayer();
 
-  // Shuffle songs in playlist
-  /*   useEffect(() => {
-    if (isShuffle && randomSongs?.length > 0) {
-      setCurrentPlayedPlaylist(randomSongs);
-    }
+  const currentSong = getCurrentSong();
 
-    if (playlistId && isPlaying) {
-      setCurrentPlayedPlaylist(songsFromPlaylist);
-    }
-  }, [songsFromPlaylist, randomSongs, isShuffle, playlistId]); */
+  /*   if (currentSong) {
+    setIsActivePlaylist(true);
+  } */
 
   useEffect(() => {
     let listToUse = songsFromPlaylist;
@@ -44,10 +39,14 @@ function Playlist() {
       listToUse = randomSongs;
     }
 
-    if (listToUse?.length > 0 && isActivePlaylist) {
-      setCurrentPlayedPlaylist(listToUse);
+    if (listToUse?.length > 0) {
+      setUpdatePlaylist(listToUse);
     }
-  }, [songsFromPlaylist, randomSongs, isShuffle, isActivePlaylist]);
+
+    if (Number(playlistId) === currentPlayedPlaylist[0]?.playlist_id) {
+      setCurrentPlayedPlaylist(updatePlaylist); // it will take effect after sometime, maybe to load the song ??
+    }
+  }, [songsFromPlaylist, randomSongs, isShuffle]);
 
   function handlePlay(songId) {
     handlePlaySong(songId, songsFromPlaylist);
@@ -61,6 +60,8 @@ function Playlist() {
   // TEST
   function handleTest() {
     console.log(currentPlayedPlaylist);
+    console.log(updatePlaylist);
+    console.log(isActivePlaylist);
   }
 
   return (

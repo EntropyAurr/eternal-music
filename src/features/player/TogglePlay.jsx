@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { useSongPlayer } from "../../context/SongPlayerContext";
 
 function TogglePlay({ type = "song", currentPlayedPlaylistId, songsFromPlaylist, randomSongs }) {
-  const { handlePlaySong, handlePauseSong, currentSongId, currentPlayedPlaylist, setCurrentPlayedPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, activePlaylistId, setActivePlaylistId, isShuffle, shuffleRef, isActivePlaylist, setIsActivePlaylist } = useSongPlayer();
+  const { handlePlaySong, handlePauseSong, currentSongId, currentPlayedPlaylist, setCurrentPlayedPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, activePlaylistId, setActivePlaylistId, isShuffle, shuffleRef, isActivePlaylist, setIsActivePlaylist, getCurrentSong } = useSongPlayer();
+
+  const currentSong = getCurrentSong();
 
   const [isTrigger, setIsTrigger] = useState(false);
 
@@ -49,11 +51,11 @@ function TogglePlay({ type = "song", currentPlayedPlaylistId, songsFromPlaylist,
         }
       }
 
-      if (isTrigger && isPlaying) {
-        setIsActivePlaylist(true);
-      }
-
       return;
+    }
+
+    if (currentSong) {
+      setIsActivePlaylist(true);
     }
 
     if (type === "playlist" && !isSamePlaylist) {

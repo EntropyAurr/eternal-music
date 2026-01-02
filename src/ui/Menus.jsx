@@ -68,7 +68,7 @@ function Button({ children, icon, onClick }) {
 
   return (
     <li>
-      <button onClick={handleClick} className="flex w-full items-center gap-4 px-3 py-6 text-left text-sm transition-all duration-200 hover:bg-[var(--color-primary-700)]">
+      <button onClick={handleClick} className="flex w-full items-center gap-4 px-3 py-2 text-left text-sm transition-all duration-200 hover:bg-[var(--color-primary-700)]">
         {icon}
         <span>{children}</span>
       </button>
