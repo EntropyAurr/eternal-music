@@ -14,7 +14,7 @@ function Player() {
 
   // TEST
   function handleTest() {
-    console.log(currentPlayedPlaylist);
+    console.log();
   }
 
   return (
@@ -39,7 +39,7 @@ function Player() {
               <SkipBack />
             </button>
 
-            <TogglePlay type="song" currentPlaylistId={Number(playlistId)} />
+            <TogglePlay type="song" />
 
             <button className="button-icon" onClick={handleNext}>
               <SkipForward />

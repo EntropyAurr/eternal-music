@@ -22,6 +22,7 @@ function SongPlayerProvider({ children }) {
   const [isLoopPlaylist, setIsLoopPlaylist] = useState(false);
   const [isLoopSong, setIsLoopSong] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
+  const [isActivePlaylist, setIsActivePlaylist] = useState(false);
 
   // VOLUME adjustment
   if (!songRef.current) audio.volume = volume / 100; // default volume: 15

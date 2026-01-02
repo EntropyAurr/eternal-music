@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { Pencil, Repeat, Repeat1, Shuffle, Snowflake, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSongPlayer } from "../../context/SongPlayerContext";
 import ConfirmDelete from "../../ui/ConfirmDelete";
@@ -24,23 +24,33 @@ function Playlist() {
   const { randomSongs } = useRandomSong();
   const { playlists, isPendingPlaylists } = usePlaylists();
   const { isDeleting, deletePlaylist } = useDeletePlaylist();
-  const { handlePlaySong, setCurrentPlayedPlaylist, isLoopPlaylist, handleLoopPlaylist, isShuffle, handleShuffle, currentPlayedPlaylist, isPlaying } = useSongPlayer();
-
-  const [isPlaylistActive, setIsPlaylistActive] = useState(false);
+  const { handlePlaySong, setCurrentPlayedPlaylist, isLoopPlaylist, handleLoopPlaylist, isShuffle, handleShuffle, currentPlayedPlaylist, isPlaying, isActivePlaylist, setIsActivePlaylist } = useSongPlayer();
 
   // Shuffle songs in playlist
-  useEffect(() => {
+  /*   useEffect(() => {
     if (isShuffle && randomSongs?.length > 0) {
       setCurrentPlayedPlaylist(randomSongs);
     }
 
-    if (playlistId) {
+    if (playlistId && isPlaying) {
       setCurrentPlayedPlaylist(songsFromPlaylist);
     }
-  }, [songsFromPlaylist, randomSongs, isShuffle, playlistId]);
+  }, [songsFromPlaylist, randomSongs, isShuffle, playlistId]); */
+
+  useEffect(() => {
+    let listToUse = songsFromPlaylist;
+
+    if (isShuffle && randomSongs?.length > 0) {
+      listToUse = randomSongs;
+    }
+
+    if (listToUse?.length > 0 && isActivePlaylist) {
+      setCurrentPlayedPlaylist(listToUse);
+    }
+  }, [songsFromPlaylist, randomSongs, isShuffle, isActivePlaylist]);
 
   function handlePlay(songId) {
-    handlePlaySong(songId, currentPlayedPlaylist);
+    handlePlaySong(songId, songsFromPlaylist);
   }
 
   if (isPendingPlaylists && isPending && isPendingRandom) return <Spinner />;
@@ -50,7 +60,7 @@ function Playlist() {
 
   // TEST
   function handleTest() {
-    console.log(isPlaying);
+    console.log(currentPlayedPlaylist);
   }
 
   return (
@@ -58,7 +68,7 @@ function Playlist() {
       <div className="flex items-center gap-9">
         <h2 className="text-2xl font-semibold">{playlist.playlistName}</h2>
 
-        <TogglePlay type="playlist" currentPlayedPlaylistId={playlist.id} songsFromPlaylist={songsFromPlaylist} randomSongs={randomSongs} />
+        <TogglePlay type="playlist" currentPlayedPlaylistId={playlist.id} songsFromPlaylist={songsFromPlaylist} randomSongs={randomSongs} isActivePlaylist={isActivePlaylist} setIsActivePlaylist={setIsActivePlaylist} />
 
         <button onClick={handleLoopPlaylist}>{isLoopPlaylist ? <Repeat1 /> : <Repeat />}</button>
 

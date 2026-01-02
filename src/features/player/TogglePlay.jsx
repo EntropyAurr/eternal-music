@@ -1,12 +1,14 @@
 import clsx from "clsx";
 import { Pause, Play } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSongPlayer } from "../../context/SongPlayerContext";
 
 function TogglePlay({ type = "song", currentPlayedPlaylistId, songsFromPlaylist, randomSongs }) {
-  const { handlePlaySong, handlePauseSong, currentSongId, currentPlayedPlaylist, setCurrentPlayedPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, activePlaylistId, setActivePlaylistId, isShuffle, shuffleRef } = useSongPlayer();
+  const { handlePlaySong, handlePauseSong, currentSongId, currentPlayedPlaylist, setCurrentPlayedPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, activePlaylistId, setActivePlaylistId, isShuffle, shuffleRef, isActivePlaylist, setIsActivePlaylist } = useSongPlayer();
 
-  const isSamePlaylist = activePlaylistId === currentPlayedPlaylistId && songRef?.current?.playlist_id === currentPlayedPlaylistId;
+  const [isTrigger, setIsTrigger] = useState(false);
+
+  const isSamePlaylist = songRef?.current?.playlist_id === currentPlayedPlaylistId;
 
   const effectivePlaylist = isShuffle ? shuffleRef.current[currentPlayedPlaylistId] || randomSongs : songsFromPlaylist;
 
@@ -36,6 +38,8 @@ function TogglePlay({ type = "song", currentPlayedPlaylistId, songsFromPlaylist,
   function handleToggle() {
     if (!currentSongId) {
       if (type === "playlist") {
+        setIsTrigger(true);
+
         if (isShuffle) {
           setCurrentPlayedPlaylist(randomSongs);
           handlePlaySong(randomSongs[0].song_id, randomSongs);
@@ -45,12 +49,16 @@ function TogglePlay({ type = "song", currentPlayedPlaylistId, songsFromPlaylist,
         }
       }
 
+      if (isTrigger && isPlaying) {
+        setIsActivePlaylist(true);
+      }
+
       return;
     }
 
     if (type === "playlist" && !isSamePlaylist) {
+      setCurrentPlayedPlaylist(songsFromPlaylist);
       handlePlaySong(songsFromPlaylist[0].song_id, songsFromPlaylist);
-
       return;
     }
 
@@ -62,8 +70,10 @@ function TogglePlay({ type = "song", currentPlayedPlaylistId, songsFromPlaylist,
 
     if (isPlaying) {
       handlePauseSong();
+      setIsPlaying(false);
     } else {
       handlePlaySong(currentSongId, currentPlayedPlaylist);
+      setIsPlaying(true);
     }
   }
 
