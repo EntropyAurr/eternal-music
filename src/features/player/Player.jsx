@@ -1,5 +1,5 @@
+import { Repeat, Repeat1, SkipBack, SkipForward, Snowflake } from "lucide-react";
 import { useParams } from "react-router-dom";
-import { Repeat, Repeat1, SkipBack, SkipForward } from "lucide-react";
 import { useSongPlayer } from "../../context/SongPlayerContext";
 import { formatDuration } from "../../utils/helpers";
 import TogglePlay from "./TogglePlay";
@@ -8,9 +8,14 @@ import ToggleVolume from "./ToggleVolume";
 function Player() {
   const { playlistId } = useParams();
 
-  const { volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress, isLoopSong, handleLoopSong, getCurrentSong } = useSongPlayer();
+  const { volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress, isLoopSong, handleLoopSong, getCurrentSong, currentPlayedPlaylist } = useSongPlayer();
 
   const currentSong = getCurrentSong();
+
+  // TEST
+  function handleTest() {
+    console.log(currentPlayedPlaylist);
+  }
 
   return (
     <div className="border-border col-span-full grid grid-cols-[17rem_auto] items-center justify-center gap-10 border-t-2 px-5 py-3 backdrop-blur-3xl">
@@ -26,6 +31,10 @@ function Player() {
       <div className="flex items-center gap-1 rounded-md p-2">
         <div className="grid grid-cols-[1fr_2fr_1fr] items-center gap-10">
           <div className="flex gap-7">
+            <button className="button-icon text-orange-600" onClick={handleTest}>
+              <Snowflake />
+            </button>
+
             <button className="button-icon" onClick={handlePrevious}>
               <SkipBack />
             </button>

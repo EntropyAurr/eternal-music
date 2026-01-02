@@ -1,12 +1,8 @@
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
 import clsx from "clsx";
-import { Pencil, Repeat, Repeat1, Shuffle, X } from "lucide-react";
+import { Pencil, Repeat, Repeat1, Shuffle, Snowflake, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useSongPlayer } from "../../context/SongPlayerContext";
-import { usePlaylists } from "./usePlaylists";
-import { usePlaylistSong } from "./usePlaylistSong";
-import { useDeletePlaylist } from "./useDeletePlaylist";
-import { useRandomSong } from "./useRandomSong";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Empty from "../../ui/Empty";
 import Menus from "../../ui/Menus";
@@ -16,6 +12,10 @@ import TogglePlay from "../player/TogglePlay";
 import AddSong from "../songs/AddSong";
 import Song from "../songs/Song";
 import CreatePlaylistForm from "./CreatePlaylistForm";
+import { useDeletePlaylist } from "./useDeletePlaylist";
+import { usePlaylists } from "./usePlaylists";
+import { usePlaylistSong } from "./usePlaylistSong";
+import { useRandomSong } from "./useRandomSong";
 
 function Playlist() {
   const { playlistId } = useParams();
@@ -24,26 +24,20 @@ function Playlist() {
   const { randomSongs } = useRandomSong();
   const { playlists, isPendingPlaylists } = usePlaylists();
   const { isDeleting, deletePlaylist } = useDeletePlaylist();
-  const { handlePlaySong, setCurrentPlayedPlaylist, isLoopPlaylist, handleLoopPlaylist, isShuffle, handleShuffle, currentPlayedPlaylist, setActivePlaylistId, isPlaying } = useSongPlayer();
+  const { handlePlaySong, setCurrentPlayedPlaylist, isLoopPlaylist, handleLoopPlaylist, isShuffle, handleShuffle, currentPlayedPlaylist, isPlaying } = useSongPlayer();
 
-  useEffect(() => {
-    if (playlistId && isPlaying) {
-      setActivePlaylistId(Number(playlistId));
-    }
-  }, [playlistId]);
+  const [isPlaylistActive, setIsPlaylistActive] = useState(false);
 
   // Shuffle songs in playlist
   useEffect(() => {
-    /* if (!currentPlayedPlaylist) {
-      setCurrentPlayedPlaylist(songsFromPlaylist);
-    } */
-
     if (isShuffle && randomSongs?.length > 0) {
       setCurrentPlayedPlaylist(randomSongs);
-    } /* else {
+    }
+
+    if (playlistId) {
       setCurrentPlayedPlaylist(songsFromPlaylist);
-    } */
-  }, [songsFromPlaylist, randomSongs, isShuffle]);
+    }
+  }, [songsFromPlaylist, randomSongs, isShuffle, playlistId]);
 
   function handlePlay(songId) {
     handlePlaySong(songId, currentPlayedPlaylist);
@@ -53,6 +47,11 @@ function Playlist() {
   if (!playlists || !songsFromPlaylist || !randomSongs) return <Empty />;
 
   const playlist = playlists.find((playlist) => playlist.id === Number(playlistId));
+
+  // TEST
+  function handleTest() {
+    console.log(isPlaying);
+  }
 
   return (
     <div className="flex flex-col gap-2.5">
@@ -94,6 +93,10 @@ function Playlist() {
             </Menus>
           </Modal>
         </div>
+
+        <button className="button-icon text-green-600" onClick={handleTest}>
+          <Snowflake />
+        </button>
       </div>
 
       {songsFromPlaylist.map((song) => (

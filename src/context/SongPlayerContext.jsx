@@ -12,7 +12,6 @@ function SongPlayerProvider({ children }) {
 
   const [currentPlayedPlaylist, setCurrentPlayedPlaylist] = useState([]);
   const [currentSongId, setCurrentSongId] = useState(null);
-  const [activePlaylistId, setActivePlaylistId] = useState(null);
   const [songIndex, setSongIndex] = useState(null);
   const [duration, setDuration] = useState(null);
   const [currentSongTime, setCurrentSongTime] = useState(0);
@@ -69,6 +68,7 @@ function SongPlayerProvider({ children }) {
 
       setCurrentSongId(song.song_id);
       setSongIndex(index);
+      setIsPlaying(true);
     },
     [audio],
   );
@@ -77,6 +77,7 @@ function SongPlayerProvider({ children }) {
   function handlePauseSong() {
     setCurrentSongTime(audio.currentTime);
     audio.pause();
+    setIsPlaying(false);
   }
 
   // NEXT song
@@ -162,7 +163,7 @@ function SongPlayerProvider({ children }) {
     [handleNext, audio, duration, isLoopSong],
   );
 
-  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlayedPlaylist, setCurrentPlayedPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, currentPlayedPlaylist, isLoopPlaylist, setIsLoopPlaylist, handleLoopPlaylist, isLoopSong, setIsLoopSong, handleLoopSong, isShuffle, setIsShuffle, handleShuffle, getCurrentSong, activePlaylistId, setActivePlaylistId, shuffleRef }}>{children}</SongPlayerContext.Provider>;
+  return <SongPlayerContext.Provider value={{ handlePlaySong, handlePauseSong, currentSongId, currentPlayedPlaylist, setCurrentPlayedPlaylist, duration, volume, setVolume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, setCurrentSongTime, progress, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, currentPlayedPlaylist, isLoopPlaylist, setIsLoopPlaylist, handleLoopPlaylist, isLoopSong, setIsLoopSong, handleLoopSong, isShuffle, setIsShuffle, handleShuffle, getCurrentSong, shuffleRef }}>{children}</SongPlayerContext.Provider>;
 }
 
 function useSongPlayer() {

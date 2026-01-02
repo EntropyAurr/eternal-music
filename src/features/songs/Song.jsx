@@ -31,7 +31,7 @@ function Song({ songContain, songIdForPlaylist, playlistId, onPlay }) {
   const isPlayingThisSong = songIdForPlaylist === currentSongId && isPlaying;
 
   return (
-    <div className="grid grid-cols-[2fr_1fr_1fr_auto] items-center justify-between gap-7">
+    <div className="mt-6 grid grid-cols-[18rem_6rem_6rem_4rem] items-center justify-between gap-7">
       <p onClick={() => onPlay(songIdForPlaylist)} className={clsx("cursor-pointer text-xl font-semibold", isPlayingThisSong && "text-primary")}>
         {name}
       </p>

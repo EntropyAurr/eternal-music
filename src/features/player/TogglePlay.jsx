@@ -6,8 +6,6 @@ import { useSongPlayer } from "../../context/SongPlayerContext";
 function TogglePlay({ type = "song", currentPlayedPlaylistId, songsFromPlaylist, randomSongs }) {
   const { handlePlaySong, handlePauseSong, currentSongId, currentPlayedPlaylist, setCurrentPlayedPlaylist, audioRef, songRef, songIndex, isPlaying, setIsPlaying, isEnding, setIsEnding, activePlaylistId, setActivePlaylistId, isShuffle, shuffleRef } = useSongPlayer();
 
-  // const isSamePlaylist = songRef?.current?.playlist_id === currentPlayedPlaylistId;
-  // const isSamePlaylist = activePlaylistId === currentPlayedPlaylistId;
   const isSamePlaylist = activePlaylistId === currentPlayedPlaylistId && songRef?.current?.playlist_id === currentPlayedPlaylistId;
 
   const effectivePlaylist = isShuffle ? shuffleRef.current[currentPlayedPlaylistId] || randomSongs : songsFromPlaylist;
@@ -35,44 +33,22 @@ function TogglePlay({ type = "song", currentPlayedPlaylistId, songsFromPlaylist,
     };
   }, []);
 
-  /*   useEffect(() => {
-    if (!songsFromPlaylist) return;
-    if (activePlaylistId !== currentPlayedPlaylistId) {
-      return;
-    }
-
-    setCurrentPlayedPlaylist((prev) => {
-      const currentSong = prev.find((song) => song.isPlaying);
-
-      if (currentSong && songsFromPlaylist.some((song) => song.id === currentSong.id)) {
-        return songsFromPlaylist.map((song) => ({
-          ...song,
-          isPlaying: song.id === currentSong.id,
-        }));
-      }
-
-      return songsFromPlaylist;
-    });
-  }, [songsFromPlaylist, randomSongs, activePlaylistId, currentPlayedPlaylistId]); */
-
   function handleToggle() {
     if (!currentSongId) {
-      setActivePlaylistId(currentPlayedPlaylistId);
-
-      if (isShuffle) {
-        setCurrentPlayedPlaylist(randomSongs);
-        handlePlaySong(randomSongs[0].song_id, randomSongs);
-      } else {
-        setCurrentPlayedPlaylist(songsFromPlaylist);
-        handlePlaySong(songsFromPlaylist[0].song_id, songsFromPlaylist);
+      if (type === "playlist") {
+        if (isShuffle) {
+          setCurrentPlayedPlaylist(randomSongs);
+          handlePlaySong(randomSongs[0].song_id, randomSongs);
+        } else {
+          setCurrentPlayedPlaylist(songsFromPlaylist);
+          handlePlaySong(songsFromPlaylist[0].song_id, songsFromPlaylist);
+        }
       }
 
       return;
     }
 
     if (type === "playlist" && !isSamePlaylist) {
-      console.log("Switch to new playlist");
-
       handlePlaySong(songsFromPlaylist[0].song_id, songsFromPlaylist);
 
       return;
@@ -86,7 +62,6 @@ function TogglePlay({ type = "song", currentPlayedPlaylistId, songsFromPlaylist,
 
     if (isPlaying) {
       handlePauseSong();
-      console.log("PAUSE");
     } else {
       handlePlaySong(currentSongId, currentPlayedPlaylist);
     }
