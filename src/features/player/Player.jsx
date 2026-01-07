@@ -8,14 +8,13 @@ import ToggleVolume from "./ToggleVolume";
 function Player() {
   const { playlistId } = useParams();
 
-  const { volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress, isLoopSong, handleLoopSong, getCurrentSong, currentPlayedPlaylist } = useSongPlayer();
+  const { volume, handleVolume, handleNext, handlePrevious, handleProgressSong, currentSongTime, duration, progress, isLoopSong, handleLoopSong, getCurrentSong } = useSongPlayer();
 
   const currentSong = getCurrentSong();
 
   // TEST
   function handleTest() {
     console.log();
-    console.log(currentSong);
   }
 
   return (

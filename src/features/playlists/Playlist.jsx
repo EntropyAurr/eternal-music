@@ -24,13 +24,7 @@ function Playlist() {
   const { randomSongs } = useRandomSong();
   const { playlists, isPendingPlaylists } = usePlaylists();
   const { isDeleting, deletePlaylist } = useDeletePlaylist();
-  const { handlePlaySong, setCurrentPlayedPlaylist, isLoopPlaylist, handleLoopPlaylist, isShuffle, handleShuffle, currentPlayedPlaylist, isPlaying, isActivePlaylist, setIsActivePlaylist, getCurrentSong, updatePlaylist, setUpdatePlaylist } = useSongPlayer();
-
-  const currentSong = getCurrentSong();
-
-  /*   if (currentSong) {
-    setIsActivePlaylist(true);
-  } */
+  const { handlePlaySong, setCurrentPlayedPlaylist, isLoopPlaylist, handleLoopPlaylist, isShuffle, handleShuffle, currentPlayedPlaylist, isActivePlaylist, setIsActivePlaylist, updatePlaylist, setUpdatePlaylist } = useSongPlayer();
 
   useEffect(() => {
     let listToUse = songsFromPlaylist;
